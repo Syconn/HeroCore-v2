@@ -1,6 +1,7 @@
 package mod.syconn.hero.common.entity;
 
 import mod.syconn.hero.core.ModDamageTypes;
+import mod.syconn.hero.core.ModEntities;
 import mod.syconn.hero.core.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +34,7 @@ public class ThrownMjolnir extends AbstractArrow {
     }
 
     public ThrownMjolnir(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(EntityType.TRIDENT, pShooter, pLevel);
+        super(ModEntities.MJOLNIR.get(), pShooter, pLevel);
         mjonirItem = pStack.copy();
     }
 

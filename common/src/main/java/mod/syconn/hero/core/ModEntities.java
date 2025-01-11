@@ -16,7 +16,7 @@ public class ModEntities {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(MOD_ID, Registries.ENTITY_TYPE);
 
-    public static final Supplier<EntityType<ThrownMjolnir>> MJOLNIR_ENTITY_TYPE = registerProjectile("thrown_mjolnir", ThrownMjolnir::new, MobCategory.MISC);
+    public static final Supplier<EntityType<ThrownMjolnir>> MJOLNIR = registerProjectile("thrown_mjolnir", ThrownMjolnir::new, MobCategory.MISC);
     
     private static <T extends Mob> Supplier<EntityType<T>> registerEntity(String name, EntityType.EntityFactory<T> entity, float width, float height, MobCategory mobCategory) {
         return ENTITIES.register(name, () -> EntityType.Builder.of(entity,mobCategory).sized(width, height).build(name));
