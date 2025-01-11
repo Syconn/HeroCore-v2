@@ -1,6 +1,6 @@
 package mod.syconn.hero.fabric.datagen;
 
-import mod.syconn.hero.core.DamageSources;
+import mod.syconn.hero.core.ModDamageTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.core.HolderLookup;
@@ -30,6 +30,6 @@ public class DamageTypeGen extends FabricDynamicRegistryProvider {
     }
 
     public static void bootstrapDamageTypes(BootstapContext<DamageType> context) {
-        context.register(DamageSources.MJOLNIR, new DamageType("mjolnir", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1f, DamageEffects.HURT, DeathMessageType.DEFAULT));
+        context.register(ModDamageTypes.MJOLNIR, new DamageType("mjolnir", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1f, DamageEffects.HURT, DeathMessageType.DEFAULT));
     }
 }

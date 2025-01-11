@@ -1,7 +1,7 @@
 package mod.syconn.hero.fabric.datagen;
 
 import mod.syconn.hero.core.ModItems;
-import mod.syconn.hero.core.TagRegistrar;
+import mod.syconn.hero.core.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
@@ -15,6 +15,6 @@ public class ItemTagGen extends FabricTagProvider.ItemTagProvider {
     }
 
     protected void addTags(HolderLookup.Provider arg) {
-        this.tag(TagRegistrar.TITANIUM_PLATE).add(reverseLookup(ModItems.TITANIUM_PLATE.get()));
+        this.tag(ModTags.TITANIUM_PLATE).add(reverseLookup(ModItems.TITANIUM_PLATE.get()));
     }
 }
