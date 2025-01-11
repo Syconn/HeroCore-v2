@@ -14,8 +14,6 @@ public class LangGen extends FabricLanguageProvider {
     public void generateTranslations(TranslationBuilder translationBuilder) {
         translationBuilder.add("itemGroup.hero.hero_items", "Super Hero Gear");
         translationBuilder.add(MJOLNIR.get(), "Mjolnir");
-        translationBuilder.add(SHURIKEN.get(), "Shuriken");
-        translationBuilder.add(GAUNTLET.get(), "Iron Man Gauntlet");
         translationBuilder.add(MARK_42_HELMET.get(), "Mark 42 Helmet");
         translationBuilder.add(MARK_42_CHESTPLATE.get(), "Mark 42 Chestplate");
         translationBuilder.add(MARK_42_LEGGINGS.get(), "Mark 42 Leggings");
@@ -23,7 +21,6 @@ public class LangGen extends FabricLanguageProvider {
         translationBuilder.add(INGOT_STEEL.get(), "Steel Ingot");
         translationBuilder.add(INGOT_TIN.get(), "Tin Ingot");
         translationBuilder.add(TITANIUM_PLATE.get(), "Titanium Plate");
-        translationBuilder.add(ARC_REACTOR.get(), "Arc Reactor");
         translationBuilder.add("key.categories.hero", "HeroCore Controls");
         translationBuilder.add("key.hero.use.ability1", "Use Ability 1");
         translationBuilder.add("key.hero.use.ability2", "Use Ability 2");
