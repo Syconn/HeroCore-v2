@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hero:mark_42"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "hero:mark_42"
+      }
+    ]
+  }
+}

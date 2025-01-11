@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="forge Client" type="Application" factoryName="Application" singleton="false">
+    <envs>
+      <env name="MOD_CLASSES" value="modClientRun%%$PROJECT_DIR$/../HeroCore\forge\build\sourcesSets\main" />
+      <env name="MCP_MAPPINGS" value="official_1.21.3" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="net.minecraftforge.bootstrap.ForgeBootstrap" />
+    <module name="HeroCore.forge.main" />
+    <option name="PROGRAM_PARAMETERS" value="--launchTarget forge_userdev_client --version MOD_DEV --assetIndex 18 --assetsDir C:\Users\Aidan\.gradle\caches\forge_gradle\assets --gameDir . --mixin.config hero.mixins.json --mixin.config hero.forge.mixins.json" />
+    <option name="VM_PARAMETERS" value="-Dnet.minecraftforge.gradle.GradleStart.srg.srg-mcp=C:\Users\Aidan\IdeaProjects\HeroCore\forge\build\createSrgToMcp\output.srg -Dmixin.env.remapRefMap=true -Dmixin.env.refMapRemappingFile=C:\Users\Aidan\IdeaProjects\HeroCore\forge\build\createSrgToMcp\output.srg -Dforge.enableGameTest=true -Djava.net.preferIPv6Addresses=system -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/forge/runs/client" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks=":forge:prepareClientCompile" externalProjectPath="$PROJECT_DIR$" />
+    </method>
+  </configuration>
+</component>

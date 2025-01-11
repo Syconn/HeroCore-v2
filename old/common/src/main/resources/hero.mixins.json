@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "mod.syconn.hero.extra.mixin",
+  "refmap": "hero.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "PlayerModelMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+

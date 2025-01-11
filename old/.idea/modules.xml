@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/HeroCore.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/HeroCore.common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/HeroCore.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/HeroCore.fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/HeroCore.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/HeroCore.fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forge/HeroCore.forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/forge/HeroCore.forge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forge/HeroCore.forge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/forge/HeroCore.forge.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/HeroCore.neoforge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/HeroCore.neoforge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/mod.syconn.hero.HeroCore.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/mod.syconn.hero.HeroCore.fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/mod.syconn.hero.HeroCore.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/mod.syconn.hero.HeroCore.fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forge/mod.syconn.hero.HeroCore.forge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/forge/mod.syconn.hero.HeroCore.forge.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/mod.syconn.hero.HeroCore.neoforge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/mod.syconn.hero.HeroCore.neoforge.main.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,19 @@
+{
+  "item.hero.arc_reactor": "Arc Reactor",
+  "item.hero.ingot_steel": "Steel Ingot",
+  "item.hero.ingot_tin": "Tin Ingot",
+  "item.hero.mark_42_boots": "Mark 42 Boots",
+  "item.hero.mark_42_chestplate": "Mark 42 Chestplate",
+  "item.hero.mark_42_helmet": "Mark 42 Helmet",
+  "item.hero.mark_42_leggings": "Mark 42 Leggings",
+  "item.hero.mjolnir": "Mjolnir",
+  "item.hero.repulsor": "Iron Man Gauntlet",
+  "item.hero.shuriken": "Shuriken",
+  "item.hero.titanium_plate": "Titanium Plate",
+  "itemGroup.hero.hero_items": "Super Hero Gear",
+  "key.categories.hero": "HeroCore Controls",
+  "key.hero.use.ability1": "Use Ability 1",
+  "key.hero.use.ability2": "Use Ability 2",
+  "key.hero.use.ability3": "Use Ability 3",
+  "key.hero.menu.abilities": "Open Abilities Menu"
+}
