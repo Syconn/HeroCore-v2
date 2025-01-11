@@ -4,8 +4,8 @@ import mod.syconn.hero.extra.core.Events;
 import mod.syconn.hero.extra.data.attachment.SuperPower;
 import mod.syconn.hero.extra.platform.Services;
 import mod.syconn.hero.extra.util.Helpers;
-import mod.syconn.hero.registrar.AttachmentRegistrar;
-import mod.syconn.hero.registrar.ItemRegistrar;
+import mod.syconn.hero.core.AttachmentRegistrar;
+import mod.syconn.hero.core.ItemRegistrar;
 import net.minecraft.world.entity.player.Player;
 
 public class CommonHandler {

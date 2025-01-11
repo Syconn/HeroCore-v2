@@ -1,7 +1,7 @@
 package mod.syconn.hero.item;
 
 import mod.syconn.hero.extra.data.components.EnergyComponent;
-import mod.syconn.hero.registrar.ComponentRegistrar;
+import mod.syconn.hero.core.ComponentRegistrar;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;

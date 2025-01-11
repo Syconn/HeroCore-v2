@@ -1,6 +1,6 @@
 package mod.syconn.hero.extra.core;
 
-import mod.syconn.hero.registrar.TagRegistrar;
+import mod.syconn.hero.core.TagRegistrar;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;

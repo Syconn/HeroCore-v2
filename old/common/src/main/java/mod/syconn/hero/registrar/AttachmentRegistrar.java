@@ -1,4 +1,4 @@
-package mod.syconn.hero.registrar;
+package mod.syconn.hero.core;
 
 import mod.syconn.hero.extra.data.attachment.IAttachmentType;
 import mod.syconn.hero.extra.data.attachment.SuperPower;

@@ -3,7 +3,7 @@ package mod.syconn.hero.extra.data.components;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import mod.syconn.hero.registrar.ComponentRegistrar;
+import mod.syconn.hero.core.ComponentRegistrar;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;

@@ -1,8 +1,8 @@
 package mod.syconn.hero.entity;
 
 import mod.syconn.hero.extra.core.DamageSources;
-import mod.syconn.hero.registrar.EntityRegistrar;
-import mod.syconn.hero.registrar.ItemRegistrar;
+import mod.syconn.hero.core.EntityRegistrar;
+import mod.syconn.hero.core.ItemRegistrar;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

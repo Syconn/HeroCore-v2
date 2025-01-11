@@ -1,7 +1,7 @@
 package mod.syconn.hero.extra.util;
 
 import mod.syconn.hero.extra.data.components.EnergyComponent;
-import mod.syconn.hero.registrar.ItemRegistrar;
+import mod.syconn.hero.core.ItemRegistrar;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
