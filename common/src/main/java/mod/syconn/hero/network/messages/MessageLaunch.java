@@ -10,18 +10,17 @@ import net.minecraft.world.phys.Vec3;
 import java.util.function.Supplier;
 
 public class MessageLaunch {
-    public final boolean canFly;
 
-    public MessageLaunch(boolean canFly) {
-        this.canFly = canFly;
+    public MessageLaunch() {
+        
     }
 
     public MessageLaunch(FriendlyByteBuf buf) {
-        this(buf.readBoolean());
+        this();
     }
 
     public void encode(FriendlyByteBuf buf) {
-        buf.writeBoolean(this.canFly);
+        
     }
 
     public void apply(Supplier<NetworkManager.PacketContext> context) {

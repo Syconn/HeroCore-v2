@@ -1,5 +1,8 @@
 package mod.syconn.hero.client;
 
+import mod.syconn.hero.network.Network;
+import mod.syconn.hero.network.messages.MessageLaunch;
+import mod.syconn.hero.util.Helpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
@@ -12,8 +15,8 @@ public class ClientHandler {
     }
     
     private static void handleMappings(LocalPlayer player) {
-//        while (CUSTOM_KEYMAPPING.consumeClick()) {
-//            // Do action here
-//        }
+        if (Minecraft.getInstance().options.keyJump.isDown() && Helpers.isWearingIronManSuit(player)) {
+            Network.CHANNEL.sendToServer(new MessageLaunch());
+        }
     }
 }
