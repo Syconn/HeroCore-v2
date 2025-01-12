@@ -16,6 +16,10 @@ public class KeyBindings {
         KeyMappingRegistry.register(ABILITIES_MENU);
         KeyMappingRegistry.register(ABILITY1);
     }
+
+    public static String key(KeyMapping mapping) {
+        return mapping.saveString().split("\\.")[2].toUpperCase();
+    }
     
     private static String keyId(String id) {
         return "key." + Constants.MOD_ID + "." + id;

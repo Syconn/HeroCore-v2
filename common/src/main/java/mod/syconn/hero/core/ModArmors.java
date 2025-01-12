@@ -1,7 +1,6 @@
 package mod.syconn.hero.core;
 
 import net.minecraft.Util;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;

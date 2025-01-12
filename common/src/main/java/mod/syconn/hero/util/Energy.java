@@ -11,6 +11,8 @@ public class Energy {
     private static final String MAX = "max_energy";
 
     public static int getEnergy(ItemStack stack) {
+        if (!stack.getOrCreateTag().contains(ENERGY))
+            stack.getOrCreateTag().putInt(ENERGY, getMax(stack));
         return stack.getOrCreateTag().getInt(ENERGY);
     }
 
@@ -19,6 +21,8 @@ public class Energy {
     }
 
     public static int getMax(ItemStack stack) {
+        if (!stack.getOrCreateTag().contains(MAX))
+            stack.getOrCreateTag().putInt(MAX, 100);
         return stack.getOrCreateTag().getInt(MAX);
     }
 
