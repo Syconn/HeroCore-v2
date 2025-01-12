@@ -29,7 +29,6 @@ public class MessageAlterHover {
             Vec3 delta = player.getDeltaMovement();
             player.setDeltaMovement(delta.x, higher ? 0.6 : -0.6, delta.z);
             player.hurtMarked = true;
-            System.out.println(player.getDeltaMovement());
         });
     }
 }

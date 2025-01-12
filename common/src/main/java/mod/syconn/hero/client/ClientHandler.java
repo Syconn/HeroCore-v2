@@ -19,7 +19,9 @@ public class ClientHandler {
     public static void onClientPlayerTick(Minecraft minecraft) {
         LocalPlayer player = minecraft.player;
         
-        if (player != null) handleMappings(player);
+        if (player != null) {
+            handleMappings(player);
+        }
     }
 
     private static void handleMappings(LocalPlayer player) {
