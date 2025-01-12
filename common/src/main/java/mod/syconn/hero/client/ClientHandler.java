@@ -3,6 +3,8 @@ package mod.syconn.hero.client;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
+import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
+import dev.kosmx.playerAnim.core.util.Ease;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import mod.syconn.hero.Constants;
@@ -10,6 +12,7 @@ import mod.syconn.hero.network.Network;
 import mod.syconn.hero.network.messages.MessageAlterHover;
 import mod.syconn.hero.network.messages.MessageFlightMode;
 import mod.syconn.hero.network.messages.MessageSuitPropel;
+import mod.syconn.hero.util.AnimationUtil;
 import mod.syconn.hero.util.Helpers;
 import mod.syconn.hero.util.SuitSettings;
 import net.minecraft.ChatFormatting;
@@ -48,20 +51,15 @@ public class ClientHandler {
                 Network.CHANNEL.sendToServer(new MessageAlterHover(Minecraft.getInstance().options.keyJump.isDown()));
 
         while (KeyBindings.ABILITY1.consumeClick()) {
+            AnimationUtil.stop(player);
             if (settings == null) settings = SuitSettings.from(player);
             settings.cycleMode();
             player.displayClientMessage(Component.literal("Flight: " + settings.getFlightMode() + " CONFIRM: " + KeyBindings.key(KeyBindings.ABILITIES_MENU)).withStyle(ChatFormatting.GOLD), true);
         }
 
         while (KeyBindings.ABILITIES_MENU.consumeClick()) {
-            var animation = PlayerAnimationAccess.getPlayerAssociatedData(player).get(new ResourceLocation(Constants.MOD_ID, "animation"));
-            if (animation != null) {
-                //You can set an animation from anywhere ON THE CLIENT
-                //Do not attempt to do this on a server, that will only fail
-                ((ModifierLayer<IAnimation>) animation).setAnimation(new KeyframeAnimationPlayer(PlayerAnimationRegistry.getAnimation(new ResourceLocation(Constants.MOD_ID, "waving"))));
-                //You might use  animation.replaceAnimationWithFade(); to create fade effect instead of sudden change
-                //See javadoc for details
-            }
+            AnimationUtil.play(player, "hover_start");
+            AnimationUtil.play(player, "hover", 20);
 
             if (settings != null) {
                 Network.CHANNEL.sendToServer(new MessageFlightMode(settings.getFlightMode()));
