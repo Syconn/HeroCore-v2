@@ -16,6 +16,7 @@ public class ClientHandler {
 
     private static SuitSettings settings = null;
     private static boolean updateAnimations = true;
+    private static boolean grounded = true;
     private static int ticksToClear;
 
     public static void onClientPlayerTick(Minecraft minecraft) {
@@ -26,12 +27,20 @@ public class ClientHandler {
 
             if (updateAnimations) {
                 SuitSettings settings = SuitSettings.from(player);
-
-                if (settings.getFlightMode() == SuitSettings.FlightMode.HOVER) {
+                if (!player.level().getBlockState(player.getOnPos()).isAir()) {
+                    AnimationUtil.stop(player);
+                } else if (settings.getFlightMode() == SuitSettings.FlightMode.HOVER && !AnimationUtil.isAnimated(player)) {
                     AnimationUtil.play(player, "start_hover");
                     AnimationUtil.play(player, "hover", 20);
-                }
+                } else if (settings.getFlightMode() == SuitSettings.FlightMode.FLY && !AnimationUtil.isAnimated(player)) {
+                    AnimationUtil.play(player, "flight");
+                } else if (settings.getFlightMode() == SuitSettings.FlightMode.WALK) AnimationUtil.stop(player);
                 updateAnimations = false;
+            }
+
+            if (!grounded && !player.level().getBlockState(player.getOnPos()).isAir()) {
+                grounded = true;
+                updateAnimations = true;
             }
         }
     }
@@ -43,13 +52,21 @@ public class ClientHandler {
             settings = null;
         }
 
-        if (Minecraft.getInstance().options.keyJump.isDown())
-            if (Helpers.isWearingIronManSuit(player) && SuitSettings.from(player).getFlightMode() == SuitSettings.FlightMode.FLY)
+        if (Minecraft.getInstance().options.keyJump.isDown()) {
+            if (Helpers.isWearingIronManSuit(player) && SuitSettings.from(player).getFlightMode() == SuitSettings.FlightMode.FLY) {
+                updateAnimations = true;
+                grounded = false;
                 Network.CHANNEL.sendToServer(new MessageSuitPropel(Minecraft.getInstance().options.keySprint.isDown()));
+            }
+        }
 
-        if (Minecraft.getInstance().options.keyJump.isDown() || Minecraft.getInstance().options.keyShift.isDown())
-            if (Helpers.isWearingIronManSuit(player) && SuitSettings.from(player).getFlightMode() == SuitSettings.FlightMode.HOVER)
+        if (Minecraft.getInstance().options.keyJump.isDown() || Minecraft.getInstance().options.keyShift.isDown()) {
+            if (Helpers.isWearingIronManSuit(player) && SuitSettings.from(player).getFlightMode() == SuitSettings.FlightMode.HOVER) {
+                updateAnimations = true;
+                grounded = false;
                 Network.CHANNEL.sendToServer(new MessageAlterHover(Minecraft.getInstance().options.keyJump.isDown()));
+            }
+        }
 
         while (KeyBindings.ABILITY1.consumeClick()) {
             if (settings == null) settings = SuitSettings.from(player);
@@ -58,7 +75,6 @@ public class ClientHandler {
         }
 
         while (KeyBindings.ABILITIES_MENU.consumeClick()) {
-            AnimationUtil.play(player, "flight");
             if (settings != null) {
                 Network.CHANNEL.sendToServer(new MessageFlightMode(settings.getFlightMode()));
                 updateAnimations = true;

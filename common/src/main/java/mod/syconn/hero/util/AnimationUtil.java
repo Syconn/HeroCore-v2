@@ -42,6 +42,10 @@ public class AnimationUtil {
         if (animator != null) animator.setAnimation(null);
     }
 
+    public static boolean isAnimated(AbstractClientPlayer player) {
+        return getAnimator(player).isActive();
+    }
+
     private static boolean valid(String animation) {
         return PlayerAnimationRegistry.getAnimation(new ResourceLocation(Constants.MOD_ID, animation)) != null;
     }
