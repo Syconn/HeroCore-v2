@@ -41,6 +41,58 @@
 					}
 				}
 			}
+		},
+		"flight": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"position": {
+						"vector": [0, -15, -7]
+					}
+				},
+				"torso": {
+					"rotation": {
+						"vector": [90, 0, 0]
+					}
+				},
+				"head": {
+					"position": {
+						"vector": [0, -2, -4]
+					}
+				},
+				"right_arm": {
+					"rotation": {
+						"vector": [90, -10, 0]
+					},
+					"position": {
+						"vector": [0, 2, 2]
+					}
+				},
+				"left_arm": {
+					"rotation": {
+						"vector": [90, 15, 0]
+					},
+					"position": {
+						"vector": [0, 2, 2]
+					}
+				},
+				"right_leg": {
+					"rotation": {
+						"vector": [90, 0, 0]
+					},
+					"position": {
+						"vector": [0, 12, 12]
+					}
+				},
+				"left_leg": {
+					"rotation": {
+						"vector": [90, 0, 0]
+					},
+					"position": {
+						"vector": [0, 12, 12]
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

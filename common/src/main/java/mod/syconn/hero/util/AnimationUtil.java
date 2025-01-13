@@ -21,21 +21,28 @@ public class AnimationUtil {
 
     public static void play(AbstractClientPlayer player, String animation) {
         var animator = getAnimator(player);
-        if (animator != null) animator.setAnimation(new KeyframeAnimationPlayer(Objects.requireNonNull(PlayerAnimationRegistry.getAnimation(new ResourceLocation(Constants.MOD_ID, animation)))));
+        if (animator != null && valid(animation)) animator.setAnimation(new KeyframeAnimationPlayer(Objects.requireNonNull(
+                PlayerAnimationRegistry.getAnimation(new ResourceLocation(Constants.MOD_ID, animation)))));
     }
 
     public static void play(AbstractClientPlayer player, String animation, int delay) {
         var animator = getAnimator(player);
-        if (animator != null) animator.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(delay, Ease.CONSTANT), new KeyframeAnimationPlayer(Objects.requireNonNull(PlayerAnimationRegistry.getAnimation(new ResourceLocation(Constants.MOD_ID, animation)))));
+        if (animator != null && valid(animation)) animator.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(delay, Ease.CONSTANT),
+                new KeyframeAnimationPlayer(Objects.requireNonNull(PlayerAnimationRegistry.getAnimation(new ResourceLocation(Constants.MOD_ID, animation)))));
     }
 
     public static void play(AbstractClientPlayer player, String animation, int delay, Ease ease) {
         var animator = getAnimator(player);
-        if (animator != null) animator.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(delay, ease), new KeyframeAnimationPlayer(Objects.requireNonNull(PlayerAnimationRegistry.getAnimation(new ResourceLocation(Constants.MOD_ID, animation)))));
+        if (animator != null && valid(animation)) animator.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(delay, ease),
+                new KeyframeAnimationPlayer(Objects.requireNonNull(PlayerAnimationRegistry.getAnimation(new ResourceLocation(Constants.MOD_ID, animation)))));
     }
 
     public static void stop(AbstractClientPlayer player) {
         var animator = getAnimator(player);
         if (animator != null) animator.setAnimation(null);
+    }
+
+    private static boolean valid(String animation) {
+        return PlayerAnimationRegistry.getAnimation(new ResourceLocation(Constants.MOD_ID, animation)) != null;
     }
 }
