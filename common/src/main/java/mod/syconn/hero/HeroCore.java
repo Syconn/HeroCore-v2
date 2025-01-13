@@ -1,5 +1,6 @@
 package mod.syconn.hero;
 
+import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
@@ -12,6 +13,7 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
 import mod.syconn.hero.client.ClientHandler;
 import mod.syconn.hero.client.KeyBindings;
 import mod.syconn.hero.client.render.entity.MjolnirRenderer;
+import mod.syconn.hero.client.screen.overlay.IronmanOverlay;
 import mod.syconn.hero.common.CommonHandler;
 import mod.syconn.hero.core.ModEntities;
 import mod.syconn.hero.core.ModItems;
@@ -42,6 +44,7 @@ public final class HeroCore {
         @Environment(EnvType.CLIENT)
         public static void initClient() {
             ClientTickEvent.CLIENT_PRE.register(ClientHandler::onClientPlayerTick);
+            ClientGuiEvent.RENDER_HUD.register(IronmanOverlay::renderOverlay);
 
             PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(
                     new ResourceLocation(Constants.MOD_ID, "animation"), 42, HeroCore.Client::registerPlayerAnimation);
