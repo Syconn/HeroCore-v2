@@ -5,8 +5,8 @@ import mod.syconn.hero.network.messages.MessageAlterHover;
 import mod.syconn.hero.network.messages.MessageFlightMode;
 import mod.syconn.hero.network.messages.MessageSuitPropel;
 import mod.syconn.hero.util.AnimationUtil;
-import mod.syconn.hero.util.Helpers;
-import mod.syconn.hero.util.SuitSettings;
+import mod.syconn.hero.util.ItemUtil;
+import mod.syconn.hero.util.data.SuitSettings;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -53,7 +53,7 @@ public class ClientHandler {
         }
 
         if (Minecraft.getInstance().options.keyJump.isDown()) {
-            if (Helpers.isWearingIronManSuit(player) && SuitSettings.from(player).getFlightMode() == SuitSettings.FlightMode.FLY) {
+            if (ItemUtil.isWearingIronManSuit(player) && SuitSettings.from(player).getFlightMode() == SuitSettings.FlightMode.FLY) {
                 updateAnimations = true;
                 grounded = false;
                 Network.CHANNEL.sendToServer(new MessageSuitPropel(Minecraft.getInstance().options.keySprint.isDown()));
@@ -61,7 +61,7 @@ public class ClientHandler {
         }
 
         if (Minecraft.getInstance().options.keyJump.isDown() || Minecraft.getInstance().options.keyShift.isDown()) {
-            if (Helpers.isWearingIronManSuit(player) && SuitSettings.from(player).getFlightMode() == SuitSettings.FlightMode.HOVER) {
+            if (ItemUtil.isWearingIronManSuit(player) && SuitSettings.from(player).getFlightMode() == SuitSettings.FlightMode.HOVER) {
                 updateAnimations = true;
                 grounded = false;
                 Network.CHANNEL.sendToServer(new MessageAlterHover(Minecraft.getInstance().options.keyJump.isDown()));

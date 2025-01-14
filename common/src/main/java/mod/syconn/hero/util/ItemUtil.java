@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class Helpers {
+public class ItemUtil {
 
     public static boolean isWearingIronManSuit(Player player) {
         NonNullList<ItemStack> inv = player.getInventory().armor;

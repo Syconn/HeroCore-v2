@@ -1,5 +1,6 @@
-package mod.syconn.hero.util;
+package mod.syconn.hero.util.data;
 
+import mod.syconn.hero.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -44,7 +45,7 @@ public class SuitSettings {
 
     public static SuitSettings from(Player player) {
         SuitSettings settings = instance();
-        if (Helpers.isWearingIronManSuit(player)) {
+        if (ItemUtil.isWearingIronManSuit(player)) {
             if (player.getItemBySlot(EquipmentSlot.CHEST).getOrCreateTag().contains("settings"))
                 return new SuitSettings((CompoundTag) player.getItemBySlot(EquipmentSlot.CHEST).getOrCreateTag().get("settings"));
             else player.getItemBySlot(EquipmentSlot.CHEST).getOrCreateTag().put("settings", settings.writeTag());

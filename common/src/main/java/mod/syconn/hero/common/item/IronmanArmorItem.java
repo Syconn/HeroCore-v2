@@ -1,6 +1,6 @@
 package mod.syconn.hero.common.item;
 
-import mod.syconn.hero.util.Energy;
+import mod.syconn.hero.util.EnergyUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;
@@ -20,6 +20,6 @@ public class IronmanArmorItem extends ArmorItem {
 
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-        tooltipComponents.add(Component.literal("Energy: " + Energy.getEnergy(stack) + "/" + Energy.getMax(stack)).withStyle(ChatFormatting.AQUA));
+        tooltipComponents.add(Component.literal("Energy: " + EnergyUtil.getEnergy(stack) + "/" + EnergyUtil.getMax(stack)).withStyle(ChatFormatting.AQUA));
     }
 }

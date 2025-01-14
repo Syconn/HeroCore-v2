@@ -5,7 +5,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class Energy {
+public class EnergyUtil {
     
     private static final String ENERGY = "energy";
     private static final String MAX = "max_energy";
@@ -57,5 +57,14 @@ public class Energy {
     public static int getSuitEnergy(Player player) {
         return getEnergy(player.getItemBySlot(EquipmentSlot.HEAD)) + getEnergy(player.getItemBySlot(EquipmentSlot.CHEST)) +
                 getEnergy(player.getItemBySlot(EquipmentSlot.LEGS)) + getEnergy(player.getItemBySlot(EquipmentSlot.FEET));
+    }
+
+    public static int getSuitEnergyMax(Player player) {
+        return getMax(player.getItemBySlot(EquipmentSlot.HEAD)) + getMax(player.getItemBySlot(EquipmentSlot.CHEST)) +
+                getMax(player.getItemBySlot(EquipmentSlot.LEGS)) + getMax(player.getItemBySlot(EquipmentSlot.FEET));
+    }
+
+    public static int getSuitPercentage(Player player) {
+        return (int) ((float) getSuitEnergy(player) / getSuitEnergyMax(player) * 100);
     }
 }
