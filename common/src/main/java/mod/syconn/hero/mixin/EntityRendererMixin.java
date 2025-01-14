@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import org.joml.Matrix4f;
@@ -22,9 +23,9 @@ public class EntityRendererMixin<T extends Entity> {
     @Inject(at = @At("HEAD"), method = "render")
     public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci) {
         Player player = Minecraft.getInstance().player;
-        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get())) {
+        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get()) && entity instanceof LivingEntity living && entity != player) {
             double d = Minecraft.getInstance().getEntityRenderDispatcher().distanceToSqr(entity);
-            String displayName = "test";
+            String displayName = "HP " + (int) (living.getHealth() / living.getMaxHealth() * 100) + "%";
             if (!(d > 4096.0)) {
                 float f = entity.getNameTagOffsetY();
                 poseStack.pushPose();
@@ -36,7 +37,6 @@ public class EntityRendererMixin<T extends Entity> {
                 int j = (int)(g * 255.0F) << 24;
                 Font font = Minecraft.getInstance().font;
                 float h = (float)(-font.width(displayName) / 2);
-//                font.drawInBatch(displayName, h, 0, 553648127, false, matrix4f, buffer, Font.DisplayMode.NORMAL, j, packedLight);
                 font.drawInBatch(displayName, h, 0, DyeColor.LIGHT_BLUE.getTextColor(), false, matrix4f, buffer, Font.DisplayMode.NORMAL, j, packedLight);
                 poseStack.popPose();
             }

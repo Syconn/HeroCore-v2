@@ -52,7 +52,6 @@ public class IronmanOverlay {
                 int percentage = EnergyUtil.getSuitPercentage(player);
                 int percent_color = percentage >= 75 ? DyeColor.GREEN.getTextColor() : percentage >= 30 ? DyeColor.YELLOW.getTextColor() : DyeColor.RED.getTextColor();
                 graphics.drawString(minecraft.font, "Energy:", 5, 35, DyeColor.LIGHT_BLUE.getTextColor());
-                graphics.drawString(minecraft.font, "Energy:", 5, 35, DyeColor.LIGHT_BLUE.getTextColor());
                 graphics.drawString(minecraft.font, percentage + "%", 47, 35, percent_color);
                 graphics.drawString(minecraft.font, "Flight Mode: ", 5, 50, DyeColor.LIGHT_BLUE.getTextColor());
                 graphics.drawString(minecraft.font, settings.getFlightMode().name(), 65, 50, percent_color);
