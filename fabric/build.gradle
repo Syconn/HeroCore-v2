@@ -2,6 +2,19 @@ plugins {
     id 'com.github.johnrengelman.shadow'
 }
 
+loom {
+    runs {
+        datagen {
+            inherit server
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${project(':common').file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.modid=$project.archives_name"
+            runDir "build/datagen"
+        }
+    }
+}
+
 architectury {
     platformSetupLoomIde()
     fabric()
@@ -24,24 +37,11 @@ configurations {
     }
 }
 
-loom {
-    runs {
-        datagen {
-            inherit server
-            name "Data Generation"
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${project(':common').file("src/main/generated")}"
-            vmArg "-Dfabric-api.datagen.modid=$project.archives_name"
-            runDir "build/datagen"
-        }
-    }
-}
-
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
     modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
-    modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_anim_version}")
+    modImplementation "dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_anim_version}"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
@@ -51,7 +51,7 @@ processResources {
     inputs.property 'version', project.version
 
     filesMatching('fabric.mod.json') {
-        expand version: project.version, mod_id: project.archives_name, license: project.license, mod_name: project.mod_name, mod_author: project.mod_author, description: project.description
+        expand version: project.version
     }
 }
 

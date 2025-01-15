@@ -1,10 +1,9 @@
 {
   "required": true,
   "package": "mod.syconn.hero.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
-    "EntityRendererMixin"
   ],
   "mixins": [
   ],
