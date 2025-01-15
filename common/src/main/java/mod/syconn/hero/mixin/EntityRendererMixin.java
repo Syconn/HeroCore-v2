@@ -7,10 +7,12 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,11 +27,11 @@ public class EntityRendererMixin<T extends Entity> {
         Player player = Minecraft.getInstance().player;
         if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get()) && entity instanceof LivingEntity living && entity != player) {
             double d = Minecraft.getInstance().getEntityRenderDispatcher().distanceToSqr(entity);
+            Vec3 vec3 = entity.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, entity.getViewYRot(partialTick));
             String displayName = "HP " + (int) (living.getHealth() / living.getMaxHealth() * 100) + "%";
-            if (!(d > 4096.0)) {
-                float f = entity.getNameTagOffsetY();
+            if (!(d > 4096.0) && vec3 != null) {
                 poseStack.pushPose();
-                poseStack.translate(0.0F, f, 0.0F);
+                poseStack.translate(vec3.x, vec3.y + 0.5, vec3.z);
                 poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
                 poseStack.scale(-0.025F, -0.025F, 0.025F);
                 Matrix4f matrix4f = poseStack.last().pose();
