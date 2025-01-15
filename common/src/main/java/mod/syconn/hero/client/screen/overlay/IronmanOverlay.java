@@ -4,11 +4,12 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.syconn.hero.common.components.EnergyComponent;
+import mod.syconn.hero.common.components.SuitComponent;
 import mod.syconn.hero.core.ModItems;
-import mod.syconn.hero.util.EnergyUtil;
 import mod.syconn.hero.util.ItemUtil;
 import mod.syconn.hero.util.RenderUtil;
-import mod.syconn.hero.util.data.SuitSettings;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -23,9 +24,9 @@ import org.joml.Quaternionf;
 public class IronmanOverlay {
 
     private static final Minecraft minecraft = Minecraft.getInstance();
-    private static final ResourceLocation VIGNETTE_LOCATION = new ResourceLocation("textures/misc/vignette.png");
+    private static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/vignette.png");
 
-    public static void renderOverlay(GuiGraphics graphics, float tickDelta) {
+    public static void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker) {
         Player player = minecraft.player;
         if (player != null && player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get())) {
             boolean online = ItemUtil.isWearingIronManSuit(player);
@@ -48,13 +49,13 @@ public class IronmanOverlay {
             graphics.drawString(minecraft.font, "Status:", 5, 20, DyeColor.LIGHT_BLUE.getTextColor());
             graphics.drawString(minecraft.font, online ? "Online" : "Offline", 42, 20, online ? DyeColor.GREEN.getTextColor() : DyeColor.RED.getTextColor());
             if (online) {
-                SuitSettings settings = SuitSettings.from(player);
-                int percentage = EnergyUtil.getSuitPercentage(player);
+                SuitComponent settings = SuitComponent.from(player);
+                int percentage = EnergyComponent.getSuitPercentage(player);
                 int percent_color = percentage >= 75 ? DyeColor.GREEN.getTextColor() : percentage >= 30 ? DyeColor.YELLOW.getTextColor() : DyeColor.RED.getTextColor();
                 graphics.drawString(minecraft.font, "Energy:", 5, 35, DyeColor.LIGHT_BLUE.getTextColor());
                 graphics.drawString(minecraft.font, percentage + "%", 47, 35, percent_color);
                 graphics.drawString(minecraft.font, "Flight Mode: ", 5, 50, DyeColor.LIGHT_BLUE.getTextColor());
-                graphics.drawString(minecraft.font, settings.getFlightMode().name(), 65, 50, percent_color);
+                graphics.drawString(minecraft.font, settings.flightMode().name(), 65, 50, percent_color);
                 renderPlayerHologram(graphics, 35, graphics.guiHeight() * 2 - 30, 30, player);
             }
             poseStack.popPose();
@@ -81,7 +82,7 @@ public class IronmanOverlay {
         guiGraphics.setColor(hurt_level, 1.0F, 4.0F, 1.0F);
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(x, y, 50);
-        guiGraphics.pose().mulPoseMatrix(new Matrix4f().scaling(scale, scale, -scale));
+        guiGraphics.pose().mulPose(new Matrix4f().scaling(scale, scale, -scale));
         guiGraphics.pose().mulPose(new Quaternionf().rotateZ((float) Math.PI));
         Lighting.setupForEntityInInventory();
         EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();

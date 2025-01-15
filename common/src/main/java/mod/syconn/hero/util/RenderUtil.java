@@ -19,16 +19,15 @@ public class RenderUtil {
 
     public static void innerBlit(GuiGraphics graphics, ResourceLocation atlasLocation, int x1, int x2, int y1, int y2, int blitOffset, float minU, float maxU, float minV, float maxV, float red, float green, float blue, float alpha) {
         RenderSystem.setShaderTexture(0, atlasLocation);
-        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.enableBlend();
         Matrix4f matrix4f = graphics.pose().last().pose();
-        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
-        bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)blitOffset).color(red, green, blue, alpha).uv(minU, minV).endVertex();
-        bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)blitOffset).color(red, green, blue, alpha).uv(minU, maxV).endVertex();
-        bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)blitOffset).color(red, green, blue, alpha).uv(maxU, maxV).endVertex();
-        bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)blitOffset).color(red, green, blue, alpha).uv(maxU, minV).endVertex();
-        BufferUploader.drawWithShader(bufferBuilder.end());
+        BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        bufferBuilder.addVertex(matrix4f, (float)x1, (float)y1, (float)blitOffset).setColor(red, green, blue, alpha).setUv(minU, minV);
+        bufferBuilder.addVertex(matrix4f, (float)x1, (float)y2, (float)blitOffset).setColor(red, green, blue, alpha).setUv(minU, maxV);
+        bufferBuilder.addVertex(matrix4f, (float)x2, (float)y2, (float)blitOffset).setColor(red, green, blue, alpha).setUv(maxU, maxV);
+        bufferBuilder.addVertex(matrix4f, (float)x2, (float)y1, (float)blitOffset).setColor(red, green, blue, alpha).setUv(maxU, minV);
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
         RenderSystem.disableBlend();
     }
 }
