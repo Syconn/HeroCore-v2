@@ -2,9 +2,7 @@ package mod.syconn.hero.fabric;
 
 import net.fabricmc.api.ModInitializer;
 
-import mod.syconn.hero.ExampleMod;
-
-public final class ExampleModFabric implements ModInitializer {
+public final class HeroModFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         // This code runs as soon as Minecraft is in a mod-load-ready state.

@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageScaling;
 import net.minecraft.world.damagesource.DamageType;
@@ -29,7 +29,7 @@ public class DamageTypeGen extends FabricDynamicRegistryProvider {
         return MOD_ID + ":damage_types";
     }
 
-    public static void bootstrapDamageTypes(BootstapContext<DamageType> context) {
+    public static void bootstrapDamageTypes(BootstrapContext<DamageType> context) {
         context.register(ModDamageTypes.MJOLNIR, new DamageType("mjolnir", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1f, DamageEffects.HURT, DeathMessageType.DEFAULT));
     }
 }

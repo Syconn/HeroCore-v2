@@ -2,16 +2,19 @@ package mod.syconn.hero.fabric.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.core.HolderLookup;
+
+import java.util.concurrent.CompletableFuture;
 
 import static mod.syconn.hero.core.ModItems.*;
 
 public class LangGen extends FabricLanguageProvider {
 
-    public LangGen(FabricDataOutput dataOutput) {
-        super(dataOutput);
+    public LangGen(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+        super(dataOutput, registryLookup);
     }
 
-    public void generateTranslations(TranslationBuilder translationBuilder) {
+    public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder translationBuilder) {
         translationBuilder.add("itemGroup.hero.hero_items", "Super Hero Gear");
         translationBuilder.add(MJOLNIR.get(), "Mjolnir");
         translationBuilder.add(MARK_42_HELMET.get(), "Mark 42 Helmet");

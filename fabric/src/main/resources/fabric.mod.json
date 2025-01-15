@@ -12,14 +12,17 @@
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
   "license": "CC0-1.0",
-  "icon": "assets/hero/icon.png",
+  "icon": "hero.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "mod.syconn.hero.fabric.ExampleModFabric"
+      "mod.syconn.hero.fabric.HeroModFabric"
     ],
     "client": [
-      "mod.syconn.hero.fabric.client.ExampleModFabricClient"
+      "mod.syconn.hero.fabric.client.HeroFabricClient"
+    ],
+    "fabric-datagen": [
+      "mod.syconn.hero.fabric.datagen.HeroDataGenerator"
     ]
   },
   "mixins": [
