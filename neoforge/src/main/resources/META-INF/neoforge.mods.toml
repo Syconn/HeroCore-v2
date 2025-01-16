@@ -10,7 +10,6 @@ author = "Syconn"
 updateJSONURL="https://raw.githubusercontent.com/Syconn/Syconn-Mod-Updates/refs/heads/main/HeroCore.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/syconns-super-hero-mod"
 logoFile = "hero.png"
-#credits =
 authors = "${mod_author}"
 description = '''${description}'''
 

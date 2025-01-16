@@ -34,7 +34,7 @@ public class ThrownMjolnir extends AbstractArrow {
     }
 
     public ThrownMjolnir(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(ModEntities.MJOLNIR.get(), pShooter, pLevel);
+        super(ModEntities.MJOLNIR.get(), pShooter, pLevel, pStack, null);
         mjonirItem = pStack.copy();
     }
 
@@ -80,19 +80,19 @@ public class ThrownMjolnir extends AbstractArrow {
         Entity entity = pResult.getEntity();
         float f = 8.0F;
         Entity entity2 = this.getOwner();
-        DamageSource damagesource = ModDamageTypes.mjolnir(this, entity2 == null ? this : entity2);
+        DamageSource damageSource = ModDamageTypes.mjolnir(this, entity2 == null ? this : entity2);
 
         this.dealtDamage = true;
-        if (entity.hurt(damagesource, f)) {
+        if (entity.hurt(damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) return;
 
-            if (entity instanceof LivingEntity livingentity) {
-                if (entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingentity, entity2);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity)entity2, livingentity);
-                }
+            if (this.level() instanceof ServerLevel serverLevel) {
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverLevel, entity, damageSource, this.getWeaponItem());
+            }
 
-                this.doPostHurtEffects(livingentity);
+            if (entity instanceof LivingEntity livingEntity) {
+                this.doKnockback(livingEntity, damageSource);
+                this.doPostHurtEffects(livingEntity);
             }
         }
 

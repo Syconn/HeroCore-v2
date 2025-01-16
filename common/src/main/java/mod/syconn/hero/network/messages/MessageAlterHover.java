@@ -1,33 +1,28 @@
 package mod.syconn.hero.network.messages;
 
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.network.FriendlyByteBuf;
+import mod.syconn.hero.Constants;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.function.Supplier;
+public record MessageAlterHover(boolean rise) implements CustomPacketPayload {
 
-public class MessageAlterHover {
+    public static final CustomPacketPayload.Type<MessageAlterHover> TYPE = new CustomPacketPayload.Type<>(Constants.withId("alter_hover"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageAlterHover> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.BOOL, MessageAlterHover::rise, MessageAlterHover::new);
 
-    private final boolean higher;
-
-    public MessageAlterHover(boolean higher) {
-        this.higher = higher;
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public MessageAlterHover(FriendlyByteBuf buf) {
-        this(buf.readBoolean());
-    }
-
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeBoolean(this.higher);
-    }
-
-    public void apply(Supplier<NetworkManager.PacketContext> context) {
-        context.get().queue(() -> {
-            Player player = context.get().getPlayer();
+    public static void handle(MessageAlterHover message, NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            Player player = context.getPlayer();
             Vec3 delta = player.getDeltaMovement();
-            player.setDeltaMovement(delta.x, higher ? 0.6 : -0.6, delta.z);
+            player.setDeltaMovement(delta.x, message.rise ? 0.6 : -0.6, delta.z);
             player.hurtMarked = true;
         });
     }

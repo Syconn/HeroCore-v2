@@ -8,10 +8,11 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public record EnergyComponent(int energy, int max) {
 
-    public static EnergyComponent DEFAULT = new EnergyComponent(100, 100);
+    private static final EnergyComponent DEFAULT = new EnergyComponent(100, 100);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, EnergyComponent> STREAM_CODEC =
             StreamCodec.composite(ByteBufCodecs.INT, EnergyComponent::energy, ByteBufCodecs.INT, EnergyComponent::max, EnergyComponent::new);
@@ -23,6 +24,10 @@ public record EnergyComponent(int energy, int max) {
 
     public EnergyComponent modifyEnergy(int amount) {
         return new EnergyComponent(energy + amount, max);
+    }
+
+    public static EnergyComponent from(ItemStack stack) {
+        return stack.getOrDefault(ModComponents.ENERGY.get(), DEFAULT);
     }
 
     public static void lowerSuitEnergy(Player player) {

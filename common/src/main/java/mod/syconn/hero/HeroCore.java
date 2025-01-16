@@ -15,6 +15,7 @@ import mod.syconn.hero.client.KeyBindings;
 import mod.syconn.hero.client.render.entity.MjolnirRenderer;
 import mod.syconn.hero.client.screen.overlay.IronmanOverlay;
 import mod.syconn.hero.common.CommonHandler;
+import mod.syconn.hero.core.ModArmors;
 import mod.syconn.hero.core.ModComponents;
 import mod.syconn.hero.core.ModEntities;
 import mod.syconn.hero.core.ModItems;
@@ -28,6 +29,7 @@ public final class HeroCore {
     public static void init() {
         ModItems.TABS.register();
         ModItems.ITEMS.register();
+        ModArmors.ARMOR.register();
         ModComponents.COMPONENTS.register();
         ModEntities.ENTITIES.register();
         
@@ -35,7 +37,8 @@ public final class HeroCore {
         TickEvent.PLAYER_PRE.register(CommonHandler::onPlayerTick);
 
         KeyBindings.registerMappings();
-        Network.init();
+        Network.clientReceivers();
+
         EnvExecutor.runInEnv(Env.CLIENT, () -> HeroCore.Client::initClient);
     }
 
@@ -50,6 +53,8 @@ public final class HeroCore {
             PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(Constants.withId("animation"), 42, HeroCore.Client::registerPlayerAnimation);
             
             EntityRendererRegistry.register(ModEntities.MJOLNIR, MjolnirRenderer::new);
+
+            Network.serverReceivers();
         }
 
         private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {

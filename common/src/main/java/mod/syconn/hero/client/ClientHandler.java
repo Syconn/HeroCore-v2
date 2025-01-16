@@ -1,7 +1,7 @@
 package mod.syconn.hero.client;
 
+import dev.architectury.networking.NetworkManager;
 import mod.syconn.hero.common.components.SuitComponent;
-import mod.syconn.hero.network.Network;
 import mod.syconn.hero.network.messages.MessageAlterHover;
 import mod.syconn.hero.network.messages.MessageFlightMode;
 import mod.syconn.hero.network.messages.MessageSuitPropel;
@@ -56,7 +56,7 @@ public class ClientHandler {
             if (ItemUtil.isWearingIronManSuit(player) && SuitComponent.from(player).flightMode() == SuitComponent.FlightMode.FLY) {
                 updateAnimations = true;
                 grounded = false;
-                Network.CHANNEL.sendToServer(new MessageSuitPropel(Minecraft.getInstance().options.keySprint.isDown()));
+                NetworkManager.sendToServer(new MessageSuitPropel(Minecraft.getInstance().options.keySprint.isDown()));
             }
         }
 
@@ -64,19 +64,19 @@ public class ClientHandler {
             if (ItemUtil.isWearingIronManSuit(player) && SuitComponent.from(player).flightMode() == SuitComponent.FlightMode.HOVER) {
                 updateAnimations = true;
                 grounded = false;
-                Network.CHANNEL.sendToServer(new MessageAlterHover(Minecraft.getInstance().options.keyJump.isDown()));
+                NetworkManager.sendToServer(new MessageAlterHover(Minecraft.getInstance().options.keyJump.isDown()));
             }
         }
 
         while (KeyBindings.ABILITY1.consumeClick()) {
             if (settings == null) settings = SuitComponent.from(player);
-            settings.cycleMode();
+            settings = settings.cycleMode();
             player.displayClientMessage(Component.literal("Flight: " + settings.flightMode() + " CONFIRM: " + KeyBindings.key(KeyBindings.ABILITIES_MENU)).withStyle(ChatFormatting.GOLD), true);
         }
 
         while (KeyBindings.ABILITIES_MENU.consumeClick()) {
             if (settings != null) {
-                Network.CHANNEL.sendToServer(new MessageFlightMode(settings.flightMode()));
+                NetworkManager.sendToServer(new MessageFlightMode(settings.flightMode()));
                 updateAnimations = true;
                 settings = null;
             }

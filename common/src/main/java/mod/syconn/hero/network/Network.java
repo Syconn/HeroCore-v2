@@ -1,18 +1,17 @@
 package mod.syconn.hero.network;
 
-import dev.architectury.networking.NetworkChannel;
-import mod.syconn.hero.Constants;
+import dev.architectury.networking.NetworkManager;
 import mod.syconn.hero.network.messages.MessageAlterHover;
 import mod.syconn.hero.network.messages.MessageFlightMode;
 import mod.syconn.hero.network.messages.MessageSuitPropel;
 
 public class Network {
 
-    public static final NetworkChannel CHANNEL = NetworkChannel.create(Constants.withId("network"));
+    public static void clientReceivers() {}
 
-    public static void init() {
-        CHANNEL.register(MessageSuitPropel.class, MessageSuitPropel::encode, MessageSuitPropel::new, MessageSuitPropel::apply);
-        CHANNEL.register(MessageFlightMode.class, MessageFlightMode::encode, MessageFlightMode::new, MessageFlightMode::apply);
-        CHANNEL.register(MessageAlterHover.class, MessageAlterHover::encode, MessageAlterHover::new, MessageAlterHover::apply);
+    public static void serverReceivers() {
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, MessageAlterHover.TYPE, MessageAlterHover.STREAM_CODEC, MessageAlterHover::handle);
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, MessageSuitPropel.TYPE, MessageSuitPropel.STREAM_CODEC, MessageSuitPropel::handle);
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, MessageFlightMode.TYPE, MessageFlightMode.STREAM_CODEC, MessageFlightMode::handle);
     }
 }

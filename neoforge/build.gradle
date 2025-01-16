@@ -42,7 +42,7 @@ processResources {
     inputs.property 'version', project.version
 
     filesMatching('META-INF/neoforge.mods.toml') {
-        expand version: project.version
+        expand version: project.version, mod_id: project.archives_name, license: project.license, mod_name: project.mod_name, mod_author: project.mod_author, description: project.description
     }
 }
 

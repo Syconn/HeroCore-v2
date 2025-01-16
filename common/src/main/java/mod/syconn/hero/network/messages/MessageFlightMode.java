@@ -1,28 +1,22 @@
 package mod.syconn.hero.network.messages;
 
 import dev.architectury.networking.NetworkManager;
+import mod.syconn.hero.Constants;
 import mod.syconn.hero.common.components.SuitComponent;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-import java.util.function.Supplier;
+public record MessageFlightMode(SuitComponent.FlightMode mode) implements CustomPacketPayload {
 
-public class MessageFlightMode {
+    public static final CustomPacketPayload.Type<MessageFlightMode> TYPE = new CustomPacketPayload.Type<>(Constants.withId("flight_mode"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageFlightMode> STREAM_CODEC = StreamCodec.composite(SuitComponent.FlightMode.STREAM_CODEC, MessageFlightMode::mode, MessageFlightMode::new);
 
-    private final SuitComponent.FlightMode mode;
-
-    public MessageFlightMode(SuitComponent.FlightMode mode) {
-        this.mode = mode;
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public MessageFlightMode(FriendlyByteBuf buf) {
-        this(buf.readEnum(SuitComponent.FlightMode.class));
-    }
-
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeEnum(mode);
-    }
-
-    public void apply(Supplier<NetworkManager.PacketContext> context) {
-        context.get().queue(() -> SuitComponent.update(context.get().getPlayer(), settings -> settings.setFlightMode(mode)));
+    public static void handle(MessageFlightMode message, NetworkManager.PacketContext context) {
+        context.queue(() -> SuitComponent.update(context.getPlayer(), settings -> settings.setFlightMode(message.mode)));
     }
 }
