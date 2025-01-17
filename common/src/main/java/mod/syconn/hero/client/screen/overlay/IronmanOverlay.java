@@ -27,7 +27,7 @@ public class IronmanOverlay {
 
     public static void renderOverlay(GuiGraphics graphics, float tickDelta) {
         Player player = minecraft.player;
-        if (player != null && player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get())) {
+        if (player != null && !SuitSettings.from(player).isLifted() && player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get())) {
             boolean online = ItemUtil.isWearingIronManSuit(player);
 
             // Blue Glint

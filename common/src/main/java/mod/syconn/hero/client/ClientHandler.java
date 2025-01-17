@@ -2,7 +2,7 @@ package mod.syconn.hero.client;
 
 import mod.syconn.hero.network.Network;
 import mod.syconn.hero.network.messages.MessageAlterHover;
-import mod.syconn.hero.network.messages.MessageFlightMode;
+import mod.syconn.hero.network.messages.MessageUpdateSuitSettings;
 import mod.syconn.hero.network.messages.MessageSuitPropel;
 import mod.syconn.hero.util.AnimationUtil;
 import mod.syconn.hero.util.ItemUtil;
@@ -69,16 +69,27 @@ public class ClientHandler {
         }
 
         while (KeyBindings.ABILITY1.consumeClick()) {
-            if (settings == null) settings = SuitSettings.from(player);
-            settings.cycleMode();
-            player.displayClientMessage(Component.literal("Flight: " + settings.getFlightMode() + " CONFIRM: " + KeyBindings.key(KeyBindings.ABILITIES_MENU)).withStyle(ChatFormatting.GOLD), true);
+            if (ItemUtil.canInteractWithIronManSuit(player)) {
+                if (settings == null) settings = SuitSettings.from(player);
+                settings.cycleMode();
+                player.displayClientMessage(Component.literal("Flight: " + settings.getFlightMode() + " CONFIRM: " + KeyBindings.key(KeyBindings.ABILITIES_MENU)).withStyle(ChatFormatting.GOLD), true);
+            }
+        }
+
+        while (KeyBindings.ABILITY2.consumeClick()) {
+            if (ItemUtil.canInteractWithIronManSuit(player)) {
+                Network.CHANNEL.sendToServer(new MessageUpdateSuitSettings(SuitSettings.from(player).flipHelmet()));
+                player.displayClientMessage(Component.literal("Helmet " + (SuitSettings.from(player).isLifted() ? "Lifted" : "Lowered")).withStyle(ChatFormatting.GOLD), true);
+            }
         }
 
         while (KeyBindings.ABILITIES_MENU.consumeClick()) {
-            if (settings != null) {
-                Network.CHANNEL.sendToServer(new MessageFlightMode(settings.getFlightMode()));
-                updateAnimations = true;
-                settings = null;
+            if (ItemUtil.canInteractWithIronManSuit(player)) {
+                if (settings != null) {
+                    Network.CHANNEL.sendToServer(new MessageUpdateSuitSettings(settings));
+                    updateAnimations = true;
+                    settings = null;
+                }
             }
         }
     }
