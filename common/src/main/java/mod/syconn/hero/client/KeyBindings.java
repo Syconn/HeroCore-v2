@@ -16,6 +16,7 @@ public class KeyBindings {
         KeyMappingRegistry.register(ABILITIES_MENU);
         KeyMappingRegistry.register(ABILITY1);
         KeyMappingRegistry.register(ABILITY2);
+        KeyMappingRegistry.register(ABILITY3);
     }
 
     public static String key(KeyMapping mapping) {

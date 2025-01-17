@@ -17,7 +17,9 @@ public class ClientHandler {
     private static SuitSettings settings = null;
     private static boolean updateAnimations = true;
     private static boolean grounded = true;
-    private static int ticksToClear;
+    private static boolean held = false;
+    private static int ticksToClear1;
+    private static int ticks;
 
     public static void onClientPlayerTick(Minecraft minecraft) {
         LocalPlayer player = minecraft.player;
@@ -46,10 +48,16 @@ public class ClientHandler {
     }
 
     private static void handleMappings(LocalPlayer player) {
-        if (settings != null) ticksToClear++;
-        if (ticksToClear > 100) {
-            ticksToClear = 0;
+        if (settings != null) ticksToClear1++;
+        if (ticksToClear1 > 100) {
+            ticksToClear1 = 0;
             settings = null;
+        }
+
+        if (held) ticks++;
+        if (ticks > 20) {
+            ticks = 0;
+            System.out.println("Done");
         }
 
         if (Minecraft.getInstance().options.keyJump.isDown()) {
@@ -82,6 +90,8 @@ public class ClientHandler {
                 player.displayClientMessage(Component.literal("Helmet " + (SuitSettings.from(player).isLifted() ? "Lifted" : "Lowered")).withStyle(ChatFormatting.GOLD), true);
             }
         }
+
+        held = KeyBindings.ABILITY3.isDown();
 
         while (KeyBindings.ABILITIES_MENU.consumeClick()) {
             if (ItemUtil.canInteractWithIronManSuit(player)) {
