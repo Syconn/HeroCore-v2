@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'hero'
+rootProject.name = 'HeroCore'
 
 include 'common'
 include 'fabric'
