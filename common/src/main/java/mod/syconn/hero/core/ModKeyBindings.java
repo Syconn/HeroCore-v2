@@ -1,11 +1,11 @@
-package mod.syconn.hero.client;
+package mod.syconn.hero.core;
 
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import mod.syconn.hero.Constants;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 
-public class KeyBindings {
+public class ModKeyBindings {
     
     public static final KeyMapping ABILITY1 = new KeyMapping(keyId("use.ability1"), GLFW.GLFW_KEY_N, modCategory());
     public static final KeyMapping ABILITY2 = new KeyMapping(keyId("use.ability2"), GLFW.GLFW_KEY_M, modCategory());

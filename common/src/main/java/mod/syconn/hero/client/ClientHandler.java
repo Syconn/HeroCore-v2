@@ -1,9 +1,10 @@
 package mod.syconn.hero.client;
 
+import mod.syconn.hero.core.ModKeyBindings;
 import mod.syconn.hero.network.Network;
 import mod.syconn.hero.network.messages.MessageAlterHover;
-import mod.syconn.hero.network.messages.MessageUpdateSuitSettings;
 import mod.syconn.hero.network.messages.MessageSuitPropel;
+import mod.syconn.hero.network.messages.MessageUpdateSuitSettings;
 import mod.syconn.hero.util.AnimationUtil;
 import mod.syconn.hero.util.ItemUtil;
 import mod.syconn.hero.util.data.SuitSettings;
@@ -76,24 +77,24 @@ public class ClientHandler {
             }
         }
 
-        while (KeyBindings.ABILITY1.consumeClick()) {
+        while (ModKeyBindings.ABILITY1.consumeClick()) {
             if (ItemUtil.canInteractWithIronManSuit(player)) {
                 if (settings == null) settings = SuitSettings.from(player);
                 settings.cycleMode();
-                player.displayClientMessage(Component.literal("Flight: " + settings.getFlightMode() + " CONFIRM: " + KeyBindings.key(KeyBindings.ABILITIES_MENU)).withStyle(ChatFormatting.GOLD), true);
+                player.displayClientMessage(Component.literal("Flight: " + settings.getFlightMode() + " CONFIRM: " + ModKeyBindings.key(ModKeyBindings.ABILITIES_MENU)).withStyle(ChatFormatting.GOLD), true);
             }
         }
 
-        while (KeyBindings.ABILITY2.consumeClick()) {
+        while (ModKeyBindings.ABILITY2.consumeClick()) {
             if (ItemUtil.canInteractWithIronManSuit(player)) {
                 Network.CHANNEL.sendToServer(new MessageUpdateSuitSettings(SuitSettings.from(player).flipHelmet()));
-                player.displayClientMessage(Component.literal("Helmet " + (SuitSettings.from(player).isLifted() ? "Lifted" : "Lowered")).withStyle(ChatFormatting.GOLD), true);
+                player.displayClientMessage(Component.literal("Helmet " + (SuitSettings.from(player).isLifted() ? "Lowered" : "Lifted")).withStyle(ChatFormatting.GOLD), true);
             }
         }
 
-        held = KeyBindings.ABILITY3.isDown();
+        held = ModKeyBindings.ABILITY3.isDown();
 
-        while (KeyBindings.ABILITIES_MENU.consumeClick()) {
+        while (ModKeyBindings.ABILITIES_MENU.consumeClick()) {
             if (ItemUtil.canInteractWithIronManSuit(player)) {
                 if (settings != null) {
                     Network.CHANNEL.sendToServer(new MessageUpdateSuitSettings(settings));
