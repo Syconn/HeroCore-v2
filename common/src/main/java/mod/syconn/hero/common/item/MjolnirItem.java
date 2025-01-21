@@ -54,7 +54,7 @@ public class MjolnirItem extends Item implements IUseAnim {
             if (i >= 10) {
                 if (!pLevel.isClientSide && player.isCrouching()) {
                     ThrownMjolnir thrownMjolnir = new ThrownMjolnir(pLevel, player, pStack);
-                    thrownMjolnir.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
+                    thrownMjolnir.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F); // 2.5F
                     if (player.isCreative()) thrownMjolnir.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                     pLevel.addFreshEntity(thrownMjolnir);
                     pLevel.playSound(null, thrownMjolnir, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);

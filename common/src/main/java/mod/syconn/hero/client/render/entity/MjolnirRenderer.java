@@ -25,7 +25,12 @@ public class MjolnirRenderer extends EntityRenderer<ThrownMjolnir> {
     public void render(ThrownMjolnir entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(0, 0.5f, 0);
-        poseStack.mulPose(Axis.XP.rotationDegrees(180f));
+        if (entity.clientReturnTicks > 0) poseStack.mulPose(Axis.XP.rotationDegrees(180f));
+        else {
+            poseStack.mulPose(Axis.XP.rotationDegrees(90f));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(180f + entity.getThrownAngle())); // TODO ONLY WORKS IN 1 Direction
+        }
+
         BakedModel bakedModel = this.itemRenderer.getModel(entity.getMjonirItem(), entity.level(), null, entity.getId());
         this.itemRenderer.render(entity.getMjonirItem(), ItemDisplayContext.GROUND, false, poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, bakedModel);
         poseStack.popPose();

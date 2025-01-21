@@ -26,7 +26,7 @@ public class IronmanOverlay {
     private static final ResourceLocation VIGNETTE_LOCATION = new ResourceLocation("textures/misc/vignette.png");
 
     public static void renderOverlay(GuiGraphics graphics, float tickDelta) {
-        Player player = minecraft.player;
+        Player player = getCameraPlayer();
         if (player != null && !SuitSettings.from(player).isLifted() && player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get())) {
             boolean online = ItemUtil.isWearingIronManSuit(player);
 
@@ -56,6 +56,7 @@ public class IronmanOverlay {
                 graphics.drawString(minecraft.font, "Flight Mode: ", 5, 50, DyeColor.LIGHT_BLUE.getTextColor());
                 graphics.drawString(minecraft.font, settings.getFlightMode().name(), 65, 50, percent_color);
                 renderPlayerHologram(graphics, 35, graphics.guiHeight() * 2 - 30, 30, player);
+                renderCombatHotbar(graphics);
             }
             poseStack.popPose();
         }
@@ -98,5 +99,13 @@ public class IronmanOverlay {
         entity.setXRot(j);
         entity.yHeadRotO = k;
         entity.yHeadRot = l;
+    }
+
+    public static void renderCombatHotbar(GuiGraphics graphics) {
+
+    }
+
+    private static Player getCameraPlayer() {
+        return !(minecraft.getCameraEntity() instanceof Player) ? null : (Player) minecraft.getCameraEntity();
     }
 }

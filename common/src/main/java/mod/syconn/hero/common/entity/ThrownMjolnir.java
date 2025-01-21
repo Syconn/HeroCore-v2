@@ -1,10 +1,15 @@
 package mod.syconn.hero.common.entity;
 
+import dev.architectury.extensions.network.EntitySpawnExtension;
+import dev.architectury.networking.NetworkManager;
 import mod.syconn.hero.core.ModDamageTypes;
 import mod.syconn.hero.core.ModEntities;
 import mod.syconn.hero.core.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -23,11 +28,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class ThrownMjolnir extends AbstractArrow {
+public class ThrownMjolnir extends AbstractArrow implements EntitySpawnExtension {
 
+    private float thrownAngle = 0.0F;
     private ItemStack mjonirItem = new ItemStack(ModItems.MJOLNIR.get());
     private boolean dealtDamage;
-    public int clientSideReturnTridentTickCount;
+    public int clientReturnTicks;
 
     public ThrownMjolnir(EntityType<? extends ThrownMjolnir> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -35,13 +41,14 @@ public class ThrownMjolnir extends AbstractArrow {
 
     public ThrownMjolnir(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
         super(ModEntities.MJOLNIR.get(), pShooter, pLevel);
-        mjonirItem = pStack.copy();
+        this.mjonirItem = pStack.copy();
+        this.thrownAngle = pShooter.yHeadRot;
     }
 
     public void tick() {
         if (this.isOnFire()) setRemainingFireTicks(0);
 
-        if (this.inGroundTime > 4) {
+        if (this.inGroundTime > 3) {
             this.dealtDamage = true;
         }
 
@@ -49,7 +56,7 @@ public class ThrownMjolnir extends AbstractArrow {
         int speed = 3;
         if ((this.dealtDamage || this.isNoPhysics()) && entity != null) {
             if (!this.isAcceptableReturnOwner()) {
-                if (this.level() instanceof ServerLevel sl && this.pickup == Pickup.ALLOWED) this.spawnAtLocation(this.getPickupItem(), 0.1F);
+                if (this.level() instanceof ServerLevel && this.pickup == Pickup.ALLOWED) this.spawnAtLocation(this.getPickupItem(), 0.1F);
                 this.discard();
             } else {
                 this.setNoPhysics(true);
@@ -59,8 +66,8 @@ public class ThrownMjolnir extends AbstractArrow {
 
                 double d0 = 0.05 * (double)speed;
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.95).add(vec3.normalize().scale(d0)));
-                if (this.clientSideReturnTridentTickCount == 0) this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
-                this.clientSideReturnTridentTickCount++;
+                if (this.clientReturnTicks == 0) this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
+                this.clientReturnTicks++;
             }
         }
 
@@ -123,6 +130,10 @@ public class ThrownMjolnir extends AbstractArrow {
         return mjonirItem;
     }
 
+    public float getThrownAngle() {
+        return thrownAngle;
+    }
+
     protected boolean tryPickup(Player pPlayer) {
         return super.tryPickup(pPlayer) || this.isNoPhysics() && this.ownedBy(pPlayer) && pPlayer.getInventory().add(this.getPickupItem());
     }
@@ -155,6 +166,21 @@ public class ThrownMjolnir extends AbstractArrow {
         if (this.pickup != Pickup.ALLOWED) {
             super.tickDespawn();
         }
+    }
+
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkManager.createAddEntityPacket(this);
+    }
+
+    public void saveAdditionalSpawnData(FriendlyByteBuf buf) {
+        buf.writeFloat(this.thrownAngle);
+        buf.writeInt(this.getOwner() == null ? 0 : this.getOwner().getId());
+    }
+
+    public void loadAdditionalSpawnData(FriendlyByteBuf buf) {
+        this.thrownAngle = buf.readFloat();
+        Entity entity = this.level().getEntity(buf.readInt());
+        if (entity != null) this.setOwner(entity);
     }
 
     protected float getWaterInertia() {

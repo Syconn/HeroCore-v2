@@ -1,7 +1,7 @@
 package mod.syconn.hero.common.item;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import mod.syconn.hero.client.KeyBindings;
+import mod.syconn.hero.core.ModKeyBindings;
 import mod.syconn.hero.util.EnergyUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -27,8 +27,8 @@ public class IronmanArmorItem extends ArmorItem {
 
         if (level != null && level.isClientSide && InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), InputConstants.KEY_LCONTROL)) {
             tooltipComponents.add(Component.literal(""));
-            tooltipComponents.add(Component.literal("To Change Flight Mode press " + KeyBindings.key(KeyBindings.ABILITY1)).withStyle(ChatFormatting.GOLD));
-            tooltipComponents.add(Component.literal("To Lower/Raise Helmet press " + KeyBindings.key(KeyBindings.ABILITY2)).withStyle(ChatFormatting.GOLD));
+            tooltipComponents.add(Component.literal("To Change Flight Mode press " + ModKeyBindings.key(ModKeyBindings.ABILITY1)).withStyle(ChatFormatting.GOLD));
+            tooltipComponents.add(Component.literal("To Lower/Raise Helmet press " + ModKeyBindings.key(ModKeyBindings.ABILITY2)).withStyle(ChatFormatting.GOLD));
         } else {
             tooltipComponents.add(Component.literal(""));
             tooltipComponents.add(Component.literal("Press LCTRL for more info").withStyle(ChatFormatting.GOLD));
