@@ -1,9 +1,10 @@
 package mod.syconn.hero.client;
 
+import mod.syconn.hero.core.ModKeyBindings;
 import mod.syconn.hero.network.Network;
 import mod.syconn.hero.network.messages.MessageAlterHover;
-import mod.syconn.hero.network.messages.MessageFlightMode;
 import mod.syconn.hero.network.messages.MessageSuitPropel;
+import mod.syconn.hero.network.messages.MessageUpdateSuitSettings;
 import mod.syconn.hero.util.AnimationUtil;
 import mod.syconn.hero.util.ItemUtil;
 import mod.syconn.hero.util.data.SuitSettings;
@@ -17,7 +18,9 @@ public class ClientHandler {
     private static SuitSettings settings = null;
     private static boolean updateAnimations = true;
     private static boolean grounded = true;
-    private static int ticksToClear;
+    private static boolean held = false;
+    private static int ticksToClear1;
+    private static int ticks;
 
     public static void onClientPlayerTick(Minecraft minecraft) {
         LocalPlayer player = minecraft.player;
@@ -46,10 +49,16 @@ public class ClientHandler {
     }
 
     private static void handleMappings(LocalPlayer player) {
-        if (settings != null) ticksToClear++;
-        if (ticksToClear > 100) {
-            ticksToClear = 0;
+        if (settings != null) ticksToClear1++;
+        if (ticksToClear1 > 100) {
+            ticksToClear1 = 0;
             settings = null;
+        }
+
+        if (held) ticks++;
+        if (ticks > 20) {
+            ticks = 0;
+            System.out.println("Done");
         }
 
         if (Minecraft.getInstance().options.keyJump.isDown()) {
@@ -68,17 +77,30 @@ public class ClientHandler {
             }
         }
 
-        while (KeyBindings.ABILITY1.consumeClick()) {
-            if (settings == null) settings = SuitSettings.from(player);
-            settings.cycleMode();
-            player.displayClientMessage(Component.literal("Flight: " + settings.getFlightMode() + " CONFIRM: " + KeyBindings.key(KeyBindings.ABILITIES_MENU)).withStyle(ChatFormatting.GOLD), true);
+        while (ModKeyBindings.ABILITY1.consumeClick()) {
+            if (ItemUtil.canInteractWithIronManSuit(player)) {
+                if (settings == null) settings = SuitSettings.from(player);
+                settings.cycleMode();
+                player.displayClientMessage(Component.literal("Flight: " + settings.getFlightMode() + " CONFIRM: " + ModKeyBindings.key(ModKeyBindings.ABILITIES_MENU)).withStyle(ChatFormatting.GOLD), true);
+            }
         }
 
-        while (KeyBindings.ABILITIES_MENU.consumeClick()) {
-            if (settings != null) {
-                Network.CHANNEL.sendToServer(new MessageFlightMode(settings.getFlightMode()));
-                updateAnimations = true;
-                settings = null;
+        while (ModKeyBindings.ABILITY2.consumeClick()) {
+            if (ItemUtil.canInteractWithIronManSuit(player)) {
+                Network.CHANNEL.sendToServer(new MessageUpdateSuitSettings(SuitSettings.from(player).flipHelmet()));
+                player.displayClientMessage(Component.literal("Helmet " + (SuitSettings.from(player).isLifted() ? "Lowered" : "Lifted")).withStyle(ChatFormatting.GOLD), true);
+            }
+        }
+
+        held = ModKeyBindings.ABILITY3.isDown();
+
+        while (ModKeyBindings.ABILITIES_MENU.consumeClick()) {
+            if (ItemUtil.canInteractWithIronManSuit(player)) {
+                if (settings != null) {
+                    Network.CHANNEL.sendToServer(new MessageUpdateSuitSettings(settings));
+                    updateAnimations = true;
+                    settings = null;
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ package mod.syconn.hero.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.syconn.hero.core.ModItems;
+import mod.syconn.hero.util.data.SuitSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -23,7 +24,7 @@ public class EntityRendererMixin<T extends Entity> {
     @Inject(at = @At("HEAD"), method = "render")
     public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci) {
         Player player = Minecraft.getInstance().player;
-        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get()) && entity instanceof LivingEntity living && entity != player) {
+        if (player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get()) && !SuitSettings.from(player).isLifted() && entity instanceof LivingEntity living && entity != player) {
             double d = Minecraft.getInstance().getEntityRenderDispatcher().distanceToSqr(entity);
             String displayName = "HP " + (int) (living.getHealth() / living.getMaxHealth() * 100) + "%";
             if (!(d > 4096.0)) {

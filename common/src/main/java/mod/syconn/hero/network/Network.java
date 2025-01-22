@@ -3,8 +3,8 @@ package mod.syconn.hero.network;
 import dev.architectury.networking.NetworkChannel;
 import mod.syconn.hero.Constants;
 import mod.syconn.hero.network.messages.MessageAlterHover;
-import mod.syconn.hero.network.messages.MessageFlightMode;
 import mod.syconn.hero.network.messages.MessageSuitPropel;
+import mod.syconn.hero.network.messages.MessageUpdateSuitSettings;
 
 public class Network {
 
@@ -12,7 +12,7 @@ public class Network {
 
     public static void init() {
         CHANNEL.register(MessageSuitPropel.class, MessageSuitPropel::encode, MessageSuitPropel::new, MessageSuitPropel::apply);
-        CHANNEL.register(MessageFlightMode.class, MessageFlightMode::encode, MessageFlightMode::new, MessageFlightMode::apply);
+        CHANNEL.register(MessageUpdateSuitSettings.class, MessageUpdateSuitSettings::encode, MessageUpdateSuitSettings::new, MessageUpdateSuitSettings::apply);
         CHANNEL.register(MessageAlterHover.class, MessageAlterHover::encode, MessageAlterHover::new, MessageAlterHover::apply);
     }
 }
