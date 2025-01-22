@@ -18,11 +18,6 @@ permissions:
 
 jobs:
   build:
-    # strategy:
-    #   matrix:
-    #     java: |
-    #     17
-    #     os: [ubuntu-22.04]
     runs-on: ubuntu-latest
     steps:
       - name: "⬇️ Checkout"
