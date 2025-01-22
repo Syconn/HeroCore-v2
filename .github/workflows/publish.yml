@@ -1,0 +1,57 @@
+name: Publish on GitHub, CurseForge & Modrinth
+ 
+on: [ pull_request, workflow_dispatch ]
+
+env:
+  MINECRAFT_VERSION: 1.20.1                        
+  JAVA_VERSION: 22                   
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Environment Variables
+        run: env
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: 22
+
+      - name: Make Gradle Wrapper Executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew clean build
+
+      - name: Publish (CurseForge/Modrinth/GitHub)
+        uses: Kir-Antipov/mc-publish@v3.3                                   
+        with:
+          curseforge-id: 326469                                             #The id of your CurseForge project
+          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
+          
+          # modrinth-id: 1q2w3e4r                                             #The id of your modrinth project
+          # modrinth-token: "${{env.MODRINTH_TOKEN}}"
+          
+          github-tag: "v${{env.VERSION}}"
+          github-token: "${{env.GITHUB_TOKEN}}"
+
+          name: "${{env.RELEASE_NAME}}"                             
+          version: "${{env.VERSION}}"
+          version-type: release
+          changelog-file: CHANGELOG.md                                      #The file in which the changes of your new update are specified (the path starts at your project root)
+
+          loaders: fabric
+          game-versions: "${{env.MINECRAFT_VERSION}}"
+          java: "${{env.JAVA_VERSION}}"
+          
