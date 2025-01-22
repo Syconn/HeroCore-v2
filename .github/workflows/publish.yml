@@ -56,6 +56,10 @@ jobs:
           version-type: release
           changelog-file: CHANGELOG.md
 
+          files: |
+             build/libs/!(*-@(dev|sources|javadoc)).jar
+             build/libs/*-@(dev|sources|javadocs).jar
+
           dependencies: |
              fabric@0.92.3+1.20.1(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
              architectury@9.2.14(required){modrinth:architectury-api}{curseforge:419699}#(ignore:github)
