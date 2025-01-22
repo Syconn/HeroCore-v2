@@ -55,6 +55,7 @@ jobs:
           version: "${{env.VERSION}}"
           version-type: release
           changelog-file: CHANGELOG.md
+          gameVersions: "${{env.MINECRAFT_VERSION}}"
 
           files: |
              # fabric/build/libs/!(*-@(dev)).jar #|sources|javadocs
@@ -81,7 +82,7 @@ jobs:
           github-tag: "v${{env.VERSION}}"
           github-token: "${{env.GITHUB_TOKEN}}"
 
-          name: "${{env.RELEASE_NAME}}"                             
+          name: "${{env.RELEASE_NAME}}-Forge"                             
           version: "${{env.VERSION}}"
           version-type: release
           changelog-file: CHANGELOG.md
@@ -96,7 +97,7 @@ jobs:
              playeranimator@1.0.2-rc1+1.20(required){modrinth:playeranimator}{curseforge:658587}#(ignore:github)
 
           loaders: forge
-          game-versions: "${{env.MINECRAFT_VERSION}}-Forge"
+          game-versions: "${{env.MINECRAFT_VERSION}}"
           java: "${{env.JAVA_VERSION}}"
           
 
