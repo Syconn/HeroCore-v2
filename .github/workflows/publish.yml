@@ -56,7 +56,9 @@ jobs:
           version-type: release
           changelog-file: CHANGELOG.md                                      
 
-          loaders: fabric
+          loaders: |
+            fabric
+            forge
           game-versions: "${{env.MINECRAFT_VERSION}}"
           java: "${{env.JAVA_VERSION}}"
           
