@@ -1,4 +1,4 @@
-name: Publish new Version
+name: Publish 1.20.1
  
 on: [ pull_request, workflow_dispatch ]           
 
