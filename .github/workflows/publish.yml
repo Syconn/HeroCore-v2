@@ -58,8 +58,7 @@ jobs:
           gameVersions: "${{env.MINECRAFT_VERSION}}"
 
           files: |
-             # fabric/build/libs/!(*-@(dev)).jar #|sources|javadocs
-             fabric/build/libs/hero-fabric-1.0.2.jar
+             fabric/build/libs/hero-fabric-${{env.VERSION}}.jar
 
           dependencies: |
              fabric@0.92.3+1.20.1(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
@@ -70,35 +69,34 @@ jobs:
           game-versions: "${{env.MINECRAFT_VERSION}}"
           java: "${{env.JAVA_VERSION}}"
 
-      # - name: Publish Forge
-      #   uses: Kir-Antipov/mc-publish@v3.3.0                                   
-      #   with:
-      #     curseforge-id: 326469                                             
-      #     curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
+      - name: Publish Forge
+        uses: Kir-Antipov/mc-publish@v3.3.0                                   
+        with:
+          curseforge-id: 326469                                             
+          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
           
-      #     modrinth-id: syconns-superhero-mod                                             
-      #     modrinth-token: "${{env.MODRINTH_TOKEN}}"
+          modrinth-id: syconns-superhero-mod                                             
+          modrinth-token: "${{env.MODRINTH_TOKEN}}"
           
-      #     github-tag: "v${{env.VERSION}}"
-      #     github-token: "${{env.GITHUB_TOKEN}}"
+          github-tag: "v${{env.VERSION}}"
+          github-token: "${{env.GITHUB_TOKEN}}"
 
-      #     name: "${{env.RELEASE_NAME}}-Forge"                             
-      #     version: "${{env.VERSION}}"
-      #     version-type: release
-      #     changelog-file: CHANGELOG.md
+          name: "${{env.RELEASE_NAME}}-Forge"                             
+          version: "${{env.VERSION}}"
+          version-type: release
+          changelog-file: CHANGELOG.md
 
-      #     files: |
-      #        # forge/build/libs/!(*-@(dev)).jar #|sources|javadocs
-      #        forge/build/libs/*.jar
+          files: |
+             forge/build/libs/hero-forge-${{env.VERSION}}.jar
 
-      #     dependencies: |
-      #        fabric@0.92.3+1.20.1(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
-      #        architectury@9.2.14(required){modrinth:architectury-api}{curseforge:419699}#(ignore:github)
-      #        playeranimator@1.0.2-rc1+1.20(required){modrinth:playeranimator}{curseforge:658587}#(ignore:github)
+          dependencies: |
+             fabric@0.92.3+1.20.1(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
+             architectury@9.2.14(required){modrinth:architectury-api}{curseforge:419699}#(ignore:github)
+             playeranimator@1.0.2-rc1+1.20(required){modrinth:playeranimator}{curseforge:658587}#(ignore:github)
 
-      #     loaders: forge
-      #     game-versions: "${{env.MINECRAFT_VERSION}}"
-      #     java: "${{env.JAVA_VERSION}}"
+          loaders: forge
+          game-versions: "${{env.MINECRAFT_VERSION}}"
+          java: "${{env.JAVA_VERSION}}"
           
 
           
