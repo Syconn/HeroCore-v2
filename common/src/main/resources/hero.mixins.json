@@ -8,6 +8,7 @@
     "HumanoidArmorLayerMixin"
   ],
   "mixins": [
+    "PlayerPersistentDataMixin"
   ],
   "injectors": {
     "defaultRequire": 1

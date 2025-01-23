@@ -1,0 +1,31 @@
+package mod.syconn.hero.network.messages;
+
+import dev.architectury.networking.NetworkManager;
+import mod.syconn.hero.util.PersistentData;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+
+import java.util.function.Supplier;
+
+public class MessageSyncPersistentData {
+
+    private final CompoundTag persistentData;
+
+    public MessageSyncPersistentData(CompoundTag persistentData) {
+        this.persistentData = persistentData;
+    }
+
+    public MessageSyncPersistentData(FriendlyByteBuf buf) {
+        this(buf.readNbt());
+    }
+
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeNbt(this.persistentData);
+    }
+
+    public void apply(Supplier<NetworkManager.PacketContext> context) {
+        context.get().queue(() -> {
+            ((PersistentData) context.get().getPlayer()).syncPersistentData(this.persistentData);
+        });
+    }
+}

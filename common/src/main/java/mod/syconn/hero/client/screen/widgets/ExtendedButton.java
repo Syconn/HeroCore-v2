@@ -1,6 +1,6 @@
 package mod.syconn.hero.client.screen.widgets;
 
-import mod.syconn.hero.util.IGuiHelper;
+import mod.syconn.hero.util.GuiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,7 +9,7 @@ import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 
-public class ExtendedButton extends Button implements IGuiHelper {
+public class ExtendedButton extends Button implements GuiHelper {
     
     public ExtendedButton(int xPos, int yPos, int width, int height, Component displayString, OnPress handler) {
         this(xPos, yPos, width, height, displayString, handler, DEFAULT_NARRATION);
