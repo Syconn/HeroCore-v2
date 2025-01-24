@@ -34,7 +34,7 @@ public class ClientHandler {
     }
 
     private static void handleMappings(LocalPlayer player) { // TODO FLIGHT ANIMATION ISSUE BETWEEN HOVER AND FLIGHT WHEN ALREADY HOVERING
-        if (settings != null) ticksToClear1++;
+        if (settings != null) ticksToClear1++; // TODO NOT SAVING DATA
         if (ticksToClear1 > 100) {
             ticksToClear1 = 0;
             settings = null;
@@ -71,8 +71,9 @@ public class ClientHandler {
         }
 
         while (ModKeyBindings.ABILITY2.consumeClick()) {
-            if (AbilityUtil.canInteractWithIronManSuit(player)) {
-                Network.CHANNEL.sendToServer(new MessageUpdateSuitSettings(SuitSettings.from(player).flipHelmet()));
+            if (AbilityUtil.canInteractWithIronManHelmet(player)) {
+                SuitSettings.set(player, SuitSettings.from(player).flipHelmet());
+                Network.CHANNEL.sendToServer(new MessageUpdateSuitSettings(SuitSettings.from(player)));
                 player.displayClientMessage(Component.literal("Helmet " + (SuitSettings.from(player).isLifted() ? "Lowered" : "Lifted")).withStyle(ChatFormatting.GOLD), true);
             }
         }

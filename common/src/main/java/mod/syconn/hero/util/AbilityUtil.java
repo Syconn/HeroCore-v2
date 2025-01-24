@@ -9,6 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AbilityUtil {
 
     public static boolean canUseIronManPowers(Player player) {
@@ -16,12 +19,26 @@ public class AbilityUtil {
         return inv.get(0).is(ModItems.MARK_42_BOOTS.get()) && inv.get(1).is(ModItems.MARK_42_LEGGINGS.get()) && inv.get(2).is(ModItems.MARK_42_CHESTPLATE.get()) && inv.get(3).is(ModItems.MARK_42_HELMET.get());
     }
 
-    public static boolean canInteractWithIronManSuit(Player player) {
+    public static boolean canInteractWithIronManHelmet(Player player) {
         return player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get());
+    }
+
+    public static List<ItemStack> missingIronManItems(Player player) {
+        List<ItemStack> missing = new ArrayList<>();
+        NonNullList<ItemStack> inv = player.getInventory().armor;
+        if (!inv.get(0).is(ModItems.MARK_42_BOOTS.get())) missing.add(new ItemStack(ModItems.MARK_42_BOOTS.get()));
+        if (!inv.get(1).is(ModItems.MARK_42_LEGGINGS.get())) missing.add(new ItemStack(ModItems.MARK_42_LEGGINGS.get()));
+        if (!inv.get(2).is(ModItems.MARK_42_CHESTPLATE.get())) missing.add(new ItemStack(ModItems.MARK_42_CHESTPLATE.get()));
+        if (!inv.get(3).is(ModItems.MARK_42_HELMET.get())) missing.add(new ItemStack(ModItems.MARK_42_HELMET.get()));
+        return missing;
     }
 
     public static boolean canUseThorPowers(Player player) {
         return player.getInventory().contains(new ItemStack(ModItems.MJOLNIR.get()));
+    }
+
+    public static List<ItemStack> missingThorItems(Player player) {
+        return canUseThorPowers(player) ? List.of() : List.of(new ItemStack(ModItems.MJOLNIR.get()));
     }
 
     public static boolean isHolding(Player player, Item item) {

@@ -65,7 +65,7 @@ public class SuitSettings {
 
     public static SuitSettings from(Player player) {
         SuitSettings settings = instance();
-        if (AbilityUtil.canUseIronManPowers(player)) {
+        if (AbilityUtil.canInteractWithIronManHelmet(player)) {
             if (player.getItemBySlot(EquipmentSlot.HEAD).getOrCreateTag().contains("settings"))
                 return new SuitSettings((CompoundTag) player.getItemBySlot(EquipmentSlot.HEAD).getOrCreateTag().get("settings"));
             else player.getItemBySlot(EquipmentSlot.HEAD).getOrCreateTag().put("settings", settings.writeTag());

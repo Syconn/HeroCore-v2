@@ -33,8 +33,8 @@ public class HeroSelectorScreen extends Screen {
         this.topPos = (this.height - this.imageHeight) / 2;
         for (HeroTypes type : HeroTypes.values) {
             int i = type.ordinal(), iconSize = 32;
-            addRenderableWidget(buttons[i] =
-                    new HeroButton(leftPos + i * 32 + 6 + i * 7, topPos + (75 - iconSize) / 2, iconSize, iconSize, type, type == this.selectedType, type.canUse(player), this::changeHeroType));
+            addRenderableWidget(buttons[i] = new HeroButton(leftPos + i * 32 + 6 + i * 7, topPos + (75 - iconSize) / 2, iconSize, iconSize,
+                            type, type == this.selectedType, type.canUse(player), type.getMissingItems(player), this::changeHeroType));
         }
     }
 
