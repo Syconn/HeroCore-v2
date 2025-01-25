@@ -3,6 +3,7 @@ package mod.syconn.hero;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.event.events.common.EntityEvent;
+import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.utils.Env;
@@ -18,6 +19,8 @@ import mod.syconn.hero.core.ModEntities;
 import mod.syconn.hero.core.ModItems;
 import mod.syconn.hero.core.ModKeyBindings;
 import mod.syconn.hero.network.Network;
+import mod.syconn.hero.network.messages.MessageSyncPersistentData;
+import mod.syconn.hero.util.PersistentData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -28,7 +31,8 @@ public final class HeroCore {
         ModItems.TABS.register();
         ModItems.ITEMS.register();
         ModEntities.ENTITIES.register();
-        
+
+        PlayerEvent.PLAYER_JOIN.register(player -> Network.CHANNEL.sendToPlayer(player, new MessageSyncPersistentData(((PersistentData) player).getPersistentData())));
         EntityEvent.LIVING_HURT.register(CommonHandler::entityHurtEvent);
         TickEvent.PLAYER_PRE.register(CommonHandler::onPlayerTick);
 

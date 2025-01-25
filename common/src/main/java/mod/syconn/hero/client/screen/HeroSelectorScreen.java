@@ -4,6 +4,7 @@ import mod.syconn.hero.Constants;
 import mod.syconn.hero.client.screen.widgets.HeroButton;
 import mod.syconn.hero.util.AbilityUtil;
 import mod.syconn.hero.util.HeroTypes;
+import mod.syconn.hero.util.PersistentData;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,6 +26,7 @@ public class HeroSelectorScreen extends Screen {
     public HeroSelectorScreen(Player player) {
         super(Component.translatable("hero.ability.screen"));
         this.player = player;
+        System.out.println(((PersistentData) player).getPersistentData());
         this.selectedType = AbilityUtil.getHeroType(player);
     }
 

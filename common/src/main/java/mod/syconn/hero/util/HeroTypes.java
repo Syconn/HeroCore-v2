@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.function.Function;
 
-public enum HeroTypes implements StringRepresentable { // TODO Need Hold Required Gear Hear to Grab for Menu Screen
+public enum HeroTypes implements StringRepresentable {
 
     NONE("No Powers", 64, 0, player -> true, player -> List.of()),
     IRON_MAN("Fight with Iron Man's Suit", 0, 0, AbilityUtil::canUseIronManPowers, AbilityUtil::missingIronManItems),

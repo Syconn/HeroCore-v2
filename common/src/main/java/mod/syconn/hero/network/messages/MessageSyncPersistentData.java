@@ -2,6 +2,7 @@ package mod.syconn.hero.network.messages;
 
 import dev.architectury.networking.NetworkManager;
 import mod.syconn.hero.util.PersistentData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 
@@ -25,7 +26,9 @@ public class MessageSyncPersistentData {
 
     public void apply(Supplier<NetworkManager.PacketContext> context) {
         context.get().queue(() -> {
-            ((PersistentData) context.get().getPlayer()).syncPersistentData(this.persistentData);
+            System.out.println("Syncing" + this.persistentData);
+            if (context.get().getPlayer() == null) ((PersistentData) Minecraft.getInstance().player).syncPersistentData(this.persistentData);
+            else ((PersistentData) context.get().getPlayer()).syncPersistentData(this.persistentData);
         });
     }
 }

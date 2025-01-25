@@ -15,7 +15,7 @@ public interface PersistentData {
     void updatePersistentData(Player player, Function<CompoundTag, CompoundTag> function);
 
     default void sync(PersistentData data, Player player) {
-        if (player instanceof ServerPlayer sp) Network.CHANNEL.sendToPlayer(sp, new MessageSyncPersistentData(data.getPersistentData()));
+        if (player instanceof ServerPlayer sp ) Network.CHANNEL.sendToPlayer(sp, new MessageSyncPersistentData(data.getPersistentData()));
         else Network.CHANNEL.sendToServer(new MessageSyncPersistentData(data.getPersistentData()));
     }
 }
