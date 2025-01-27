@@ -2,8 +2,9 @@ package mod.syconn.hero.common;
 
 import dev.architectury.event.EventResult;
 import mod.syconn.hero.core.ModItems;
-import mod.syconn.hero.util.ItemUtil;
-import mod.syconn.hero.util.data.SuitSettings;
+import mod.syconn.hero.util.AbilityUtil;
+import mod.syconn.hero.common.data.SuitSettings;
+import mod.syconn.hero.util.HeroTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,13 +17,13 @@ public class CommonHandler {
     
     public static EventResult entityHurtEvent(LivingEntity entity, DamageSource source, float amount) {
         if (entity instanceof Player player) 
-            if (source.is(DamageTypes.FALL) && (ItemUtil.isWearingIronManSuit(player) || ItemUtil.isHolding(player, ModItems.MJOLNIR.get())))
+            if (source.is(DamageTypes.FALL) && (AbilityUtil.useSpecificPower(player, HeroTypes.IRON_MAN) || AbilityUtil.getHolding(player).is(ModItems.MJOLNIR.get())))
                 return EventResult.interruptFalse();
         return EventResult.pass();
     }
 
     public static void onPlayerTick(Player player) {
-        if (player != null && ItemUtil.isWearingIronManSuit(player)) {
+        if (player != null && AbilityUtil.useSpecificPower(player, HeroTypes.IRON_MAN)) {
             SuitSettings settings = SuitSettings.from(player);
             if (settings.getFlightMode() == SuitSettings.FlightMode.HOVER) {
                 Vec3 pos = player.getEyePosition();

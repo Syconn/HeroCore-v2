@@ -6,9 +6,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.syconn.hero.core.ModItems;
 import mod.syconn.hero.util.EnergyUtil;
-import mod.syconn.hero.util.ItemUtil;
+import mod.syconn.hero.util.AbilityUtil;
 import mod.syconn.hero.util.RenderUtil;
-import mod.syconn.hero.util.data.SuitSettings;
+import mod.syconn.hero.common.data.SuitSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -28,7 +28,7 @@ public class IronmanOverlay {
     public static void renderOverlay(GuiGraphics graphics, float tickDelta) {
         Player player = getCameraPlayer();
         if (player != null && !SuitSettings.from(player).isLifted() && player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_42_HELMET.get())) {
-            boolean online = ItemUtil.isWearingIronManSuit(player);
+            boolean online = AbilityUtil.canUseIronManPowers(player);
 
             // Blue Glint
             RenderSystem.disableDepthTest();

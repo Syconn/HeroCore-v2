@@ -1,7 +1,7 @@
 package mod.syconn.hero.network.messages;
 
 import dev.architectury.networking.NetworkManager;
-import mod.syconn.hero.util.data.SuitSettings;
+import mod.syconn.hero.common.data.SuitSettings;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.function.Supplier;

@@ -22,6 +22,7 @@ public class LangGen extends FabricLanguageProvider {
         translationBuilder.add(INGOT_TIN.get(), "Tin Ingot");
         translationBuilder.add(TITANIUM_PLATE.get(), "Titanium Plate");
         translationBuilder.add("key.categories.hero", "HeroCore Controls");
+        translationBuilder.add("key.hero.use.ironman_helmet", "Open/Close of Helmet");
         translationBuilder.add("key.hero.use.ability1", "Use Ability 1");
         translationBuilder.add("key.hero.use.ability2", "Use Ability 2");
         translationBuilder.add("key.hero.use.ability3", "Use Ability 3");

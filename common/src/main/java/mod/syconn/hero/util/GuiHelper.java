@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 
-public interface IGuiHelper
+public interface GuiHelper
 {
     FormattedText ELLIPSIS = FormattedText.of("...");
     Font font();

@@ -10,6 +10,7 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import mod.syconn.hero.Constants;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
+
 import java.util.Objects;
 
 @SuppressWarnings("unchecked")

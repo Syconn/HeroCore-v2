@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.syconn.hero.common.item.IronmanArmorItem;
-import mod.syconn.hero.util.data.SuitSettings;
+import mod.syconn.hero.common.data.SuitSettings;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

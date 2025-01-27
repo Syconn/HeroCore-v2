@@ -105,20 +105,20 @@ public class ThrownMjolnir extends AbstractArrow implements EntitySpawnExtension
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
-        this.strikeLightning(pResult.getEntity().getOnPos());
+        strikeLightning(level(), pResult.getEntity().getOnPos());
     }
 
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        this.strikeLightning(pResult.getBlockPos());
+        strikeLightning(level(), pResult.getBlockPos());
     }
 
-    private void strikeLightning(BlockPos point) {
-        LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(level());
+    public static void strikeLightning(Level level, BlockPos point) {
+        LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(level);
         if (lightningbolt != null) {
             lightningbolt.moveTo(Vec3.atBottomCenterOf(point));
             lightningbolt.setVisualOnly(false);
-            level().addFreshEntity(lightningbolt);
+            level.addFreshEntity(lightningbolt);
         }
     }
 
@@ -136,10 +136,6 @@ public class ThrownMjolnir extends AbstractArrow implements EntitySpawnExtension
 
     protected boolean tryPickup(Player pPlayer) {
         return super.tryPickup(pPlayer) || this.isNoPhysics() && this.ownedBy(pPlayer) && pPlayer.getInventory().add(this.getPickupItem());
-    }
-
-    protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(ModItems.MJOLNIR.get());
     }
 
     protected SoundEvent getDefaultHitGroundSoundEvent() {

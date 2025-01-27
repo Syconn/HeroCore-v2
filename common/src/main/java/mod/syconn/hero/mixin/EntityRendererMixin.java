@@ -2,7 +2,7 @@ package mod.syconn.hero.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.syconn.hero.core.ModItems;
-import mod.syconn.hero.util.data.SuitSettings;
+import mod.syconn.hero.common.data.SuitSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
