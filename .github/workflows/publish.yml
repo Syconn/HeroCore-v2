@@ -9,8 +9,8 @@ on:
 env:                                              
   MINECRAFT_VERSION: 1.20.1                       
   JAVA_VERSION: 22     
-  VERSION: 1.0.3
-  RELEASE_NAME: V1.0.3
+  # VERSION: 1.0.3
+  # RELEASE_NAME: V1.0.3
   TYPE: release
   MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
   CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
@@ -43,6 +43,14 @@ jobs:
 
       - name: Build
         run: ./gradlew clean build
+
+      - name: Get Gradle Version
+        uses: BrycensRanch/read-properties-action@v1
+        id: version
+        with:
+          file: gradle.properties
+          property: mod_version
+          default: 1.0.3
         
       - name: Publish Fabric
         uses: Kir-Antipov/mc-publish@v3.3.0                                   
@@ -56,13 +64,13 @@ jobs:
           github-tag: "v${{env.VERSION}}"
           github-token: "${{env.GITHUB_TOKEN}}"
 
-          name: "${{env.RELEASE_NAME}}-Fabric"                             
-          version: "${{env.VERSION}}"
+          name: "V${{steps.version.outputs.version}}-Fabric"                             
+          version: "${{steps.version.outputs.version}}"
           version-type: "${{env.TYPE}}"
           changelog-file: CHANGELOG.md
           
           files: |
-             fabric/build/libs/hero-fabric-${{env.VERSION}}.jar
+             fabric/build/libs/hero-fabric-${{steps.version.outputs.version}}.jar
 
           dependencies: |
              fabric@0.92.3+1.20.1(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
@@ -82,16 +90,16 @@ jobs:
           modrinth-id: syconns-superhero-mod                                             
           modrinth-token: "${{env.MODRINTH_TOKEN}}"
           
-          github-tag: "v${{env.VERSION}}"
+          github-tag: "v${{steps.version.outputs.version}}"
           github-token: "${{env.GITHUB_TOKEN}}"
 
-          name: "${{env.RELEASE_NAME}}-Forge"                             
-          version: "${{env.VERSION}}"
+          name: "$V{{steps.version.outputs.version}}-Forge"                             
+          version: "${{steps.version.outputs.version}}"
           version-type: "${{env.TYPE}}"
           changelog-file: CHANGELOG.md
 
           files: |
-             forge/build/libs/hero-forge-${{env.VERSION}}.jar
+             forge/build/libs/hero-forge-${{steps.version.outputs.version}}.jar
 
           dependencies: |
              architectury@9.2.14(required){modrinth:architectury-api}{curseforge:419699}#(ignore:github)
