@@ -94,7 +94,6 @@ jobs:
              forge/build/libs/hero-forge-${{env.VERSION}}.jar
 
           dependencies: |
-             fabric@0.92.3+1.20.1(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
              architectury@9.2.14(required){modrinth:architectury-api}{curseforge:419699}#(ignore:github)
              playeranimator@1.0.2-rc1+1.20(required){modrinth:playeranimator}{curseforge:658587}#(ignore:github)
 
