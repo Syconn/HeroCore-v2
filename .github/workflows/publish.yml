@@ -60,7 +60,7 @@ jobs:
           version: "${{env.VERSION}}"
           version-type: "${{env.TYPE}}"
           changelog-file: CHANGELOG.md
-          gameVersions: "${{env.MINECRAFT_VERSION}}"
+          game-versions: "${{env.MINECRAFT_VERSION}}"
 
           files: |
              fabric/build/libs/hero-fabric-${{env.VERSION}}.jar
