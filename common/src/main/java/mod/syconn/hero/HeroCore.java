@@ -48,7 +48,6 @@ public final class HeroCore {
         public static void init() {
             ClientTickEvent.CLIENT_PRE.register(ClientHandler::onClientPlayerTick);
             ClientGuiEvent.RENDER_HUD.register(IronmanOverlay::renderOverlay);
-
             PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(Constants.withId("animation"), 42, HeroCore.Client::registerPlayerAnimation);
 
             EntityRendererRegistry.register(ModEntities.MJOLNIR, MjolnirRenderer::new);
