@@ -115,6 +115,6 @@ public class MjolnirItem extends Item {
         player.level().addFreshEntity(thrownMjolnir);
         player.level().playSound(null, thrownMjolnir, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
         if (!player.isCreative()) player.getInventory().removeItem(stack);
-        player.getCooldowns().addCooldown(stack.getItem(), 30); // TODO MAYBE CUSTOM COOLDOWN
+        player.getCooldowns().addCooldown(stack.getItem(), 30);
     }
 }
