@@ -28,7 +28,7 @@ public class IronmanArmorItem extends ArmorItem {
         if (level != null && level.isClientSide && InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), InputConstants.KEY_LCONTROL)) {
             tooltipComponents.add(Component.literal(""));
             tooltipComponents.add(Component.literal("To Change Flight Mode press " + ModKeyBindings.key(ModKeyBindings.ABILITY1)).withStyle(ChatFormatting.GOLD));
-            tooltipComponents.add(Component.literal("To Lower/Raise Helmet press " + ModKeyBindings.key(ModKeyBindings.ABILITY2)).withStyle(ChatFormatting.GOLD));
+            tooltipComponents.add(Component.literal("To Lower/Raise Helmet press " + ModKeyBindings.key(ModKeyBindings.IRONMAN_HELMET)).withStyle(ChatFormatting.GOLD));
         } else {
             tooltipComponents.add(Component.literal(""));
             tooltipComponents.add(Component.literal("Press LCTRL for more info").withStyle(ChatFormatting.GOLD));

@@ -17,7 +17,7 @@ public class CommonHandler {
     
     public static EventResult entityHurtEvent(LivingEntity entity, DamageSource source, float amount) {
         if (entity instanceof Player player) 
-            if (source.is(DamageTypes.FALL) && (AbilityUtil.useSpecificPower(player, HeroTypes.IRON_MAN) || AbilityUtil.isHolding(player, ModItems.MJOLNIR.get())))
+            if (source.is(DamageTypes.FALL) && (AbilityUtil.useSpecificPower(player, HeroTypes.IRON_MAN) || AbilityUtil.getHolding(player).is(ModItems.MJOLNIR.get())))
                 return EventResult.interruptFalse();
         return EventResult.pass();
     }

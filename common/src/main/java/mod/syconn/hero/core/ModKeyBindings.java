@@ -10,10 +10,12 @@ public class ModKeyBindings {
     public static final KeyMapping ABILITY1 = new KeyMapping(keyId("use.ability1"), GLFW.GLFW_KEY_N, modCategory());
     public static final KeyMapping ABILITY2 = new KeyMapping(keyId("use.ability2"), GLFW.GLFW_KEY_M, modCategory());
     public static final KeyMapping ABILITY3 = new KeyMapping(keyId("use.ability3"), GLFW.GLFW_KEY_V, modCategory());
+    public static final KeyMapping IRONMAN_HELMET = new KeyMapping(keyId("use.ironman_helmet"), GLFW.GLFW_KEY_COMMA, modCategory());
     public static final KeyMapping ABILITIES_MENU = new KeyMapping(keyId("menu.abilities"), GLFW.GLFW_KEY_B, modCategory());
     
     public static void registerMappings() {
         KeyMappingRegistry.register(ABILITIES_MENU);
+        KeyMappingRegistry.register(IRONMAN_HELMET);
         KeyMappingRegistry.register(ABILITY1);
         KeyMappingRegistry.register(ABILITY2);
         KeyMappingRegistry.register(ABILITY3);

@@ -4,7 +4,6 @@ import mod.syconn.hero.Constants;
 import mod.syconn.hero.client.screen.widgets.HeroButton;
 import mod.syconn.hero.util.AbilityUtil;
 import mod.syconn.hero.util.HeroTypes;
-import mod.syconn.hero.util.PersistentData;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -26,7 +25,6 @@ public class HeroSelectorScreen extends Screen {
     public HeroSelectorScreen(Player player) {
         super(Component.translatable("hero.ability.screen"));
         this.player = player;
-        System.out.println(((PersistentData) player).getPersistentData());
         this.selectedType = AbilityUtil.getHeroType(player);
     }
 
@@ -36,7 +34,7 @@ public class HeroSelectorScreen extends Screen {
         for (HeroTypes type : HeroTypes.values) {
             int i = type.ordinal(), iconSize = 32;
             addRenderableWidget(buttons[i] = new HeroButton(leftPos + i * 32 + 6 + i * 7, topPos + (75 - iconSize) / 2, iconSize, iconSize,
-                            type, type == this.selectedType, type.canUse(player), type.getMissingItems(player), this::changeHeroType));
+                            type, type == this.selectedType, type.selectable(player), type.getMissingItems(player), this::changeHeroType));
         }
     }
 
@@ -46,7 +44,7 @@ public class HeroSelectorScreen extends Screen {
     }
 
     private void changeHeroType(Button button) {
-        if (button instanceof HeroButton heroButton && heroButton.getType().canUse(player)) {
+        if (button instanceof HeroButton heroButton && heroButton.getType().selectable(player)) {
             buttons[this.selectedType.ordinal()].setSelected(false);
             this.selectedType = AbilityUtil.setHeroType(player, heroButton.getType());
             heroButton.setSelected(true);

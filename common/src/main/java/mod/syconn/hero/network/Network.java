@@ -2,10 +2,7 @@ package mod.syconn.hero.network;
 
 import dev.architectury.networking.NetworkChannel;
 import mod.syconn.hero.Constants;
-import mod.syconn.hero.network.messages.MessageAlterHover;
-import mod.syconn.hero.network.messages.MessageSuitPropel;
-import mod.syconn.hero.network.messages.MessageSyncPersistentData;
-import mod.syconn.hero.network.messages.MessageUpdateSuitSettings;
+import mod.syconn.hero.network.messages.*;
 
 public class Network {
 
@@ -16,6 +13,8 @@ public class Network {
         CHANNEL.register(MessageUpdateSuitSettings.class, MessageUpdateSuitSettings::encode, MessageUpdateSuitSettings::new, MessageUpdateSuitSettings::apply);
         CHANNEL.register(MessageAlterHover.class, MessageAlterHover::encode, MessageAlterHover::new, MessageAlterHover::apply);
         CHANNEL.register(MessageSyncPersistentData.class, MessageSyncPersistentData::encode, MessageSyncPersistentData::new, MessageSyncPersistentData::apply);
+        CHANNEL.register(MessageThrowMjolnir.class, MessageThrowMjolnir::encode, MessageThrowMjolnir::new, MessageThrowMjolnir::apply);
+        CHANNEL.register(MessageMjolnirStrikeEnemy.class, MessageMjolnirStrikeEnemy::encode, MessageMjolnirStrikeEnemy::new, MessageMjolnirStrikeEnemy::apply);
     }
 
     public static void initS2C() {

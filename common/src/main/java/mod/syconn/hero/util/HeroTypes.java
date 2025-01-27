@@ -11,23 +11,25 @@ import java.util.function.Function;
 
 public enum HeroTypes implements StringRepresentable {
 
-    NONE("No Powers", 64, 0, player -> true, player -> List.of()),
-    IRON_MAN("Fight with Iron Man's Suit", 0, 0, AbilityUtil::canUseIronManPowers, AbilityUtil::missingIronManItems),
-    THOR("Wield Thor's Lightning", 32, 0, AbilityUtil::canUseThorPowers, AbilityUtil::missingThorItems);
+    NONE("No Powers", 64, 0, player -> true, player -> true, player -> List.of()),
+    IRON_MAN("Fight with Iron Man's Suit", 0, 0, AbilityUtil::canUseIronManPowers, AbilityUtil::canUseIronManPowers, AbilityUtil::missingIronManItems),
+    THOR("Wield Thor's Lightning", 32, 0, AbilityUtil::canUseThorPowers, AbilityUtil::canSelectThorPowers, AbilityUtil::missingThorItems);
 
     private final String name;
     private final int renderX;
     private final int renderY;
     private final Function<Player, Boolean> usable;
+    private final Function<Player, Boolean> selectable;
     private final Function<Player, List<ItemStack>> missing;
 
     public static final HeroTypes values[] = values();
 
-    HeroTypes(String name, int renderX, int renderY, Function<Player, Boolean> usable, Function<Player, List<ItemStack>> missing) {
+    HeroTypes(String name, int renderX, int renderY, Function<Player, Boolean> usable, Function<Player, Boolean> selectable, Function<Player, List<ItemStack>> missing) {
         this.name = name;
         this.renderX = renderX;
         this.renderY = renderY;
         this.usable = usable;
+        this.selectable = selectable;
         this.missing = missing;
     }
 
@@ -45,6 +47,10 @@ public enum HeroTypes implements StringRepresentable {
 
     public boolean canUse(Player player) {
         return this.usable.apply(player);
+    }
+
+    public boolean selectable(Player player) {
+        return this.selectable.apply(player);
     }
 
     public List<ItemStack> getMissingItems(Player player) {

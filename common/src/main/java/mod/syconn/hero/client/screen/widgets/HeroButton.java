@@ -18,15 +18,15 @@ public class HeroButton extends ExtendedButton {
     private final ResourceLocation BACKGROUND = Constants.withId("textures/gui/ability_selector.png");
     private final ResourceLocation ICONS = Constants.withId("textures/gui/hero_icons.png");
     private final HeroTypes type;
-    private final boolean canUse;
+    private final boolean selectable;
     private final List<ItemStack> missing;
     private boolean selected;
 
-    public HeroButton(int x, int y, int width, int height, HeroTypes type, boolean selected, boolean canUse, List<ItemStack> missing, OnPress onPress) {
+    public HeroButton(int x, int y, int width, int height, HeroTypes type, boolean selected, boolean selectable, List<ItemStack> missing, OnPress onPress) {
         super(x, y, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
         this.type = type;
         this.selected = selected;
-        this.canUse = canUse;
+        this.selectable = selectable;
         this.missing = missing;
     }
 
@@ -39,8 +39,8 @@ public class HeroButton extends ExtendedButton {
 
     public List<FormattedCharSequence> generateComponent() {
         var list = new ArrayList<FormattedCharSequence>();
-        list.add(Component.literal(type.getOverlayName()).withStyle(canUse ? ChatFormatting.WHITE : ChatFormatting.RED).getVisualOrderText());
-        if (!canUse) {
+        list.add(Component.literal(type.getOverlayName()).withStyle(selectable ? ChatFormatting.WHITE : ChatFormatting.RED).getVisualOrderText());
+        if (!selectable) {
             list.add(Component.literal("Missing Required Items").getVisualOrderText());
             for (ItemStack stack : missing) list.add(Component.literal("-" + stack.getHoverName().getString() + (stack.getCount() > 1 ? " x" + stack.getCount() : "")).withStyle(ChatFormatting.RED).getVisualOrderText());
         }

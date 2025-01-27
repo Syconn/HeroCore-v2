@@ -36,12 +36,10 @@ public class PlayerPersistentDataMixin implements PersistentData {
     @Inject(at = @At("HEAD"), method = "addAdditionalSaveData")
     protected void addAdditionalSaveData(CompoundTag compound, CallbackInfo ci) {
         if (persistentData != null) compound.put(Constants.MOD_ID + ":persistentData", persistentData);
-        System.out.println("WRITING " + persistentData);
     }
 
     @Inject(at = @At("HEAD"), method = "readAdditionalSaveData")
     protected void readAdditionalSaveData(CompoundTag nbt, CallbackInfo info) {
         if (nbt.contains(Constants.MOD_ID + ":persistentData")) persistentData = nbt.getCompound(Constants.MOD_ID + ":persistentData");
-        System.out.println("WRITING " + persistentData);
     }
 }

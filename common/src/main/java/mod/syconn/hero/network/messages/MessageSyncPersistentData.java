@@ -26,7 +26,6 @@ public class MessageSyncPersistentData {
 
     public void apply(Supplier<NetworkManager.PacketContext> context) {
         context.get().queue(() -> {
-            System.out.println("Syncing" + this.persistentData);
             if (context.get().getPlayer() == null) ((PersistentData) Minecraft.getInstance().player).syncPersistentData(this.persistentData);
             else ((PersistentData) context.get().getPlayer()).syncPersistentData(this.persistentData);
         });
