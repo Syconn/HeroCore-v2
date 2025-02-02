@@ -34,7 +34,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '19.0.2+7'
           distribution: 'adopt'
 
       - name: Make Gradle Wrapper Executable
