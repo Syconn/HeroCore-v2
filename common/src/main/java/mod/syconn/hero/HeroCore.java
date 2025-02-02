@@ -36,9 +36,9 @@ public final class HeroCore {
         EntityEvent.LIVING_HURT.register(CommonHandler::entityHurtEvent);
         TickEvent.PLAYER_PRE.register(CommonHandler::onPlayerTick);
 
-        ModKeyBindings.registerMappings();
         EnvExecutor.runInEnv(Env.SERVER, () -> Server::init);
         EnvExecutor.runInEnv(Env.CLIENT, () -> Client::init);
+        Network.init();
     }
 
     @Environment(EnvType.CLIENT)
@@ -48,12 +48,11 @@ public final class HeroCore {
         public static void init() {
             ClientTickEvent.CLIENT_PRE.register(ClientHandler::onClientPlayerTick);
             ClientGuiEvent.RENDER_HUD.register(IronmanOverlay::renderOverlay);
-
             PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(Constants.withId("animation"), 42, HeroCore.Client::registerPlayerAnimation);
 
             EntityRendererRegistry.register(ModEntities.MJOLNIR, MjolnirRenderer::new);
 
-            Network.initC2S();
+            ModKeyBindings.registerMappings();
         }
 
         private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {
@@ -66,7 +65,7 @@ public final class HeroCore {
 
         @Environment(EnvType.SERVER)
         public static void init() {
-            Network.initS2C();
+
         }
     }
 }

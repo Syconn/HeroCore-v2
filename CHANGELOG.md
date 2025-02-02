@@ -1,3 +1,2 @@
-# Version 1.0.3 Changes
-* Added in Hero Selector
-* Added new thor power to use
+# Version 1.0.4 Changes
+* Fixed Server Crashing

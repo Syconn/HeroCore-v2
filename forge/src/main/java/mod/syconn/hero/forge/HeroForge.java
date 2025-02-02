@@ -9,8 +9,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(Constants.MOD_ID)
 public final class HeroForge {
     
-    public HeroForge(FMLJavaModLoadingContext context) {
-        EventBuses.registerModEventBus(Constants.MOD_ID, context.getModEventBus());
+    public HeroForge() {
+        EventBuses.registerModEventBus(Constants.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         HeroCore.init();
     }
 }
