@@ -34,8 +34,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          distribution: "adopt"
-          java-version: 22
+          java-version: '21'
+          distribution: 'adopt'
 
       - name: Make Gradle Wrapper Executable
         if: ${{ runner.os != 'Windows' }}
