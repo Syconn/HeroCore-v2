@@ -38,6 +38,7 @@ public final class HeroCore {
 
         EnvExecutor.runInEnv(Env.SERVER, () -> Server::init);
         EnvExecutor.runInEnv(Env.CLIENT, () -> Client::init);
+        Network.init();
     }
 
     @Environment(EnvType.CLIENT)
@@ -52,7 +53,6 @@ public final class HeroCore {
             EntityRendererRegistry.register(ModEntities.MJOLNIR, MjolnirRenderer::new);
 
             ModKeyBindings.registerMappings();
-            Network.initC2S();
         }
 
         private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {
@@ -65,7 +65,7 @@ public final class HeroCore {
 
         @Environment(EnvType.SERVER)
         public static void init() {
-            Network.initS2C();
+
         }
     }
 }
