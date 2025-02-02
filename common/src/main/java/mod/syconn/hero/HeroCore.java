@@ -36,7 +36,6 @@ public final class HeroCore {
         EntityEvent.LIVING_HURT.register(CommonHandler::entityHurtEvent);
         TickEvent.PLAYER_PRE.register(CommonHandler::onPlayerTick);
 
-        ModKeyBindings.registerMappings();
         EnvExecutor.runInEnv(Env.SERVER, () -> Server::init);
         EnvExecutor.runInEnv(Env.CLIENT, () -> Client::init);
     }
@@ -52,6 +51,7 @@ public final class HeroCore {
 
             EntityRendererRegistry.register(ModEntities.MJOLNIR, MjolnirRenderer::new);
 
+            ModKeyBindings.registerMappings();
             Network.initC2S();
         }
 
