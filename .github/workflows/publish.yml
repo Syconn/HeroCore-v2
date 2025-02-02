@@ -70,7 +70,7 @@ jobs:
           changelog-file: CHANGELOG.md
           
           files: |
-             fabric/build/libs/hero-fabric-${{steps.version.outputs.version}}.jar
+             fabric/build/libs/hero-fabric-1.0.4.jar
 
           dependencies: |
              fabric@0.92.3+1.20.1(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
@@ -99,7 +99,7 @@ jobs:
           changelog-file: CHANGELOG.md
 
           files: |
-             forge/build/libs/hero-forge-${{steps.version.outputs.version}}.jar
+             forge/build/libs/hero-forge-1.0.4.jar
 
           dependencies: |
              architectury@9.2.14(required){modrinth:architectury-api}{curseforge:419699}#(ignore:github)
