@@ -1,0 +1,75 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"start_hover": {
+			"animation_length": 1,
+			"bones": {
+				"right_arm": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.25": [0, 0, 15]
+					}
+				},
+				"left_arm": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.25": [0, 0, -15]
+					}
+				}
+			}
+		},
+		"hover": {
+			"loop": true,
+			"start_delay": "0.5",
+			"bones": {
+				"right_arm": {
+					"rotation": [0, 0, 15]
+				},
+				"left_arm": {
+					"rotation": [0, 0, -15]
+				}
+			}
+		},
+		"flight": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"position": [0, -15, -7]
+				},
+				"torso": {
+					"rotation": [90, 0, 0]
+				},
+				"head": {
+					"position": [0, -2, -4]
+				},
+				"right_arm": {
+					"rotation": [90, -10, 0],
+					"position": [0, 2, 2]
+				},
+				"left_arm": {
+					"rotation": [90, 15, 0],
+					"position": [0, 2, 2]
+				},
+				"right_leg": {
+					"rotation": [90, 0, 0],
+					"position": [0, 12, 12]
+				},
+				"left_leg": {
+					"rotation": [90, 0, 0],
+					"position": [0, 12, 12]
+				}
+			}
+		},
+		"Weild Mjolnir": {
+			"animation_length": 0.5,
+			"bones": {
+				"right_arm": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.25": [-128.46347, 11.84911, -9.26433]
+					}
+				}
+			}
+		}
+	}
+}
