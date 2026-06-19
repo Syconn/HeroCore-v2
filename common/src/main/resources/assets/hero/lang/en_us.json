@@ -1,0 +1,31 @@
+{
+  "hero.ability.screen": "Ability Menu",
+
+  "item.hero.mark_2_boots": "Mark 2 Boots",
+  "item.hero.mark_2_chestplate": "Mark 2 Chestplate",
+  "item.hero.mark_2_helmet": "Mark 2 Helmet",
+  "item.hero.mark_2_leggings": "Mark 2 Leggings",
+  "item.hero.mark_42_boots": "Mark 42 Boots",
+  "item.hero.mark_42_chestplate": "Mark 42 Chestplate",
+  "item.hero.mark_42_helmet": "Mark 42 Helmet",
+  "item.hero.mark_42_leggings": "Mark 42 Leggings",
+  "item.hero.mark_43_boots": "Mark 43 Boots",
+  "item.hero.mark_43_chestplate": "Mark 43 Chestplate",
+  "item.hero.mark_43_helmet": "Mark 43 Helmet",
+  "item.hero.mark_43_leggings": "Mark 43 Leggings",
+  "item.hero.mark_5_boots": "Mark 5 Boots",
+  "item.hero.mark_5_chestplate": "Mark 5 Chestplate",
+  "item.hero.mark_5_helmet": "Mark 5 Helmet",
+  "item.hero.mark_5_leggings": "Mark 5 Leggings",
+  "item.hero.war_machine_boots": "War Machine Boots",
+  "item.hero.war_machine_chestplate": "War Machine Chestplate",
+  "item.hero.war_machine_helmet": "War Machine Helmet",
+  "item.hero.war_machine_leggings": "War Machine Leggings",
+
+  "itemGroup.hero.hero_items": "Super Hero Gear",
+
+  "key.hero.hero_settings": "Edit Hero Settings",
+  "key.hero.flip_helmet": "Flip Ironman Helmet",
+
+  "key.categories.hero": "HeroCore"
+}

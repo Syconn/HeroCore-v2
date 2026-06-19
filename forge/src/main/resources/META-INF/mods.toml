@@ -1,0 +1,48 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+issueTrackerURL = "https://github.com/Syconn/HeroCore-v2/issues/new"
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "hero"
+version = "2.2"
+displayName = "HeroCore"
+authors = "Syconn"
+logoFile = "assets/hero/icon.png"
+description = '''
+Adds Super Hero's and Gadgets to Minecraft
+'''
+
+[[dependencies.hero]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hero]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hero]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"
+
+#[[dependencies.hero]]
+#modId="playeranimator"
+#mandatory=true
+#versionRange="[1,)"
+#ordering="AFTER"
+#side="BOTH"
+
+[[dependencies.hero]]
+modId="fzzy_config"
+mandatory=true
+ordering="AFTER"
+side="BOTH"

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "hero:mark_42_boots",
+    "hero:mark_42_leggings",
+    "hero:mark_42_chestplate",
+    "hero:mark_42_helmet"
+  ]
+}

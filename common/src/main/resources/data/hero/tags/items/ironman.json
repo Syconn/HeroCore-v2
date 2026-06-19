@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#hero:mark_2",
+    "#hero:mark_5",
+    "#hero:mark_42",
+    "#hero:mark_43",
+    "#hero:war_machine"
+  ]
+}

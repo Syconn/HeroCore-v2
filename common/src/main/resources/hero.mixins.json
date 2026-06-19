@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "mod.syconn.hero.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "client.AbstractClientPlayerMixin",
+    "client.HttpTextureMixin",
+    "client.HumanoidArmorLayerMixin",
+    "client.LevelRendererMixin",
+    "client.TitleScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "PlayerMixin"
+  ]
+}
