@@ -28,7 +28,6 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     private boolean engagedHover = false;
     private boolean initialJump = false;
     private boolean flying = false;
-    private int waitTicks = 0;
 
     public FlightAbility(IHeroType hero) {
         this.hero = hero;
@@ -43,12 +42,6 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             this.sendAllData(player);
             return;
         }
-
-//        if (confirming) waitTicks++;
-//        if (waitTicks > 40) {
-//            confirming = false;
-//            waitTicks = 0;
-//        }
 
         if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround()) flying = true;
         if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump) initialJump = true;
@@ -72,20 +65,25 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             Network.CHANNEL.sendToServer(new FlightTravelPacket(vector(options.keyJump.isDown(), options.keyShift.isDown()), vector(options.keyUp.isDown(), options.keyDown.isDown()), vector(options.keyLeft.isDown(), options.keyRight.isDown())));
         }
 
-        if (player.onGround() && flying) flying = false;
+        if (player.onGround() && flying) {
+            flying = false;
+            this.sendSyncData();
+        }
     }
 
     @Override
     public void serverTick(Player player) {
+        System.out.println(this.flying);
+
         if (!usable(player)) {
             if (this.engagedHover) player.setNoGravity(false);
             return;
         }
 
         if (this.mode == FlightMode.NORMAL && this.flying) {
-            System.out.println(player);
             player.fallDistance = 0;
-        }
+            player.startFallFlying();
+        } //  else if (this.mode == FlightMode.NORMAL && player.onGround())
 
         if (this.mode == FlightMode.HOVER) {
             player.setNoGravity(true);
@@ -135,6 +133,18 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     @Override
     public void syncPlayer(Player player) {
         this.requiresUpdate(player);
+    }
+
+    @Override
+    public CompoundTag writeAdditionalSync() {
+        var tag = new CompoundTag();
+        tag.putBoolean("flying", this.flying);
+        return tag;
+    }
+
+    @Override
+    public void additionalSync(CompoundTag tag) {
+        this.flying = tag.getBoolean("flying");
     }
 
     public FlightMode getMode() {

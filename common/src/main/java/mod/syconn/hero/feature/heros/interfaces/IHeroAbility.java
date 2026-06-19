@@ -31,10 +31,11 @@ public interface IHeroAbility {
     }
 
     default void sendAllData(Player player) {
-        Network.CHANNEL.sendToServer(new SaveAbilityDataPacket(this.heroType(), this.id(), this.writeData(player)));
+        var additional = this instanceof IServerSynced sync ? sync.writeAdditionalSync() : new CompoundTag();
+        Network.CHANNEL.sendToServer(new SaveAbilityDataPacket(this.heroType(), this.id(), this.writeData(player), additional));
     }
 
     default void sendSpecificData(CompoundTag data) {
-        Network.CHANNEL.sendToServer(new SaveAbilityDataPacket(this.heroType(), this.id(), data));
+        Network.CHANNEL.sendToServer(new SaveAbilityDataPacket(this.heroType(), this.id(), data, new CompoundTag()));
     }
 }
