@@ -32,8 +32,6 @@ public interface IHeroAbility {
     }
 
     default void sendSpecificData(Player player, CompoundTag data) {
-        System.out.println("SENDING SPECIFIC " + player);
-
         Network.CHANNEL.sendToServer(new SaveAbilityDataPacket(player.getUUID(), this.heroType(), this.id(), data, false));
     }
 }

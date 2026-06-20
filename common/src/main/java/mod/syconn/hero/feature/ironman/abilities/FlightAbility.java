@@ -12,11 +12,17 @@ import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.generic.NBTUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 
 public class FlightAbility implements IHeroAbility, IServerSynced {
 
@@ -66,6 +72,13 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             else if (player.onGround()) flyingTicks--;
             flying = false;
             renderFlying = false;
+
+            var worldY = player.level().getHeight(Heightmap.Types.MOTION_BLOCKING, player.getBlockX(), player.getBlockZ());
+            if ((player.onGround() || player.getY() - worldY < 0.65f)) {
+                flying = false;
+                if (flyingTicks > 0) flyingTicks--;
+            }
+
             sendClientSyncData(player);
         }
 
@@ -108,7 +121,22 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             return;
         }
 
-        if (this.mode == FlightMode.NORMAL && this.flying) player.fallDistance = 0;
+        if (this.mode == FlightMode.NORMAL && this.flyingTicks < 10) {
+            double slowHeight = 20;
+            BlockPos pos = player.blockPosition();
+            int groundY = player.level().getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ());
+            Vec3 motion = player.getDeltaMovement();
+            double targetSpeed = -0.08;
+            double distance = player.getY() - groundY;
+            if (distance <= slowHeight && motion.y < targetSpeed) {
+                double strength = 1.0 - distance / slowHeight;
+                double newY = Mth.lerp(strength * 0.25, motion.y, targetSpeed);
+                player.setDeltaMovement(motion.x, newY, motion.z);
+                player.fallDistance = 0;
+                player.hurtMarked = true;
+            }
+        }
+
         if (this.mode == FlightMode.HOVER) {
             player.setNoGravity(true);
             this.engagedHover = true;
