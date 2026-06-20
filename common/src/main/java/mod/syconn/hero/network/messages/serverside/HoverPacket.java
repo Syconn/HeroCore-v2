@@ -37,18 +37,15 @@ public class HoverPacket {
             Player player = context.get().getPlayer();
             var speed = player.isSprinting() ? 0.35 : 0.25;
             Vec3 motion = player.getDeltaMovement();
-            double gravity = 0.08;
             double verticalAccel = 0.065;
             double damping = 0.9;
 
-            double y = (motion.y + gravity) * damping;
-            if (up == 1) {
-                y += verticalAccel;
-            } else if (up == -1) {
-                y -= verticalAccel;
-            } else y = 0;
-
+            double y = motion.y * damping;
+            if (up == 1) y += verticalAccel;
+            else if (up == -1) y -= verticalAccel;
+            if (up == 0) y *= 0.5;
             y = Mth.clamp(y, -speed * 5, speed * 5);
+
             double maxY = player.level().getHeight(Heightmap.Types.MOTION_BLOCKING, player.getBlockX(), player.getBlockZ()) + Constants.CONFIG.serverSettings.maxHoverHeight.get();
             double playerY = player.getBlockY();
             double overflow = playerY - maxY;
