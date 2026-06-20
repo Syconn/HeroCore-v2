@@ -1,9 +1,5 @@
 package mod.syconn.hero.feature.ironman.abilities;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
-import dev.architectury.utils.EnvExecutor;
-import dev.architectury.utils.GameInstance;
 import mod.syconn.hero.feature.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.feature.heros.interfaces.IHeroType;
 import mod.syconn.hero.feature.heros.interfaces.IServerSynced;
@@ -40,7 +36,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     }
 
     @Override
-    public void clientTick(Player player) { // TODO PARTICLE STUFF AND ANIMATIONS
+    public void clientTick(Player player) { // TODO PARTICLES && Sound Effects && maybe shaders STUFF
         toggleFlightMode.tick();
 
         if (!usable(player)) {
@@ -51,8 +47,8 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             return;
         }
 
-        if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround()) flying = true;
-        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump) initialJump = true;
+        if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround() && mode == FlightMode.NORMAL) flying = true;
+        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump && mode == FlightMode.NORMAL) initialJump = true;
 
         if (usable(player)) this.requiresUpdate(player);
 
@@ -66,36 +62,43 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
         if (this.mode == FlightMode.HOVER) {
             var options = Minecraft.getInstance().options;
             Network.CHANNEL.sendToServer(new HoverPacket(vector(options.keyJump.isDown(), options.keyShift.isDown()), vector(options.keyUp.isDown(), options.keyDown.isDown()), vector(options.keyLeft.isDown(), options.keyRight.isDown())));
-        }
-
-        boolean dirty = false;
-        boolean stillFlying = false;
-        if (this.mode == FlightMode.NORMAL && Minecraft.getInstance().options.keyJump.isDown() && flying) {
-            var options = Minecraft.getInstance().options;
-            Network.CHANNEL.sendToServer(new FlightTravelPacket(vector(options.keyJump.isDown(), options.keyShift.isDown()), vector(options.keyUp.isDown(), options.keyDown.isDown()), vector(options.keyLeft.isDown(), options.keyRight.isDown())));
-            if (flyingTicks < 15) flyingTicks++;
-            stillFlying = true;
-            dirty = true;
-        }
-
-        if (flyingTicks > 0) {
-            if (!stillFlying) flyingTicks--;
-            if (flying) renderFlying = true;
-            dirty = true;
-        }
-
-        if ((this.flyingTicks <= 0 || !this.flying) && renderFlying) {
-            this.renderFlying = false;
-            dirty = true;
-        }
-
-        if (player.onGround() && flying && !stillFlying) {
+            if (flyingTicks < 15 && !player.onGround()) flyingTicks++;
+            else if (player.onGround()) flyingTicks--;
             flying = false;
-            flyingTicks = 0;
-            dirty = true;
+            renderFlying = false;
+            sendClientSyncData(player);
         }
 
-        if (dirty) sendClientSyncData(player);
+        if (this.mode == FlightMode.NORMAL) {
+            boolean dirty = false;
+            boolean stillFlying = false;
+            if (Minecraft.getInstance().options.keyJump.isDown() && flying) {
+                var options = Minecraft.getInstance().options;
+                Network.CHANNEL.sendToServer(new FlightTravelPacket(vector(options.keyJump.isDown(), options.keyShift.isDown()), vector(options.keyUp.isDown(), options.keyDown.isDown()), vector(options.keyLeft.isDown(), options.keyRight.isDown())));
+                if (flyingTicks < 15) flyingTicks++;
+                stillFlying = true;
+                dirty = true;
+            }
+
+            if (flyingTicks > 0) {
+                if (!stillFlying) flyingTicks--;
+                if (flying) renderFlying = true;
+                dirty = true;
+            }
+
+            if ((this.flyingTicks <= 0 || !this.flying) && renderFlying) {
+                this.renderFlying = false;
+                dirty = true;
+            }
+
+            if (player.onGround() && flying && !stillFlying) {
+                flying = false;
+                if (flyingTicks > 0) flyingTicks--;
+                dirty = true;
+            }
+
+            if (dirty) sendClientSyncData(player);
+        }
     }
 
     @Override

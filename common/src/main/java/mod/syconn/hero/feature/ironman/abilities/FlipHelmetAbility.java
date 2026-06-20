@@ -47,7 +47,6 @@ public class FlipHelmetAbility implements IHeroAbility {
                 tag = this.writeData(player);
             }
 
-            System.out.println(player);
             if (!tag.isEmpty()) this.sendSpecificData(player, tag);
         }
     }

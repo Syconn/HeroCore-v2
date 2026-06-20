@@ -3,18 +3,66 @@ package mod.syconn.hero.mixin.client;
 import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.feature.ironman.Ironman;
 import mod.syconn.hero.feature.ironman.abilities.FlightAbility;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerModel.class)
-public class PlayerModelMixin {
+public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidModel<T> {
+
+    @Shadow
+    @Final
+    public ModelPart leftSleeve;
+
+    @Shadow
+    @Final
+    public ModelPart rightSleeve;
+
+    public PlayerModelMixin(ModelPart root) {
+        super(root);
+    }
 
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("HEAD"))
-    private void heroCore$zeroLegSwing(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
-        if (entity instanceof IHeroHolder holder && holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class).isFlying()) entity.walkAnimation.setSpeed(0.0F);
+    private void walkAnimation(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
+        if (entity instanceof IHeroHolder holder && holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class).isFlying()) {
+            entity.walkAnimation.setSpeed(0.0F);
+        }
+    }
+
+    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
+    private void animateHead(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
+        if (entity instanceof IHeroHolder holder) {
+            var flightController = holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class);
+            float progress = Mth.clamp(flightController.getFlyingTicks() / 15F, 0F, 1F);
+            boolean hover = flightController.getMode() == FlightAbility.FlightMode.HOVER && !entity.onGround();
+
+            // Head only during normal flight
+            float headTarget = flightController.isFlying() ? (float) Math.toRadians(-90) : 0F;
+
+            // Arms during flight OR hover
+            float leftArmTarget = (flightController.isFlying() || hover) ? (float) Math.toRadians(-25) : 0F;
+            float rightArmTarget = (flightController.isFlying() || hover) ? (float) Math.toRadians(25) : 0F;
+
+            // Blend with vanilla pose
+            if (flightController.getMode() != FlightAbility.FlightMode.HOVER) {
+                this.head.xRot += (headTarget - this.head.xRot) * progress;
+                this.hat.xRot = this.head.xRot;
+            }
+
+            this.leftArm.zRot += (leftArmTarget - this.leftArm.zRot) * progress;
+            this.leftSleeve.zRot = this.leftArm.zRot;
+
+            this.rightArm.zRot += (rightArmTarget - this.rightArm.zRot) * progress;
+            this.rightSleeve.zRot = this.rightArm.zRot;
+        }
     }
 }
