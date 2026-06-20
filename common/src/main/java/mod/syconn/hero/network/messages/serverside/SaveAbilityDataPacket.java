@@ -1,9 +1,8 @@
-package mod.syconn.hero.network.messages;
+package mod.syconn.hero.network.messages.serverside;
 
 import dev.architectury.networking.NetworkManager;
 import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.feature.heros.interfaces.IServerSynced;
-import mod.syconn.hero.network.Network;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -18,14 +17,14 @@ public class SaveAbilityDataPacket {
     private final ResourceLocation heroType;
     private final ResourceLocation ability;
     private final CompoundTag data;
-    private final CompoundTag additional;
+    private final boolean serverData;
 
-    public SaveAbilityDataPacket(UUID target, ResourceLocation heroType, ResourceLocation ability, CompoundTag data, CompoundTag additional) {
+    public SaveAbilityDataPacket(UUID target, ResourceLocation heroType, ResourceLocation ability, CompoundTag data, boolean serverData) {
         this.target = target;
         this.heroType = heroType;
         this.ability = ability;
         this.data = data;
-        this.additional = additional;
+        this.serverData = serverData;
     }
 
     public SaveAbilityDataPacket(FriendlyByteBuf buf) {
@@ -33,7 +32,7 @@ public class SaveAbilityDataPacket {
         this.heroType = buf.readResourceLocation();
         this.ability = buf.readResourceLocation();
         this.data = buf.readNbt();
-        this.additional = buf.readNbt();
+        this.serverData = buf.readBoolean();
     }
 
     public void encode(FriendlyByteBuf buf) {
@@ -41,22 +40,23 @@ public class SaveAbilityDataPacket {
         buf.writeResourceLocation(this.heroType);
         buf.writeResourceLocation(this.ability);
         buf.writeNbt(this.data);
-        buf.writeNbt(this.additional);
+        buf.writeBoolean(this.serverData);
     }
 
     public void apply(Supplier<NetworkManager.PacketContext> context) {
         context.get().queue(() -> {
-            var target = context.get().getPlayer().level().getPlayerByUUID(this.target);
-            if (target instanceof IHeroHolder holder) {
-                var ability = holder.hero$getManager().getType(this.heroType).getAbility(this.ability);
-                ability.readData(target, this.data);
-                if (ability instanceof IServerSynced synced) synced.readAdditionSync(this.additional);
-                if (context.get().getPlayer() instanceof ServerPlayer sp) updateClients(sp, this);
-            }
-        });
-    }
+            var sender = (ServerPlayer) context.get().getPlayer();
+            var target = sender.server.getPlayerList().getPlayer(this.target);
+            if (target == null) return;
+            if (!(target instanceof IHeroHolder holder)) return;
 
-    private static void updateClients(ServerPlayer serverPlayer, SaveAbilityDataPacket packet) { // TODO MAYBE IGNORE SENDING PLAYER
-//        Network.CHANNEL.sendToPlayers(serverPlayer.server.getPlayerList().getPlayers(), new SaveAbilityDataPacket(packet.target, packet.heroType, packet.ability, packet.data, packet.additional));
+            var type = holder.hero$getManager().getType(this.heroType);
+            if (type == null) return;
+            var ability = type.getAbility(this.ability);
+            if (ability == null) return;
+
+            if (!serverData) ability.readData(target, this.data);
+            if (serverData && ability instanceof IServerSynced synced) synced.readAdditionalSync(sender, this.data);
+        });
     }
 }

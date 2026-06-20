@@ -1,23 +1,36 @@
 package mod.syconn.hero.feature.heros.interfaces;
 
 import mod.syconn.hero.network.Network;
-import mod.syconn.hero.network.messages.SaveAbilityDataPacket;
+import mod.syconn.hero.network.messages.clientside.SyncClientPacket;
+import mod.syconn.hero.network.messages.serverside.SaveAbilityDataPacket;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 public interface IServerSynced {
 
     CompoundTag writeAdditionalSync();
-    void additionalSync(CompoundTag tag);
 
     default void syncPlayer(Player player) {}
     default void serverTick(Player player) {}
 
-    default void readAdditionSync(CompoundTag tag) {
-        if (!tag.isEmpty()) additionalSync(tag);
+    default void additionalSync(Player player, CompoundTag tag) {
+        if (player instanceof ServerPlayer sp) syncToTrackingClients(sp);
     }
 
-    default void sendSyncData(Player player) {
-        if (this instanceof IHeroAbility type) Network.CHANNEL.sendToServer(new SaveAbilityDataPacket(player.getUUID(), type.heroType(), type.id(), new CompoundTag(), writeAdditionalSync()));
+    default void readAdditionalSync(Player player, CompoundTag tag) {
+        additionalSync(player, tag);
+    }
+
+    default void sendClientSyncData(Player player) {
+        if (this instanceof IHeroAbility type) Network.CHANNEL.sendToServer(new SaveAbilityDataPacket(player.getUUID(), type.heroType(), type.id(), writeAdditionalSync(), true));
+    }
+
+    default void syncToTrackingClients(ServerPlayer sp) {
+        if (this instanceof IHeroAbility type) {
+            ServerLevel level = (ServerLevel) sp.level();
+            for (ServerPlayer viewer : level.players()) if (viewer != sp) Network.CHANNEL.sendToPlayer(viewer, new SyncClientPacket(sp.getUUID(), type.heroType(), type.id(), writeAdditionalSync()));
+        }
     }
 }

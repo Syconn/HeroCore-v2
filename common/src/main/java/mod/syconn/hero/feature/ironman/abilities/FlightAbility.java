@@ -1,5 +1,9 @@
 package mod.syconn.hero.feature.ironman.abilities;
 
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
+import dev.architectury.utils.EnvExecutor;
+import dev.architectury.utils.GameInstance;
 import mod.syconn.hero.feature.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.feature.heros.interfaces.IHeroType;
 import mod.syconn.hero.feature.heros.interfaces.IServerSynced;
@@ -16,10 +20,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 
-public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURRENTLY ANIMATION DOESN't DOESNT SYNC ALSO SERVER TICK SEEMS QUESTIONABLE, APPEARS EVERY CLIENT IS FORCING ALL UPDATES
+public class FlightAbility implements IHeroAbility, IServerSynced {
 
     public static final ResourceLocation TYPE = Constants.withId("flight");
 
@@ -41,22 +44,15 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURR
         toggleFlightMode.tick();
 
         if (!usable(player)) {
-//            mode = FlightMode.NORMAL;
-//            flying = false;
-//            flyingTicks = 0;
-//            this.sendAllData(player);
+            mode = FlightMode.NORMAL;
+            flying = false;
+            flyingTicks = 0;
+            this.sendAllData(player);
             return;
         }
 
-//        if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround()) flying = true;
-//        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump) initialJump = true;
-
-        if (flying) System.out.println("flight");
-
-        if (flying) {
-            flyingTicks++;
-            this.sendSyncData(player);
-        }
+        if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround()) flying = true;
+        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump) initialJump = true;
 
         if (usable(player)) this.requiresUpdate(player);
 
@@ -72,32 +68,34 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURR
             Network.CHANNEL.sendToServer(new HoverPacket(vector(options.keyJump.isDown(), options.keyShift.isDown()), vector(options.keyUp.isDown(), options.keyDown.isDown()), vector(options.keyLeft.isDown(), options.keyRight.isDown())));
         }
 
-        if (this.mode == FlightMode.NORMAL && Minecraft.getInstance().options.keyJump.isDown()) {
+        boolean dirty = false;
+        boolean stillFlying = false;
+        if (this.mode == FlightMode.NORMAL && Minecraft.getInstance().options.keyJump.isDown() && flying) {
             var options = Minecraft.getInstance().options;
             Network.CHANNEL.sendToServer(new FlightTravelPacket(vector(options.keyJump.isDown(), options.keyShift.isDown()), vector(options.keyUp.isDown(), options.keyDown.isDown()), vector(options.keyLeft.isDown(), options.keyRight.isDown())));
-
-            if (!this.flying) {
-                this.flying = true;
-                sendSyncData(player);
-            }
+            if (flyingTicks < 15) flyingTicks++;
+            stillFlying = true;
+            dirty = true;
         }
 
-        if (this.flying && this.flyingTicks > 0) {
-            renderFlying = true;
-            sendSyncData(player);
+        if (flyingTicks > 0) {
+            if (!stillFlying) flyingTicks--;
+            if (flying) renderFlying = true;
+            dirty = true;
         }
+
         if ((this.flyingTicks <= 0 || !this.flying) && renderFlying) {
             this.renderFlying = false;
-            sendSyncData(player);
+            dirty = true;
         }
 
-        if (player.onGround() && flying) {
+        if (player.onGround() && flying && !stillFlying) {
             flying = false;
             flyingTicks = 0;
-            this.sendSyncData(player);
+            dirty = true;
         }
 
-        if (flying) System.out.println("client for " + this.flyingTicks);
+        if (dirty) sendClientSyncData(player);
     }
 
     @Override
@@ -106,8 +104,6 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURR
             if (this.engagedHover) player.setNoGravity(false);
             return;
         }
-
-        if (flying) System.out.println("server for " + this.flyingTicks);
 
         if (this.mode == FlightMode.NORMAL && this.flying) player.fallDistance = 0;
         if (this.mode == FlightMode.HOVER) {
@@ -166,18 +162,16 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURR
         tag.putBoolean("flying", this.flying);
         tag.putInt("flyingTicks", this.flyingTicks);
         tag.putBoolean("renderFlying", this.renderFlying);
-
-//        System.out.println("write " + this.flying);
         return tag;
     }
 
     @Override
-    public void additionalSync(CompoundTag tag) {
+    public void additionalSync(Player player, CompoundTag tag) {
         this.flying = tag.getBoolean("flying");
         this.flyingTicks = tag.getInt("flyingTicks");
         this.renderFlying = tag.getBoolean("renderFlying");
 
-//        System.out.println("read " + this.flying);
+        IServerSynced.super.additionalSync(player, tag);
     }
 
     public FlightMode getMode() {
