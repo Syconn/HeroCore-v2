@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class PlayerMixin extends LivingEntity implements IHeroHolder {
 
     @Unique
-    private final HeroManager hero$manager = new HeroManager(IHeroHolder.CLASS_MAP);
+    private final HeroManager hero$manager = new HeroManager(IHeroHolder.CLASS_MAP, IHeroHolder.ID_MAP);
 
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);

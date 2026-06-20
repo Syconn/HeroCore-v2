@@ -19,7 +19,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 
-public class FlightAbility implements IHeroAbility, IServerSynced {
+public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURRENTLY ANIMATION DOESN't DOESNT SYNC ALSO SERVER TICK SEEMS QUESTIONABLE, APPEARS EVERY CLIENT IS FORCING ALL UPDATES
 
     public static final ResourceLocation TYPE = Constants.withId("flight");
 
@@ -48,12 +48,12 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             return;
         }
 
-        if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround()) flying = true;
-        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump) initialJump = true;
+//        if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround()) flying = true;
+//        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump) initialJump = true;
 
         if (flying) {
             flyingTicks++;
-            this.sendSyncData();
+            this.sendSyncData(player);
         }
 
         if (usable(player)) this.requiresUpdate(player);
@@ -62,7 +62,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             this.cycleMode();
             player.displayClientMessage(Component.literal("Engaging ").withStyle(ChatFormatting.GOLD).append(mode == FlightMode.HOVER ? "Hover" : "Normal").withStyle(ChatFormatting.AQUA)
                     .append(" Mode").withStyle(ChatFormatting.GOLD), true);
-            this.sendSpecificData(this.writeData(player));
+            this.sendSpecificData(player, this.writeData(player));
         }
 
         if (this.mode == FlightMode.HOVER) {
@@ -70,20 +70,29 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             Network.CHANNEL.sendToServer(new HoverPacket(vector(options.keyJump.isDown(), options.keyShift.isDown()), vector(options.keyUp.isDown(), options.keyDown.isDown()), vector(options.keyLeft.isDown(), options.keyRight.isDown())));
         }
 
-        if (this.mode == FlightMode.NORMAL && (Minecraft.getInstance().options.keyJump.isDown() || Minecraft.getInstance().options.keyShift.isDown()) && flying) {
+        if (this.mode == FlightMode.NORMAL && Minecraft.getInstance().options.keyJump.isDown()) {
             var options = Minecraft.getInstance().options;
             Network.CHANNEL.sendToServer(new FlightTravelPacket(vector(options.keyJump.isDown(), options.keyShift.isDown()), vector(options.keyUp.isDown(), options.keyDown.isDown()), vector(options.keyLeft.isDown(), options.keyRight.isDown())));
+
+            if (!this.flying) {
+                this.flying = true;
+                sendSyncData(player);
+            }
+        }
+
+        if (this.flying && this.flyingTicks > 0) {
             renderFlying = true;
-            this.sendSyncData();
-        } else if (renderFlying) {
-            renderFlying = false;
-            this.sendSyncData();
+            sendSyncData(player);
+        }
+        if ((this.flyingTicks <= 0 || !this.flying) && renderFlying) {
+            this.renderFlying = false;
+            sendSyncData(player);
         }
 
         if (player.onGround() && flying) {
             flying = false;
             flyingTicks = 0;
-            this.sendSyncData();
+            this.sendSyncData(player);
         }
     }
 
@@ -93,6 +102,8 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             if (this.engagedHover) player.setNoGravity(false);
             return;
         }
+
+//        System.out.println(player.getName() + " " + flying + " " + flyingTicks + " " + renderFlying);
 
         if (this.mode == FlightMode.NORMAL && this.flying) player.fallDistance = 0;
         if (this.mode == FlightMode.HOVER) {
@@ -156,6 +167,8 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
 
     @Override
     public void additionalSync(CompoundTag tag) {
+//        System.out.println(tag);
+
         this.flying = tag.getBoolean("flying");
         this.flyingTicks = tag.getInt("flyingTicks");
         this.renderFlying = tag.getBoolean("renderFlying");

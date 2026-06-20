@@ -5,13 +5,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public record HeroManager(Map<Class<? extends IHeroType>, IHeroType> types) {
+public record HeroManager(Map<Class<? extends IHeroType>, IHeroType> types, Map<ResourceLocation, IHeroType> ids) {
 
     public void tick(Player player) {
         if (player instanceof AbstractClientPlayer) clientTick(player);
@@ -29,5 +30,9 @@ public record HeroManager(Map<Class<? extends IHeroType>, IHeroType> types) {
     @SuppressWarnings("unchecked")
     public <T extends IHeroType> T getType(Class<T> clazz) {
         return (T) types.get(clazz);
+    }
+
+    public IHeroType getType(ResourceLocation id) {
+        return ids.get(id);
     }
 }

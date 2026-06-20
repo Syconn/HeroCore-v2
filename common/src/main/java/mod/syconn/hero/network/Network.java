@@ -1,9 +1,10 @@
 package mod.syconn.hero.network;
 
 import dev.architectury.networking.NetworkChannel;
+import mod.syconn.hero.network.messages.PlayAnimationPacket;
 import mod.syconn.hero.network.messages.serverside.FlightTravelPacket;
 import mod.syconn.hero.network.messages.serverside.HoverPacket;
-import mod.syconn.hero.network.messages.serverside.SaveAbilityDataPacket;
+import mod.syconn.hero.network.messages.SaveAbilityDataPacket;
 import mod.syconn.hero.utils.Constants;
 
 public class Network {
@@ -14,5 +15,6 @@ public class Network {
         CHANNEL.register(SaveAbilityDataPacket.class, SaveAbilityDataPacket::encode, SaveAbilityDataPacket::new, SaveAbilityDataPacket::apply);
         CHANNEL.register(FlightTravelPacket.class, FlightTravelPacket::encode, FlightTravelPacket::new, FlightTravelPacket::apply);
         CHANNEL.register(HoverPacket.class, HoverPacket::encode, HoverPacket::new, HoverPacket::apply);
+        CHANNEL.register(PlayAnimationPacket.class, PlayAnimationPacket::encode, PlayAnimationPacket::new, PlayAnimationPacket::apply);
     }
 }
