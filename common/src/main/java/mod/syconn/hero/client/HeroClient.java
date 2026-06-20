@@ -8,6 +8,7 @@ import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApi;
 import mod.syconn.hero.client.screen.overlays.IronmanOverlay;
 import mod.syconn.hero.core.ModKeys;
+import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.utils.Constants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,7 +24,6 @@ public class HeroClient {
         ClientLifecycleEvent.CLIENT_SETUP.register(HeroClient::setupEvent);
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(HeroClient::onClientJoin);
         ClientGuiEvent.RENDER_HUD.register(IronmanOverlay::renderOverlay);
-        TickEvent.PLAYER_PRE.register(p -> onClientTick());
     }
 
     public static void setupEvent(Minecraft minecraft) {}
@@ -32,7 +32,8 @@ public class HeroClient {
         Constants.TRACKER.clientPlayerJoined(player);
     }
 
-    public static void onClientTick() {
+    public static void onClientTick(LocalPlayer player) {
+        if (player instanceof IHeroHolder holder) holder.hero$getManager().clientTick(player);
         if (ModKeys.EDIT_SETTINGS.consumeClick()) ConfigApi.INSTANCE.openScreen("hero");
     }
 

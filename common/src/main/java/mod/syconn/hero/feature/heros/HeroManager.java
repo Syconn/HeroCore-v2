@@ -27,16 +27,11 @@ public class HeroManager {
         }
     }
 
-    public void tick(Player player) {
-        if (player.level().isClientSide) clientTick(player);
-        else serverTick(player);
-    }
-
-    private void clientTick(Player player) {
+    public void clientTick(Player player) {
         for (var type : types.values()) type.clientTick(player);
     }
 
-    private void serverTick(Player player) {
+    public void serverTick(Player player) {
         for (var type : types.values()) type.serverTick(player);
     }
 

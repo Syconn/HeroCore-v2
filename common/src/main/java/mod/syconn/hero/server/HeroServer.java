@@ -11,6 +11,6 @@ public class HeroServer {
     }
 
     public static void playerTick(Player player) {
-        if (player instanceof IHeroHolder holder) holder.hero$getManager().tick(player);
+        if (player instanceof IHeroHolder holder && !player.level().isClientSide()) holder.hero$getManager().serverTick(player);
     }
 }
