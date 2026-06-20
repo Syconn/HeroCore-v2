@@ -15,15 +15,15 @@ import java.util.Map;
 
 public class Ironman implements IHeroType {
 
-    private final Map<ResourceLocation, IHeroAbility> ABILITIES = new HashMap<>();
-    private final Map<Class<? extends IHeroAbility>, ResourceLocation> IDS = new HashMap<>();
+    private final Map<ResourceLocation, IHeroAbility> abilities = new HashMap<>();
+    private final Map<Class<? extends IHeroAbility>, ResourceLocation> ids = new HashMap<>();
 
     @Override
-    public void register() {
+    public void initializeAbilities() {
         final FlipHelmetAbility flipHelmet = new FlipHelmetAbility(this);
-        IHeroType.register(this.ABILITIES, this.IDS, flipHelmet);
-        IHeroType.register(this.ABILITIES, this.IDS, new IronmanVisorAbility(this, flipHelmet));
-        IHeroType.register(this.ABILITIES, this.IDS, new FlightAbility(this));
+        IHeroType.initializeAbilities(this.abilities, this.ids, flipHelmet);
+        IHeroType.initializeAbilities(this.abilities, this.ids, new IronmanVisorAbility(this, flipHelmet));
+        IHeroType.initializeAbilities(this.abilities, this.ids, new FlightAbility(this));
     }
 
     @Override
@@ -38,16 +38,16 @@ public class Ironman implements IHeroType {
 
     @Override
     public List<IHeroAbility> getAbilities() {
-        return this.ABILITIES.values().stream().toList();
+        return this.abilities.values().stream().toList();
     }
 
     @Override
     public IHeroAbility getAbility(ResourceLocation id) {
-        return this.ABILITIES.get(id);
+        return this.abilities.get(id);
     }
 
     @Override
     public <T extends IHeroAbility> T getAbility(Class<T> clazz) {
-        return getAbilityHelper(clazz, this.ABILITIES, this.IDS);
+        return getAbilityHelper(clazz, this.abilities, this.ids);
     }
 }

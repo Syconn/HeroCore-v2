@@ -2,21 +2,18 @@ package mod.syconn.hero.feature.heros.interfaces;
 
 import mod.syconn.hero.feature.heros.errors.AbilityRegistrationError;
 import mod.syconn.hero.feature.heros.errors.DuplicateAbilityException;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public interface IHeroType {
 
     Component getName();
     ResourceLocation id();
-    void register();
+    void initializeAbilities();
     List<IHeroAbility> getAbilities();
     IHeroAbility getAbility(ResourceLocation id);
     <T extends IHeroAbility> T getAbility(Class<T> clazz);
@@ -28,7 +25,7 @@ public interface IHeroType {
     default void serverTick(Player player) {
         for (var ability : this.getAbilities()) {
             if (ability instanceof IServerSynced sync) {
-//                sync.syncPlayer(player);
+                sync.syncPlayer(player);
                 sync.serverTick(player);
             }
         }
@@ -46,7 +43,7 @@ public interface IHeroType {
         return clazz.cast(ability);
     }
 
-    static void register(Map<ResourceLocation, IHeroAbility> abilityRegistry, Map<Class<? extends IHeroAbility>, ResourceLocation> idRegistry, IHeroAbility... abilities) {
+    static void initializeAbilities(Map<ResourceLocation, IHeroAbility> abilityRegistry, Map<Class<? extends IHeroAbility>, ResourceLocation> idRegistry, IHeroAbility... abilities) {
         for (IHeroAbility ability : abilities) {
             if (abilityRegistry.containsKey(ability.id())) throw new DuplicateAbilityException(ability.id());
             else if (idRegistry.containsKey(ability.getClass())) throw new DuplicateAbilityException(ability.getClass());

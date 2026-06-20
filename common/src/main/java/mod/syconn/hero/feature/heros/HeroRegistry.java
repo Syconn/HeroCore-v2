@@ -6,6 +6,6 @@ import mod.syconn.hero.feature.ironman.Ironman;
 public class HeroRegistry {
 
     public static void registerBuiltinHeroes() {
-        IHeroHolder.register(new Ironman());
+        IHeroHolder.register(Ironman::new);
     }
 }

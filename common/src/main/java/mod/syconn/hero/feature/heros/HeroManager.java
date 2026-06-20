@@ -1,5 +1,6 @@
 package mod.syconn.hero.feature.heros;
 
+import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.feature.heros.interfaces.IHeroType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -9,10 +10,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
-public record HeroManager(Map<Class<? extends IHeroType>, IHeroType> types, Map<ResourceLocation, IHeroType> ids) {
+public class HeroManager {
+
+    private final Map<Class<? extends IHeroType>, IHeroType> types = new HashMap<>();
+    private final Map<ResourceLocation, IHeroType> ids = new HashMap<>();
+
+    public HeroManager() {
+        for (var entry : IHeroHolder.CLASS_MAP.entrySet()) {
+            IHeroType type = entry.getValue().get();
+            type.initializeAbilities();
+            types.put(type.getClass(), type);
+            ids.put(type.id(), type);
+        }
+    }
 
     public void tick(Player player) {
         if (player.level().isClientSide) clientTick(player);
