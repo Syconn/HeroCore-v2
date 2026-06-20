@@ -1,8 +1,7 @@
 package mod.syconn.hero.item;
 
-import mod.syconn.hero.core.ModItems;
 import mod.syconn.hero.core.ModTags;
-import mod.syconn.hero.feature.ironman.client.IronmanArmorRenderer;
+import mod.syconn.hero.feature.ironman.client.renderers.IronmanArmorRenderer;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;

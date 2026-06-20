@@ -12,7 +12,7 @@
     "sources": "https://github.com/Syconn/HeroCore-v2"
   },
   "license": "All-Rights-Reserved",
-  "icon": "assets/hero/icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

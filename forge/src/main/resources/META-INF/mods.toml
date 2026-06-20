@@ -8,7 +8,7 @@ modId = "hero"
 version = "2.2"
 displayName = "HeroCore"
 authors = "Syconn"
-logoFile = "assets/hero/icon.png"
+logoFile = "icon.png"
 description = '''
 Adds Super Hero's and Gadgets to Minecraft
 '''

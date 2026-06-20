@@ -1,4 +1,4 @@
-package mod.syconn.hero.feature.ironman.client;
+package mod.syconn.hero.feature.ironman.client.renderers;
 
 import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.feature.ironman.Ironman;

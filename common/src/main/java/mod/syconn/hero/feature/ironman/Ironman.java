@@ -4,7 +4,7 @@ import mod.syconn.hero.feature.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.feature.heros.interfaces.IHeroType;
 import mod.syconn.hero.feature.ironman.abilities.FlightAbility;
 import mod.syconn.hero.feature.ironman.abilities.FlipHelmetAbility;
-import mod.syconn.hero.feature.ironman.abilities.IronmanVisorAbility;
+import mod.syconn.hero.feature.ironman.abilities.VisorAbility;
 import mod.syconn.hero.utils.Constants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +22,7 @@ public class Ironman implements IHeroType {
     public void initializeAbilities() {
         final FlipHelmetAbility flipHelmet = new FlipHelmetAbility(this);
         IHeroType.initializeAbilities(this.abilities, this.ids, flipHelmet);
-        IHeroType.initializeAbilities(this.abilities, this.ids, new IronmanVisorAbility(this, flipHelmet));
+        IHeroType.initializeAbilities(this.abilities, this.ids, new VisorAbility(this, flipHelmet));
         IHeroType.initializeAbilities(this.abilities, this.ids, new FlightAbility(this));
     }
 

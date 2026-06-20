@@ -7,13 +7,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.feature.ironman.Ironman;
 import mod.syconn.hero.feature.ironman.abilities.FlightAbility;
-import mod.syconn.hero.feature.ironman.abilities.IronmanVisorAbility;
+import mod.syconn.hero.feature.ironman.abilities.VisorAbility;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.generic.GraphicsUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -34,7 +32,7 @@ public class IronmanOverlay {
         Player player = getCameraPlayer();
         if (player instanceof IHeroHolder holder) {
             var ironman = holder.hero$getManager().getType(Ironman.class);
-            if (ironman.getAbility(IronmanVisorAbility.class).usable(player)) {
+            if (ironman.getAbility(VisorAbility.class).usable(player)) {
                 // Blue Glint
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);

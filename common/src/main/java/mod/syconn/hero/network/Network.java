@@ -5,6 +5,7 @@ import mod.syconn.hero.network.messages.PlayAnimationPacket;
 import mod.syconn.hero.network.messages.clientside.SyncClientPacket;
 import mod.syconn.hero.network.messages.serverside.FlightTravelPacket;
 import mod.syconn.hero.network.messages.serverside.HoverPacket;
+import mod.syconn.hero.network.messages.serverside.PlaySoundPacket;
 import mod.syconn.hero.network.messages.serverside.SaveAbilityDataPacket;
 import mod.syconn.hero.utils.Constants;
 
@@ -18,5 +19,6 @@ public class Network {
         CHANNEL.register(HoverPacket.class, HoverPacket::encode, HoverPacket::new, HoverPacket::apply);
         CHANNEL.register(PlayAnimationPacket.class, PlayAnimationPacket::encode, PlayAnimationPacket::new, PlayAnimationPacket::apply);
         CHANNEL.register(SyncClientPacket.class, SyncClientPacket::encode, SyncClientPacket::new, SyncClientPacket::apply);
+        CHANNEL.register(PlaySoundPacket.class, PlaySoundPacket::encode, PlaySoundPacket::new, PlaySoundPacket::apply);
     }
 }
