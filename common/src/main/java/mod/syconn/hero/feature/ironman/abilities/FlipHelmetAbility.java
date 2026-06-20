@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 
-public class FlipHelmetAbility implements IHeroAbility { // TODO ISSUE: Both Players have suit on, One has Overlay on, Both one modifies both
+public class FlipHelmetAbility implements IHeroAbility {
 
     public static final ResourceLocation TYPE = Constants.withId("flip_helmet");
     private static final byte TRANSITION_TICKS = 6;

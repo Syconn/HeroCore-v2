@@ -6,7 +6,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.commons.lang3.function.TriFunction;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +16,6 @@ import java.util.Optional;
 public class ResourceUtil {
 
     private static final Map<String, ResourceLocation> DYNAMIC_TEXTURES = new HashMap<>();
-    private static final Map<ResourceLocation, NativeImage> SKINS = new HashMap<>();
 
     public static Optional<NativeImage> loadResource(ResourceLocation location) {
         try {
@@ -28,12 +26,6 @@ public class ResourceUtil {
         } catch (IOException e) {
             return Optional.empty();
         }
-    }
-
-    public static Optional<NativeImage> loadSkin(ResourceLocation skinLocation) {
-        if (GameInstance.getClient().getResourceManager().getResource(skinLocation).isPresent()) return loadResource(skinLocation);
-        if (SKINS.containsKey(skinLocation)) return Optional.of(SKINS.get(skinLocation).mappedCopy(p -> p));
-        return Optional.empty();
     }
 
     public static ResourceLocation registerOrGet(String id, DynamicTexture texture) {
@@ -55,9 +47,5 @@ public class ResourceUtil {
             texture.upload();
         }
         return loaded;
-    }
-
-    public static void registerSkin(String id, NativeImage skin) {
-        if (!SKINS.containsKey(new ResourceLocation("skins/" + id))) SKINS.put(new ResourceLocation("skins/" + id), skin);
     }
 }

@@ -8,7 +8,6 @@ import mod.syconn.hero.utils.generic.ImageUtil;
 import mod.syconn.hero.utils.generic.MapUtil;
 import mod.syconn.hero.utils.generic.ResourceUtil;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;

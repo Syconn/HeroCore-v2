@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class FontUtil {
     private static final FormattedText ELLIPSIS = FormattedText.of("...");
 
-    public static FormattedText ellipsize(Font font, FormattedText text, int maxWidth) {
+    public static FormattedText ellipsis(Font font, FormattedText text, int maxWidth) {
         final int strWidth = font.width(text);
         final int ellipsisWidth = font.width(ELLIPSIS);
         if (strWidth > maxWidth) {

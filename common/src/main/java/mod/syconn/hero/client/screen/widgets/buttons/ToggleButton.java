@@ -2,14 +2,11 @@ package mod.syconn.hero.client.screen.widgets.buttons;
 
 import mod.syconn.hero.client.screen.widgets.ExpandedButton;
 import mod.syconn.hero.utils.Constants;
-import mod.syconn.hero.utils.generic.MathUtil;
 import mod.syconn.hero.utils.interfaces.IWidgetComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
