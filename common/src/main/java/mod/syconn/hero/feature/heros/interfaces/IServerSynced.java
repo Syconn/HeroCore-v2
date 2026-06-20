@@ -16,7 +16,7 @@ public interface IServerSynced {
     default void serverTick(Player player) {}
 
     default void additionalSync(Player player, CompoundTag tag) {
-        if (player instanceof ServerPlayer sp) syncToTrackingClients(sp);
+        sendTrackingData(player);
     }
 
     default void readAdditionalSync(Player player, CompoundTag tag) {
@@ -27,10 +27,14 @@ public interface IServerSynced {
         if (this instanceof IHeroAbility type) Network.CHANNEL.sendToServer(new SaveAbilityDataPacket(player.getUUID(), type.heroType(), type.id(), writeAdditionalSync(), true));
     }
 
+    default void sendTrackingData(Player player) {
+        if (player instanceof ServerPlayer sp) syncToTrackingClients(sp);
+    }
+
     default void syncToTrackingClients(ServerPlayer sp) {
         if (this instanceof IHeroAbility type) {
             ServerLevel level = (ServerLevel) sp.level();
-            for (ServerPlayer viewer : level.players()) if (viewer != sp) Network.CHANNEL.sendToPlayer(viewer, new SyncClientPacket(sp.getUUID(), type.heroType(), type.id(), writeAdditionalSync()));
+            for (ServerPlayer viewer : level.players()) Network.CHANNEL.sendToPlayer(viewer, new SyncClientPacket(sp.getUUID(), type.heroType(), type.id(), writeAdditionalSync()));
         }
     }
 }

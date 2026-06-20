@@ -42,17 +42,13 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
     private void animateHead(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         if (entity instanceof IHeroHolder holder) {
             var flightController = holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class);
-            float progress = Mth.clamp(flightController.getFlyingTicks() / 15F, 0F, 1F);
+            float progress = Mth.clamp(Math.max(flightController.getFlyingTicks() / 15F, flightController.getSlowFallingTicks() / 8F), 0F, 1F);
             boolean hover = flightController.getMode() == FlightAbility.FlightMode.HOVER && !entity.onGround();
-
-            // Head only during normal flight
+            boolean flyFalling = flightController.isFlying() || flightController.getSlowFallingTicks() > 0;
             float headTarget = flightController.isFlying() ? (float) Math.toRadians(-90) : 0F;
+            float leftArmTarget = (flyFalling || hover) ? (float) Math.toRadians(-25) : 0F;
+            float rightArmTarget = (flyFalling || hover) ? (float) Math.toRadians(25) : 0F;
 
-            // Arms during flight OR hover
-            float leftArmTarget = (flightController.isFlying() || hover) ? (float) Math.toRadians(-25) : 0F;
-            float rightArmTarget = (flightController.isFlying() || hover) ? (float) Math.toRadians(25) : 0F;
-
-            // Blend with vanilla pose
             if (flightController.getMode() != FlightAbility.FlightMode.HOVER) {
                 this.head.xRot += (headTarget - this.head.xRot) * progress;
                 this.hat.xRot = this.head.xRot;
@@ -60,7 +56,6 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
 
             this.leftArm.zRot += (leftArmTarget - this.leftArm.zRot) * progress;
             this.leftSleeve.zRot = this.leftArm.zRot;
-
             this.rightArm.zRot += (rightArmTarget - this.rightArm.zRot) * progress;
             this.rightSleeve.zRot = this.rightArm.zRot;
         }

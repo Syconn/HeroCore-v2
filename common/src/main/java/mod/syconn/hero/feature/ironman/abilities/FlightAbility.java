@@ -17,10 +17,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
@@ -36,6 +34,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     private boolean flying = false;
     private boolean renderFlying = false;
     private int flyingTicks = 0;
+    private int slowFallingTicks = 0;
 
     public FlightAbility(IHeroType hero) {
         this.hero = hero;
@@ -121,19 +120,30 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             return;
         }
 
-        if (this.mode == FlightMode.NORMAL && this.flyingTicks < 10) {
+        if (this.mode == FlightMode.NORMAL) {
             double slowHeight = 20;
             BlockPos pos = player.blockPosition();
             int groundY = player.level().getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ());
             Vec3 motion = player.getDeltaMovement();
             double targetSpeed = -0.08;
             double distance = player.getY() - groundY;
-            if (distance <= slowHeight && motion.y < targetSpeed) {
-                double strength = 1.0 - distance / slowHeight;
-                double newY = Mth.lerp(strength * 0.25, motion.y, targetSpeed);
-                player.setDeltaMovement(motion.x, newY, motion.z);
-                player.fallDistance = 0;
-                player.hurtMarked = true;
+
+            if (distance <= slowHeight && !player.onGround() && this.flyingTicks < 10) {
+                if (slowFallingTicks < 8) {
+                    slowFallingTicks++;
+                    sendTrackingData(player);
+                }
+
+                if (motion.y < targetSpeed) {
+                    double strength = 1.0 - distance / slowHeight;
+                    double newY = Mth.lerp(strength * 0.25, motion.y, targetSpeed);
+                    player.setDeltaMovement(motion.x, newY, motion.z);
+                    player.fallDistance = 0;
+                    player.hurtMarked = true;
+                }
+            } else if (slowFallingTicks > 0) {
+                slowFallingTicks--;
+                sendTrackingData(player);
             }
         }
 
@@ -193,6 +203,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
         tag.putBoolean("flying", this.flying);
         tag.putInt("flyingTicks", this.flyingTicks);
         tag.putBoolean("renderFlying", this.renderFlying);
+        tag.putInt("slowFallingTicks", this.slowFallingTicks);
         return tag;
     }
 
@@ -201,7 +212,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
         this.flying = tag.getBoolean("flying");
         this.flyingTicks = tag.getInt("flyingTicks");
         this.renderFlying = tag.getBoolean("renderFlying");
-
+        this.slowFallingTicks = tag.getInt("slowFallingTicks");
         IServerSynced.super.additionalSync(player, tag);
     }
 
@@ -215,6 +226,10 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
 
     public int getFlyingTicks() {
         return flyingTicks;
+    }
+
+    public int getSlowFallingTicks() {
+        return slowFallingTicks;
     }
 
     private void cycleMode() {
