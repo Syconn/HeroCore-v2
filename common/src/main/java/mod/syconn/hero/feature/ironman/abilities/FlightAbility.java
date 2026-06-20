@@ -41,15 +41,17 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURR
         toggleFlightMode.tick();
 
         if (!usable(player)) {
-            mode = FlightMode.NORMAL;
-            flying = false;
-            flyingTicks = 0;
-            this.sendAllData(player);
+//            mode = FlightMode.NORMAL;
+//            flying = false;
+//            flyingTicks = 0;
+//            this.sendAllData(player);
             return;
         }
 
 //        if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround()) flying = true;
 //        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump) initialJump = true;
+
+        if (flying) System.out.println("flight");
 
         if (flying) {
             flyingTicks++;
@@ -94,6 +96,8 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURR
             flyingTicks = 0;
             this.sendSyncData(player);
         }
+
+        if (flying) System.out.println("client for " + this.flyingTicks);
     }
 
     @Override
@@ -103,7 +107,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURR
             return;
         }
 
-//        System.out.println(player.getName() + " " + flying + " " + flyingTicks + " " + renderFlying);
+        if (flying) System.out.println("server for " + this.flyingTicks);
 
         if (this.mode == FlightMode.NORMAL && this.flying) player.fallDistance = 0;
         if (this.mode == FlightMode.HOVER) {
@@ -162,16 +166,18 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO CURR
         tag.putBoolean("flying", this.flying);
         tag.putInt("flyingTicks", this.flyingTicks);
         tag.putBoolean("renderFlying", this.renderFlying);
+
+//        System.out.println("write " + this.flying);
         return tag;
     }
 
     @Override
     public void additionalSync(CompoundTag tag) {
-//        System.out.println(tag);
-
         this.flying = tag.getBoolean("flying");
         this.flyingTicks = tag.getInt("flyingTicks");
         this.renderFlying = tag.getBoolean("renderFlying");
+
+//        System.out.println("read " + this.flying);
     }
 
     public FlightMode getMode() {

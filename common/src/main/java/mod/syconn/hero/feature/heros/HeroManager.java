@@ -15,7 +15,7 @@ import java.util.Map;
 public record HeroManager(Map<Class<? extends IHeroType>, IHeroType> types, Map<ResourceLocation, IHeroType> ids) {
 
     public void tick(Player player) {
-        if (player instanceof AbstractClientPlayer) clientTick(player);
+        if (player.level().isClientSide) clientTick(player);
         else serverTick(player);
     }
 

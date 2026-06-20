@@ -57,6 +57,6 @@ public class SaveAbilityDataPacket {
     }
 
     private static void updateClients(ServerPlayer serverPlayer, SaveAbilityDataPacket packet) { // TODO MAYBE IGNORE SENDING PLAYER
-        Network.CHANNEL.sendToPlayers(serverPlayer.server.getPlayerList().getPlayers(), new SaveAbilityDataPacket(packet.target, packet.heroType, packet.ability, packet.data, packet.additional));
+//        Network.CHANNEL.sendToPlayers(serverPlayer.server.getPlayerList().getPlayers(), new SaveAbilityDataPacket(packet.target, packet.heroType, packet.ability, packet.data, packet.additional));
     }
 }

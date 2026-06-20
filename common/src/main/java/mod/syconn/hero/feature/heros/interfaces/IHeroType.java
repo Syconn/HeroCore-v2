@@ -28,7 +28,7 @@ public interface IHeroType {
     default void serverTick(Player player) {
         for (var ability : this.getAbilities()) {
             if (ability instanceof IServerSynced sync) {
-                sync.syncPlayer(player);
+//                sync.syncPlayer(player);
                 sync.serverTick(player);
             }
         }

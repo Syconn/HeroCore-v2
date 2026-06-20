@@ -33,9 +33,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
     modImplementation "me.fzzyhmstrs:fzzy_config:${project.fuzzy_version}"
-
-    modRuntimeOnly "me.fzzyhmstrs:fzzy_config:${project.fuzzy_version}"
-//    modImplementation "dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}"
+    modImplementation "dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
