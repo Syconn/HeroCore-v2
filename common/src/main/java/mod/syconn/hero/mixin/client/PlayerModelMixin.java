@@ -49,7 +49,7 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
             float leftArmTarget = (flyFalling || hover) ? (float) Math.toRadians(-25) : 0F;
             float rightArmTarget = (flyFalling || hover) ? (float) Math.toRadians(25) : 0F;
 
-            if (flightController.getMode() != FlightAbility.FlightMode.HOVER) {
+            if (flightController.getMode() != FlightAbility.FlightMode.HOVER && flightController.isFlying()) {
                 this.head.xRot += (headTarget - this.head.xRot) * progress;
                 this.hat.xRot = this.head.xRot;
             }
