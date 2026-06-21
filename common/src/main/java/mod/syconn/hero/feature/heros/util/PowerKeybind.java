@@ -1,6 +1,7 @@
 package mod.syconn.hero.feature.heros.util;
 
 import me.fzzyhmstrs.fzzy_config.screen.context.FzzyKeybind;
+import net.minecraft.client.Minecraft;
 
 public class PowerKeybind {
 
@@ -20,7 +21,7 @@ public class PowerKeybind {
     }
 
     public void tick() {
-        if (parent.isPressed() && !pressed) {
+        if (Minecraft.getInstance().screen == null && parent.isPressed() && !pressed) {
             pressed = true;
             clickCount++;
         } else if (!parent.isPressed()) {

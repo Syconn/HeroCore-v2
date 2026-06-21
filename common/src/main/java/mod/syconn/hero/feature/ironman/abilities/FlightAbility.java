@@ -25,7 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
-public class FlightAbility implements IHeroAbility, IServerSynced { // TODO KEYBINDS INTERACT IN MENU's BAD
+public class FlightAbility implements IHeroAbility, IServerSynced {
 
     public static final ResourceLocation TYPE = Constants.withId("flight");
 
@@ -36,7 +36,6 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO KEYB
     private boolean initialJump = false;
     private boolean flying = false;
     private boolean renderFlying = false;
-    private boolean playSlowdownSound = false;
     private int flyingTicks = 0;
     private float slowFallingTicks = 0;
 
@@ -45,7 +44,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO KEYB
     }
 
     @Override
-    public void clientTick(Player player) { // TODO PARTICLES && Sound Effects && maybe shaders STUFF && MORE ANIMATIONS
+    public void clientTick(Player player) { // TODO PARTICLES && maybe shaders STUFF && MORE ANIMATIONS
         toggleFlightMode.tick();
 
         if (!usable(player)) {
@@ -161,7 +160,6 @@ public class FlightAbility implements IHeroAbility, IServerSynced { // TODO KEYB
                 }
             } else if (slowFallingTicks > 0) {
                 slowFallingTicks = Math.max(0, slowFallingTicks - 1);
-                this.playSlowdownSound = false;
                 sendTrackingData(player);
             }
         }
