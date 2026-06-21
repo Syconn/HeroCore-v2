@@ -2,6 +2,7 @@ package mod.syconn.hero.feature.ironman.abilities;
 
 import mod.syconn.hero.core.ModSounds;
 import mod.syconn.hero.core.ModTags;
+import mod.syconn.hero.feature.addons.IronmanContent;
 import mod.syconn.hero.feature.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.feature.heros.interfaces.IHeroType;
 import mod.syconn.hero.feature.heros.util.PowerKeybind;

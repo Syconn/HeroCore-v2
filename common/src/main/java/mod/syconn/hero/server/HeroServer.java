@@ -1,12 +1,16 @@
 package mod.syconn.hero.server;
 
 import dev.architectury.event.events.common.TickEvent;
+import mod.syconn.hero.feature.addons.IronmanContent;
 import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
+import mod.syconn.hero.utils.server.SyncedResourceManager;
 import net.minecraft.world.entity.player.Player;
 
 public class HeroServer {
 
     public static void init() {
+        SyncedResourceManager.register(IronmanContent.SUITS);
+
         TickEvent.PLAYER_POST.register(HeroServer::playerTick);
     }
 

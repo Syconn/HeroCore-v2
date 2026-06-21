@@ -39,7 +39,8 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     private boolean initialJump = false;
     private boolean flying = false;
     private boolean renderFlying = false;
-    private boolean landed = false;
+    private boolean landed = true;
+    private boolean wasSprinting = false;
     private int flyingTicks = 0;
     private float slowFallingTicks = 0;
 
@@ -48,7 +49,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     }
 
     @Override
-    public void clientTick(Player player) { // TODO PARTICLES && maybe shaders STUFF && MORE ANIMATIONS - Add Landing Animation
+    public void clientTick(Player player) { // TODO PARTICLES && maybe shaders STUFF
         toggleFlightMode.tick();
 
         if (!usable(player)) {
@@ -66,8 +67,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             Network.CHANNEL.sendToServer(new PlaySoundPacket(ModSounds.TAKE_OFF.get(), SoundSource.PLAYERS, 0.5f, pitch));
         }
 
-        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump && mode == FlightMode.NORMAL)
-            initialJump = true;
+        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump && mode == FlightMode.NORMAL) initialJump = true;
 
         if (usable(player)) this.requiresUpdate(player);
 
@@ -110,6 +110,12 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
                     float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
                     Network.CHANNEL.sendToServer(new PlaySoundPacket(ModSounds.TAKE_OFF.get(), SoundSource.PLAYERS, 0.5f, pitch));
                 }
+
+                if (player.isSprinting() && !wasSprinting && flying) {
+                    float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
+                    Network.CHANNEL.sendToServer(new PlaySoundPacket(ModSounds.TAKE_OFF.get(), SoundSource.PLAYERS, 0.5f, pitch));
+                }
+                this.wasSprinting = player.isSprinting();
             }
 
             if (flyingTicks > 0) {
@@ -165,7 +171,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
                 }
             } else if (slowFallingTicks > 0) {
                 slowFallingTicks = Math.max(0, slowFallingTicks - 1);
-                if (!landed && player instanceof ServerPlayer sp) {
+                if (!landed && player instanceof ServerPlayer sp && player.onGround()) {
                     landed = true;
                     AnimationUtil.notifyAndPlay(sp, "ironman.landing", 1.5f, 1, Ease.OUTCUBIC);
                     float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
