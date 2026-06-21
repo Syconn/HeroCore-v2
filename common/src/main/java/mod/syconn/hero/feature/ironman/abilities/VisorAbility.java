@@ -9,7 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-public class IronmanVisorAbility implements IHeroAbility {
+public class VisorAbility implements IHeroAbility {
 
     public static final ResourceLocation TYPE = Constants.withId("ironman_visor");
 
@@ -18,7 +18,7 @@ public class IronmanVisorAbility implements IHeroAbility {
     private final FlipHelmetAbility flipHelmet;
     private boolean enabled;
 
-    public IronmanVisorAbility(IHeroType heroType, FlipHelmetAbility flipHelmet) {
+    public VisorAbility(IHeroType heroType, FlipHelmetAbility flipHelmet) {
         this.heroType = heroType;
         this.flipHelmet = flipHelmet;
         this.enabled = true;

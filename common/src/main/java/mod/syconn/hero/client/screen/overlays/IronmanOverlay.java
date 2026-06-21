@@ -63,7 +63,7 @@ public class IronmanOverlay {
     //            graphics.drawString(minecraft.font, percentage + "%", 47, 35, percent_color);
                 graphics.drawString(minecraft.font, "Flight Mode: ", 5, 50, DyeColor.LIGHT_BLUE.getTextColor());
                 graphics.drawString(minecraft.font, ironman.getAbility(FlightAbility.class).getMode().toString(), 65, 50, DyeColor.GREEN.getTextColor()); // percent_color
-                renderPlayerHologram(graphics, 45, graphics.guiHeight() * 2 - 30, 50, player);
+//                renderPlayerHologram(graphics, 45, graphics.guiHeight() * 2 - 30, 50, player);
                 renderCombatHotbar(graphics);
 
                 poseStack.popPose();

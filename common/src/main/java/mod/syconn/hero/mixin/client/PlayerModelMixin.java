@@ -11,7 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -45,7 +44,7 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
             float progress = Mth.clamp(Math.max(flightController.getFlyingTicks() / 15F, flightController.getSlowFallingTicks() / 8F), 0F, 1F);
             boolean hover = flightController.getMode() == FlightAbility.FlightMode.HOVER && !entity.onGround();
             boolean flyFalling = flightController.isFlying() || flightController.getSlowFallingTicks() > 0;
-            float headTarget = flightController.isFlying() ? (float) Math.toRadians(-90) : 0F;
+            float headTarget = flightController.isFlying() ? (float) Math.toRadians(-90 * (flightController.getFlyingTicks() / 15f)) : 0F;
             float leftArmTarget = (flyFalling || hover) ? (float) Math.toRadians(-25) : 0F;
             float rightArmTarget = (flyFalling || hover) ? (float) Math.toRadians(25) : 0F;
 

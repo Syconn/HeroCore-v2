@@ -1,5 +1,6 @@
 package mod.syconn.hero.feature.ironman.abilities;
 
+import mod.syconn.hero.core.ModSounds;
 import mod.syconn.hero.feature.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.feature.heros.interfaces.IHeroType;
 import mod.syconn.hero.feature.heros.interfaces.IServerSynced;
@@ -8,6 +9,7 @@ import mod.syconn.hero.item.IronmanArmorItem;
 import mod.syconn.hero.network.Network;
 import mod.syconn.hero.network.messages.serverside.FlightTravelPacket;
 import mod.syconn.hero.network.messages.serverside.HoverPacket;
+import mod.syconn.hero.network.messages.serverside.PlaySoundPacket;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.generic.NBTUtil;
 import net.minecraft.ChatFormatting;
@@ -16,13 +18,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
-public class FlightAbility implements IHeroAbility, IServerSynced {
+public class FlightAbility implements IHeroAbility, IServerSynced { // TODO KEYBINDS INTERACT IN MENU's BAD
 
     public static final ResourceLocation TYPE = Constants.withId("flight");
 
@@ -33,27 +36,35 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     private boolean initialJump = false;
     private boolean flying = false;
     private boolean renderFlying = false;
+    private boolean playSlowdownSound = false;
     private int flyingTicks = 0;
-    private int slowFallingTicks = 0;
+    private float slowFallingTicks = 0;
 
     public FlightAbility(IHeroType hero) {
         this.hero = hero;
     }
 
     @Override
-    public void clientTick(Player player) { // TODO PARTICLES && Sound Effects && maybe shaders STUFF
+    public void clientTick(Player player) { // TODO PARTICLES && Sound Effects && maybe shaders STUFF && MORE ANIMATIONS
         toggleFlightMode.tick();
 
         if (!usable(player)) {
             mode = FlightMode.NORMAL;
             flying = false;
             flyingTicks = 0;
+            initialJump = false;
             this.sendAllData(player);
             return;
         }
 
-        if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround() && mode == FlightMode.NORMAL) flying = true;
-        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump && mode == FlightMode.NORMAL) initialJump = true;
+        if (Minecraft.getInstance().options.keyJump.consumeClick() && initialJump && !player.onGround() && mode == FlightMode.NORMAL && !flying) {
+            flying = true;
+            float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
+            Network.CHANNEL.sendToServer(new PlaySoundPacket(ModSounds.TAKE_OFF.get(), SoundSource.PLAYERS, 0.5f, pitch));
+        }
+
+        if (Minecraft.getInstance().options.keyJump.consumeClick() && !initialJump && mode == FlightMode.NORMAL)
+            initialJump = true;
 
         if (usable(player)) this.requiresUpdate(player);
 
@@ -71,6 +82,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             else if (player.onGround()) flyingTicks--;
             flying = false;
             renderFlying = false;
+            initialJump = false;
 
             var worldY = player.level().getHeight(Heightmap.Types.MOTION_BLOCKING, player.getBlockX(), player.getBlockZ());
             if ((player.onGround() || player.getY() - worldY < 0.65f)) {
@@ -90,6 +102,11 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
                 if (flyingTicks < 15) flyingTicks++;
                 stillFlying = true;
                 dirty = true;
+
+                if (!this.renderFlying) {
+                    float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
+                    Network.CHANNEL.sendToServer(new PlaySoundPacket(ModSounds.TAKE_OFF.get(), SoundSource.PLAYERS, 0.5f, pitch));
+                }
             }
 
             if (flyingTicks > 0) {
@@ -105,6 +122,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
 
             if (player.onGround() && flying && !stillFlying) {
                 flying = false;
+                initialJump = false;
                 if (flyingTicks > 0) flyingTicks--;
                 dirty = true;
             }
@@ -130,10 +148,10 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
 
             if (distance <= slowHeight && !player.onGround() && this.flyingTicks < 10) {
                 if (slowFallingTicks < 8) {
-                    slowFallingTicks++;
+                    float amount = Mth.clamp((float)(distance / slowHeight), 0.1F, 1.0F);
+                    slowFallingTicks = Math.max(0, Math.min(8, slowFallingTicks + amount));
                     sendTrackingData(player);
                 }
-
                 if (motion.y < targetSpeed) {
                     double strength = 1.0 - distance / slowHeight;
                     double newY = Mth.lerp(strength * 0.25, motion.y, targetSpeed);
@@ -142,7 +160,8 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
                     player.hurtMarked = true;
                 }
             } else if (slowFallingTicks > 0) {
-                slowFallingTicks--;
+                slowFallingTicks = Math.max(0, slowFallingTicks - 1);
+                this.playSlowdownSound = false;
                 sendTrackingData(player);
             }
         }
@@ -152,6 +171,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
             this.engagedHover = true;
         } else if (this.engagedHover) player.setNoGravity(false);
     }
+
 
     private static int vector(boolean input, boolean otherInput) {
         if (input == otherInput) return 0;
@@ -203,7 +223,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
         tag.putBoolean("flying", this.flying);
         tag.putInt("flyingTicks", this.flyingTicks);
         tag.putBoolean("renderFlying", this.renderFlying);
-        tag.putInt("slowFallingTicks", this.slowFallingTicks);
+        tag.putFloat("slowFallingTicks", this.slowFallingTicks);
         return tag;
     }
 
@@ -212,7 +232,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
         this.flying = tag.getBoolean("flying");
         this.flyingTicks = tag.getInt("flyingTicks");
         this.renderFlying = tag.getBoolean("renderFlying");
-        this.slowFallingTicks = tag.getInt("slowFallingTicks");
+        this.slowFallingTicks = tag.getFloat("slowFallingTicks");
         IServerSynced.super.additionalSync(player, tag);
     }
 
@@ -229,7 +249,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     }
 
     public int getSlowFallingTicks() {
-        return slowFallingTicks;
+        return (int) slowFallingTicks;
     }
 
     private void cycleMode() {

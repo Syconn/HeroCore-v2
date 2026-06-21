@@ -8,12 +8,16 @@ import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApi;
 import mod.syconn.hero.client.screen.overlays.IronmanOverlay;
 import mod.syconn.hero.core.ModKeys;
+import mod.syconn.hero.core.ModSounds;
 import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
+import mod.syconn.hero.network.Network;
+import mod.syconn.hero.network.messages.serverside.PlaySoundPacket;
 import mod.syconn.hero.utils.Constants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.sounds.SoundSource;
 
 @Environment(EnvType.CLIENT)
 public class HeroClient {

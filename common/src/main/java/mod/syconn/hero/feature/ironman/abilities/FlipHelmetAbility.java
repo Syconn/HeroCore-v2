@@ -1,14 +1,18 @@
 package mod.syconn.hero.feature.ironman.abilities;
 
+import mod.syconn.hero.core.ModSounds;
 import mod.syconn.hero.core.ModTags;
 import mod.syconn.hero.feature.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.feature.heros.interfaces.IHeroType;
 import mod.syconn.hero.feature.heros.util.PowerKeybind;
+import mod.syconn.hero.network.Network;
+import mod.syconn.hero.network.messages.serverside.PlaySoundPacket;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.generic.NBTUtil;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 
@@ -45,6 +49,8 @@ public class FlipHelmetAbility implements IHeroAbility {
                 this.transition = TRANSITION_TICKS;
                 this.lifted = !this.lifted;
                 tag = this.writeData(player);
+                float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
+                Network.CHANNEL.sendToServer(new PlaySoundPacket(this.lifted ? ModSounds.HELMET_RAISE.get() : ModSounds.HELMET_LOWER.get(), SoundSource.PLAYERS, 0.5f, pitch));
             }
 
             if (!tag.isEmpty()) this.sendSpecificData(player, tag);

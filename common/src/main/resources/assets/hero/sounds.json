@@ -1,5 +1,12 @@
 {
+  "power.ironman.flying": { "sounds": [ "hero:power/ironman/flying" ] },
   "power.ironman.helmet_lower": { "sounds": [ "hero:power/ironman/helmet_lower" ] },
   "power.ironman.helmet_raise": { "sounds": [ "hero:power/ironman/helmet_raise" ] },
+  "power.ironman.landing": { "sounds": [ "hero:power/ironman/landing" ] },
+  "power.ironman.moving1": { "sounds": [ "hero:power/ironman/moving1" ] },
+  "power.ironman.moving2": { "sounds": [ "hero:power/ironman/moving2" ] },
+  "power.ironman.moving3": { "sounds": [ "hero:power/ironman/moving3" ] },
+  "power.ironman.moving4": { "sounds": [ "hero:power/ironman/moving4" ] },
+  "power.ironman.hover": { "sounds": [ "hero:power/ironman/hover" ] },
   "power.ironman.take_off": { "sounds": [ "hero:power/ironman/take_off" ] }
 }
