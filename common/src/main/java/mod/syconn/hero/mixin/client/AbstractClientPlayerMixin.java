@@ -37,15 +37,16 @@ public abstract class AbstractClientPlayerMixin extends Player implements IAnima
     }
 
     @Override
-    public void swm$playAnimation(String name, int fadeIn, Ease ease) {
+    public void hero$playAnimation(String name, float speed, int fadeIn, Ease ease) {
         var animation = AnimationUtil.getAnimation(name);
         var mirror = this.getMainArm() == HumanoidArm.LEFT;
         swm$playerAnimation.mirror.setEnabled(mirror);
+        swm$playerAnimation.speed.speed = speed;
         swm$playerAnimation.base.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(fadeIn, ease), new KeyframeAnimationPlayer(animation));
     }
 
     @Override
-    public void swm$stopAnimation(int fadeOut, Ease ease) {
+    public void hero$stopAnimation(int fadeOut, Ease ease) {
         IAnimation currentAnimation = swm$playerAnimation.base.getAnimation();
         if (currentAnimation instanceof KeyframeAnimationPlayer) swm$playerAnimation.base.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(fadeOut, Ease.INOUTSINE), null);
     }

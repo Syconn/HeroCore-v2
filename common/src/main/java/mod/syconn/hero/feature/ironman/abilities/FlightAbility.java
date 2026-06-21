@@ -1,5 +1,6 @@
 package mod.syconn.hero.feature.ironman.abilities;
 
+import dev.kosmx.playerAnim.core.util.Ease;
 import mod.syconn.hero.core.ModSounds;
 import mod.syconn.hero.feature.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.feature.heros.interfaces.IHeroType;
@@ -11,6 +12,7 @@ import mod.syconn.hero.network.messages.serverside.FlightTravelPacket;
 import mod.syconn.hero.network.messages.serverside.HoverPacket;
 import mod.syconn.hero.network.messages.serverside.PlaySoundPacket;
 import mod.syconn.hero.utils.Constants;
+import mod.syconn.hero.utils.generic.AnimationUtil;
 import mod.syconn.hero.utils.generic.NBTUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -18,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -36,6 +39,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     private boolean initialJump = false;
     private boolean flying = false;
     private boolean renderFlying = false;
+    private boolean landed = false;
     private int flyingTicks = 0;
     private float slowFallingTicks = 0;
 
@@ -44,7 +48,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
     }
 
     @Override
-    public void clientTick(Player player) { // TODO PARTICLES && maybe shaders STUFF && MORE ANIMATIONS
+    public void clientTick(Player player) { // TODO PARTICLES && maybe shaders STUFF && MORE ANIMATIONS - Add Landing Animation
         toggleFlightMode.tick();
 
         if (!usable(player)) {
@@ -149,6 +153,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
                 if (slowFallingTicks < 8) {
                     float amount = Mth.clamp((float)(distance / slowHeight), 0.1F, 1.0F);
                     slowFallingTicks = Math.max(0, Math.min(8, slowFallingTicks + amount));
+                    if (slowFallingTicks >= 6 && landed) landed = false;
                     sendTrackingData(player);
                 }
                 if (motion.y < targetSpeed) {
@@ -160,6 +165,12 @@ public class FlightAbility implements IHeroAbility, IServerSynced {
                 }
             } else if (slowFallingTicks > 0) {
                 slowFallingTicks = Math.max(0, slowFallingTicks - 1);
+                if (!landed && player instanceof ServerPlayer sp) {
+                    landed = true;
+                    AnimationUtil.notifyAndPlay(sp, "ironman.landing", 1.5f, 1, Ease.OUTCUBIC);
+                    float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
+                    Network.CHANNEL.sendToServer(new PlaySoundPacket(ModSounds.LANDING.get(), SoundSource.PLAYERS, 0.5f, pitch));
+                }
                 sendTrackingData(player);
             }
         }
