@@ -46,7 +46,7 @@ public class HeroClient {
     }
 
     public static void onClientTick(LocalPlayer player) {
-        if (player instanceof IHeroHolder holder) holder.hero$getManager().clientTick(player);
+        if (player instanceof IHeroHolder holder && !Minecraft.getInstance().isPaused()) holder.hero$getManager().clientTick(player);
         if (ModKeys.EDIT_SETTINGS.consumeClick()) ConfigApi.INSTANCE.openScreen("hero");
     }
 

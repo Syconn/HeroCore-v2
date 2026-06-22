@@ -17,9 +17,7 @@ import mod.syconn.hero.utils.generic.AnimationUtil;
 import mod.syconn.hero.utils.generic.NBTUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +26,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
@@ -53,10 +50,8 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
     }
 
     @Override
-    public void clientTick(Player player) { // TODO PARTICLES && Add Chats Render Ribbon through Layers && Hover Ticks Broken && CLIENT TICKS WHEN GAME PAUSED
+    public void clientTick(Player player) { // TODO Hover Ticks Broken
         toggleFlightMode.tick();
-
-        renderVFX(player); // TODO MOVE TO SERVER
 
         if (!usable(player)) {
             mode = FlightMode.NORMAL;
@@ -192,81 +187,6 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
             this.engagedHover = true;
         } else if (this.engagedHover) player.setNoGravity(false);
     }
-
-    private static void renderVFX(Player player) {
-//        Vec3 center = player.getEyePosition();
-//
-//        float pitch = player.getXRot();
-//
-//        Vec3 look = player.getLookAngle();
-//
-//        Vec3 right = look.cross(new Vec3(0,1,0));
-//
-//        if (right.lengthSqr() < 0.001) {
-//            right = new Vec3(1,0,0);
-//        }
-//
-//        right = right.normalize();
-//        Vec3 leftHand = center
-//                .add(0,-0.45,0)
-//                .add(right.scale(-0.55));
-//
-//        Vec3 rightHand = center
-//                .add(0,-0.45,0)
-//                .add(right.scale(0.55));
-//
-//        Vec3 leftFoot = player.position()
-//                .add(0,0.12,0)
-//                .add(right.scale(-0.18));
-//
-//        Vec3 rightFoot = player.position()
-//                .add(0,0.12,0)
-//                .add(right.scale(0.18));
-//
-//        Vec3 velocity = player.getDeltaMovement();
-//
-//        Vec3 exhaust;
-//
-//        if (velocity.lengthSqr() > 0.01) {
-//            exhaust = velocity.normalize().scale(-0.16);
-//        } else {
-//            exhaust = new Vec3(0,-0.16,0);
-//        }
-//
-//        spawn(player.level(), leftHand, exhaust);
-//        spawn(player.level(), rightHand, exhaust);
-//
-//        spawn(player.level(), leftFoot, exhaust);
-//        spawn(player.level(), rightFoot, exhaust);
-    }
-
-    private static void spawn(Level level, Vec3 pos, Vec3 dir) {
-
-        level.addParticle(
-                ParticleTypes.END_ROD,
-
-                pos.x,
-                pos.y,
-                pos.z,
-
-                dir.x,
-                dir.y,
-                dir.z
-        );
-
-        level.addParticle(
-                ParticleTypes.ELECTRIC_SPARK,
-
-                pos.x,
-                pos.y,
-                pos.z,
-
-                dir.x * .4,
-                dir.y * .4,
-                dir.z * .4
-        );
-    }
-
 
     private static int vector(boolean input, boolean otherInput) {
         if (input == otherInput) return 0;
