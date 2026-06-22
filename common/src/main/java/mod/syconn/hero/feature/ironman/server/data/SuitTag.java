@@ -1,11 +1,13 @@
 package mod.syconn.hero.feature.ironman.server.data;
 
+import mod.syconn.hero.core.ModArmors;
 import mod.syconn.hero.feature.addons.IronmanContent;
 import mod.syconn.hero.utils.Constants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -16,20 +18,17 @@ public class SuitTag {
     private static final String ID = "suitData";
 
     public ResourceLocation model;
-    public TagKey<Item> tagKey;
     public int version;
     public int color;
 
-    public SuitTag(ResourceLocation model, TagKey<Item> tagKey, int version, int color) {
+    public SuitTag(ResourceLocation model, int version, int color) {
         this.model = model;
-        this.tagKey = tagKey;
         this.version = version;
         this.color = color;
     }
 
     public SuitTag(CompoundTag tag) {
         this.model = new ResourceLocation(tag.getString("model"));
-        this.tagKey = TagKey.create(Registries.ITEM, new ResourceLocation(tag.getString("tag")));
         this.version = tag.getInt("version");
         this.color = tag.getInt("color");
         updateData(tag.getInt("version"));
@@ -38,14 +37,17 @@ public class SuitTag {
     private void updateData(int value) {
         this.version = value;
         var saved = IronmanContent.SUITS.get(this.model);
-        if (saved == null) System.out.println("Invalid Lightsaber Tag for " + this.tagKey);
+        if (saved == null) System.out.println("Invalid Suit Tag for " + this.model);
         else if (this.version != saved.version()) {
             var tag = saved.toTag().save();
-            this.model = tag.contains("model") ? new ResourceLocation(tag.getString("model")): Constants.withId("mark_2");
-            this.tagKey = TagKey.create(Registries.ITEM, new ResourceLocation(tag.getString("tag")));
+            this.model = tag.contains("model") ? new ResourceLocation(tag.getString("model")) : Constants.withId("suits/mark_2");
             this.color = tag.getInt("color");
             this.version = saved.version();
         }
+    }
+
+    public ArmorMaterial getMaterial() {
+        return ModArmors.IRONMAN_TYPES.getOrDefault(this.model, ModArmors.MARK_2);
     }
 
     public ItemStack change(ItemStack stack) {
@@ -56,7 +58,6 @@ public class SuitTag {
     public CompoundTag save() {
         var tag = new CompoundTag();
         tag.putString("model", this.model.toString());
-        tag.putString("tag", tagKey.location().toString());
         tag.putInt("version", this.version);
         tag.putInt("color", this.color);
         return tag;

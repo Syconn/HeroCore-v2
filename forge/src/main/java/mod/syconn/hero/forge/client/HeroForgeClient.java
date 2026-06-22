@@ -1,0 +1,40 @@
+package mod.syconn.hero.forge.client;
+
+import dev.architectury.utils.GameInstance;
+import mod.syconn.hero.client.HeroClient;
+import mod.syconn.hero.utils.Constants;
+import mod.syconn.hero.utils.interfaces.ISpecialRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+@Mod.EventBusSubscriber(modid = Constants.MOD, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public class HeroForgeClient {
+
+    @SubscribeEvent
+    public static void clientTickEvent(TickEvent.ClientTickEvent event) {
+        if (event.side.isClient()) HeroClient.onClientTick(Minecraft.getInstance().player);
+    }
+
+    @SubscribeEvent
+    public static void registerAdditionalModels(final ModelEvent.RegisterAdditional event) {
+        var files = new ArrayList<ResourceLocation>();
+        ISpecialRenderer.SPECIAL_RENDER_FOLDER.forEach(path -> scanFilesInDirectory(path, ISpecialRenderer::itemModelPath, files));
+        files.addAll(ISpecialRenderer.SPECIAL_RENDERS);
+        files.forEach(event::register);
+        event.register(Constants.withId("lightsaber/mace", "inventory"));
+    }
+
+    private static void scanFilesInDirectory(String name, Function<ResourceLocation, ResourceLocation> pathModifier, List<ResourceLocation> output) {
+        output.addAll(FileToIdConverter.json(name).listMatchingResources(GameInstance.getClient().getResourceManager()).keySet().stream().map(pathModifier).toList());
+    }
+}

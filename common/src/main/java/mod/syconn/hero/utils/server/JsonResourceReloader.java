@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mod.syconn.hero.utils.generic.NBTUtil;
 import mod.syconn.hero.utils.interfaces.ISerializable;
+import mod.syconn.hero.utils.interfaces.ISpecialRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -28,6 +29,11 @@ public class JsonResourceReloader<D extends ISerializable<CompoundTag>> extends 
         this.jsonReader = jsonReader;
         this.tagReader = tagReader;
         this.id = id;
+    }
+
+    public JsonResourceReloader(ResourceLocation id, String directory, Function<JsonObject, D> jsonReader, Function<CompoundTag, D> tagReader, String specialRenderPath) {
+        this(id, directory, jsonReader, tagReader);
+        ISpecialRenderer.registerPath(specialRenderPath);
     }
 
     protected void apply(Map<ResourceLocation, JsonElement> pJsonMap, ResourceManager resourceManager, ProfilerFiller profiler) {

@@ -3,6 +3,8 @@ plugins {
 }
 
 loom {
+    accessWidenerPath = project(':common').file("src/main/resources/hero.accessWidener")
+
     forge {
         mixinConfig "hero.mixins.json"
     }

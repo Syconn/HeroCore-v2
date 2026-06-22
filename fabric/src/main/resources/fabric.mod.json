@@ -26,7 +26,8 @@
     ]
   },
   "mixins": [
-    "hero.mixins.json"
+    "hero.mixins.json",
+    "fabric.hero.mixin.json"
   ],
   "depends": {
     "fabricloader": ">=0.17.0",

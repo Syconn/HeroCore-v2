@@ -21,6 +21,23 @@ public class FontUtil {
         return text;
     }
 
+    public static String capitalizeWords(String text) {
+        if (text == null || text.isBlank()) return text;
+
+        StringBuilder result = new StringBuilder(text.length());
+        boolean capitalizeNext = true;
+        for (char c : text.toCharArray()) {
+            if (Character.isWhitespace(c)) {
+                capitalizeNext = true;
+                result.append(c);
+            } else {
+                result.append(capitalizeNext ? Character.toUpperCase(c) : Character.toLowerCase(c));
+                capitalizeNext = false;
+            }
+        }
+        return result.toString();
+    }
+
     static final Pattern URL_PATTERN = Pattern.compile("((?:[a-z0-9]{2,}://)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|[-\\w_]+\\.[a-z]{2,}?)(?::[0-9]{1,5})?.*?(?=[!\"§ \n]|$))", Pattern.CASE_INSENSITIVE);
 
     public static Component newChatWithLinks(String string) {

@@ -1,12 +1,15 @@
 package mod.syconn.hero.mixin.client;
 
+import mod.syconn.hero.client.HeroClient;
 import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.feature.ironman.Ironman;
 import mod.syconn.hero.feature.ironman.abilities.FlightAbility;
+import mod.syconn.hero.utils.interfaces.IModifiedPoseRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -57,6 +60,22 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
             this.leftSleeve.zRot = this.leftArm.zRot;
             this.rightArm.zRot += (rightArmTarget - this.rightArm.zRot) * progress;
             this.rightSleeve.zRot = this.rightArm.zRot;
+        }
+    }
+
+    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At(value = "TAIL"))
+    public void setAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
+        if (entity.isSwimming()) return;
+
+        for (var hand : InteractionHand.values()) {
+            var stack = entity.getItemInHand(hand);
+            if (!stack.isEmpty()) {
+                final IModifiedPoseRenderer pose = IModifiedPoseRenderer.REGISTRY.get(stack.getItem().getClass());
+                if (pose != null) {
+                    pose.modifyPose(entity, hand, stack, this, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, HeroClient.getTickDelta());
+                    break;
+                }
+            }
         }
     }
 }

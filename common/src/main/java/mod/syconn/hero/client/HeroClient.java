@@ -11,11 +11,15 @@ import mod.syconn.hero.client.screen.overlays.IronmanOverlay;
 import mod.syconn.hero.core.ModKeys;
 import mod.syconn.hero.core.ModSounds;
 import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
+import mod.syconn.hero.feature.ironman.client.renderers.IronmanArmorRenderer;
+import mod.syconn.hero.item.IronmanArmorItem;
 import mod.syconn.hero.network.Network;
 import mod.syconn.hero.network.messages.serverside.PlaySoundPacket;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.generic.AnimationUtil;
 import mod.syconn.hero.utils.interfaces.IAnimatablePlayer;
+import mod.syconn.hero.utils.interfaces.IModifiedItemRenderer;
+import mod.syconn.hero.utils.interfaces.IModifiedPoseRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -27,6 +31,8 @@ public class HeroClient {
 
     public static void init() {
         ModKeys.KEYS.forEach(KeyMappingRegistry::register);
+
+        IModifiedItemRenderer.register(IronmanArmorItem.class, new IronmanArmorRenderer());
 
         ClientLifecycleEvent.CLIENT_SETUP.register(HeroClient::setupEvent);
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(HeroClient::onClientJoin);

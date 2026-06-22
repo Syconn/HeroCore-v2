@@ -13,6 +13,10 @@ fabricApi {
     }
 }
 
+loom {
+    accessWidenerPath = project(':common').file("src/main/resources/hero.accessWidener")
+}
+
 configurations {
     common {
         canBeResolved = true

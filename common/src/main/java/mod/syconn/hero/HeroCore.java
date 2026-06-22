@@ -1,6 +1,7 @@
 package mod.syconn.hero;
 
 import dev.architectury.event.events.common.LifecycleEvent;
+import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.ReloadListenerRegistry;
 import mod.syconn.hero.core.ModEntities;
 import mod.syconn.hero.core.ModItems;
@@ -16,15 +17,17 @@ import net.minecraft.server.packs.PackType;
 
 public final class HeroCore {
 
+    @SuppressWarnings("UnstableApiUsage")
     public static void init() {
         ModItems.TABS.register();
         ModItems.ITEMS.register();
         ModEntities.ENTITIES.register();
         ModSounds.SOUNDS.register();
 
+        Network.init();
+        CreativeTabRegistry.modify(ModItems.TAB, ModItems::addCreative);
         ReloadListenerRegistry.register(PackType.SERVER_DATA, IronmanContent.SUITS, Constants.withId("suit_data"));
         HeroRegistry.registerBuiltinHeroes();
-        Network.init();
         LifecycleEvent.SETUP.register(HeroServer::init);
     }
 }

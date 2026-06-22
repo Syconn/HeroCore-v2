@@ -4,6 +4,7 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import mod.syconn.hero.utils.Constants;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
 public class ModSounds {
@@ -22,6 +23,6 @@ public class ModSounds {
     public static final RegistrySupplier<SoundEvent> MOVING4 = register("power.ironman.moving4");
 
     private static RegistrySupplier<SoundEvent> register(String key) {
-        return SOUNDS.register(key, () -> SoundEvent.createVariableRangeEvent(Constants.withId(key)));
+        return SOUNDS.register(key, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(key)));
     }
 }

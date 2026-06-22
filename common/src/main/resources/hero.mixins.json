@@ -6,6 +6,8 @@
   "client": [
     "client.AbstractClientPlayerMixin",
     "client.HumanoidArmorLayerMixin",
+    "client.ItemRendererInvoker",
+    "client.ItemRendererMixin",
     "client.LevelRendererMixin",
     "client.PlayerModelMixin",
     "client.PlayerRendererMixin",
@@ -15,6 +17,9 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "ItemStackMixin",
+    "LivingEntityMixin",
+    "MobMixin",
     "PlayerMixin"
   ]
 }
