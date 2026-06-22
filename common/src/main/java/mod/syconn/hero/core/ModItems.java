@@ -17,7 +17,7 @@ import static mod.syconn.hero.utils.Constants.MOD;
 
 public class ModItems {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD, Registries.ITEM); // TODO FIX ITEM MODEL, FIX TAG SYSTEM
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD, Registries.ITEM);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(MOD, Registries.CREATIVE_MODE_TAB);
 
     public static final RegistrySupplier<Item> IRONMAN_HELMET = registerItem("helmet", properties -> new IronmanArmorItem(ArmorItem.Type.HELMET, properties));

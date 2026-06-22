@@ -1,9 +1,6 @@
 package mod.syconn.hero.fabric.datagen;
 
-import dev.architectury.platform.Mod;
 import dev.architectury.registry.registries.RegistrySupplier;
-import mod.syconn.hero.core.ModItems;
-import mod.syconn.hero.core.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
@@ -24,7 +21,7 @@ public class ItemTagGen extends FabricTagProvider.ItemTagProvider {
 //        this.addAll(ModTags.MARK_42, ModItems.MARK_42_BOOTS, ModItems.MARK_42_LEGGINGS, ModItems.MARK_42_CHESTPLATE, ModItems.MARK_42_HELMET);
 //        this.addAll(ModTags.MARK_43, ModItems.MARK_43_BOOTS, ModItems.MARK_43_LEGGINGS, ModItems.MARK_43_CHESTPLATE, ModItems.MARK_43_HELMET);
 //        this.addAll(ModTags.WAR_MACHINE, ModItems.WAR_MACHINE_BOOTS, ModItems.WAR_MACHINE_LEGGINGS, ModItems.WAR_MACHINE_CHESTPLATE, ModItems.WAR_MACHINE_HELMET);
-        this.addAllTags(ModTags.IRONMAN_ARMOR, ModTags.MARK_2, ModTags.MARK_5, ModTags.MARK_42, ModTags.MARK_43, ModTags.WAR_MACHINE);
+//        this.addAllTags(ModTags.IRONMAN_ARMOR, ModTags.MARK_2, ModTags.MARK_5, ModTags.MARK_42, ModTags.MARK_43, ModTags.WAR_MACHINE);
     }
 
     @SafeVarargs

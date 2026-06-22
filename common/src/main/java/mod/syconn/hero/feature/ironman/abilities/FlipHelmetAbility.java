@@ -1,16 +1,14 @@
 package mod.syconn.hero.feature.ironman.abilities;
 
 import mod.syconn.hero.core.ModSounds;
-import mod.syconn.hero.core.ModTags;
-import mod.syconn.hero.feature.addons.IronmanContent;
 import mod.syconn.hero.feature.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.feature.heros.interfaces.IHeroType;
 import mod.syconn.hero.feature.heros.util.PowerKeybind;
+import mod.syconn.hero.item.IronmanArmorItem;
 import mod.syconn.hero.network.Network;
 import mod.syconn.hero.network.messages.serverside.PlaySoundPacket;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.generic.NBTUtil;
-import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -73,7 +71,7 @@ public class FlipHelmetAbility implements IHeroAbility {
 
     @Override
     public boolean usable(Player player) {
-        return player.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.IRONMAN_ARMOR) && player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ICustomArmor;
+        return player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof IronmanArmorItem;
     }
 
     @Override

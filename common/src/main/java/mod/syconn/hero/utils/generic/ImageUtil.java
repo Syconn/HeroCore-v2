@@ -19,7 +19,7 @@ public class ImageUtil {
         }
     }
 
-    public static int[][] cut(@NotNull NativeImage image, int uX, int uY, int width, int height) { // TODO MAY NEED TO UPLOAD?
+    public static int[][] cut(@NotNull NativeImage image, int uX, int uY, int width, int height) {
         var pixels = new int[width][height];
         for (var x = uX; x < uX + width; x++) {
             for (var y = uY; y < uY + height; y++) {
@@ -30,11 +30,11 @@ public class ImageUtil {
         return pixels;
     }
 
-    public static void paste(@NotNull NativeImage image, int[][] pixels, int uX, int uY, int width, int height) { // TODO MAY NEED TO UPLOAD?
+    public static void paste(@NotNull NativeImage image, int[][] pixels, int uX, int uY, int width, int height) {
         for (var x = uX; x < uX + width; x++) for (var y = uY; y < uY + height; y++) image.setPixelRGBA(x, y, pixels[x - uX][y - uY]);
     }
 
-    public static void erase(@NotNull NativeImage image, int uX, int uY, int width, int height) { // TODO MAY NEED TO UPLOAD?
+    public static void erase(@NotNull NativeImage image, int uX, int uY, int width, int height) {
         for (var x = uX; x < uX + width; x++) for (var y = uY; y < uY + height; y++) image.setPixelRGBA(x, y, ColorUtil.packArgb(0, 0, 0, 0));
     }
 

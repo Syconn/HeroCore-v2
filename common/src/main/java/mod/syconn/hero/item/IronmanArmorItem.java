@@ -1,6 +1,5 @@
 package mod.syconn.hero.item;
 
-import mod.syconn.hero.core.ModTags;
 import mod.syconn.hero.feature.ironman.client.renderers.IronmanArmorRenderer;
 import mod.syconn.hero.feature.ironman.server.data.SuitTag;
 import mod.syconn.hero.utils.generic.FontUtil;
@@ -9,11 +8,12 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -60,23 +60,10 @@ public class IronmanArmorItem extends ArmorItem implements ICustomArmor {
         return SuitTag.getOrCreate(stack).getMaterial().getToughness();
     }
 
-    public static boolean wearingFullSameSuit(Player player) { // TODO NEEDS FIXING
-        NonNullList<ItemStack> inv = player.getInventory().armor;
-        TagKey<Item> mark = getMark(inv.get(0));
-        for (ItemStack stack : inv) {
-            if (!stack.is(ModTags.IRONMAN_ARMOR) || mark != getMark(stack)) return false;
-            mark = getMark(stack);
-        }
-
+    public static boolean wearingFullSameSuit(Player player) {
+        var inv = player.getInventory().armor;
+        var mark = SuitTag.getOrCreate(inv.get(0)).model;
+        for (ItemStack stack : inv) if (!(stack.getItem() instanceof IronmanArmorItem) || !SuitTag.getOrCreate(stack).model.equals(mark)) return false;
         return true;
-    }
-
-    public static TagKey<Item> getMark(ItemStack stack) { // TODO NEEDS FIXING
-        if (stack.is(ModTags.MARK_2)) return ModTags.MARK_2;
-        if (stack.is(ModTags.MARK_5)) return ModTags.MARK_5;
-        if (stack.is(ModTags.MARK_42)) return ModTags.MARK_42;
-        if (stack.is(ModTags.MARK_43)) return ModTags.MARK_43;
-        if (stack.is(ModTags.WAR_MACHINE)) return ModTags.WAR_MACHINE;
-        return null;
     }
 }

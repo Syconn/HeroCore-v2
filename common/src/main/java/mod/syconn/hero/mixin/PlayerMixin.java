@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin extends LivingEntity implements IHeroHolder { // TODO INDEPENDENT MANAGERS THEN CUSTOM SAVE TO FILE SYSTEM
+public abstract class PlayerMixin extends LivingEntity implements IHeroHolder {
 
     @Unique
     private final HeroManager hero$manager = new HeroManager();

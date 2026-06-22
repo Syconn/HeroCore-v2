@@ -17,12 +17,8 @@ public class ModSounds {
     public static final RegistrySupplier<SoundEvent> FLYING = register("power.ironman.flying");
     public static final RegistrySupplier<SoundEvent> HOVER = register("power.ironman.hover");
     public static final RegistrySupplier<SoundEvent> LANDING = register("power.ironman.landing");
-    public static final RegistrySupplier<SoundEvent> MOVING1 = register("power.ironman.moving1");
-    public static final RegistrySupplier<SoundEvent> MOVING2 = register("power.ironman.moving2");
-    public static final RegistrySupplier<SoundEvent> MOVING3 = register("power.ironman.moving3");
-    public static final RegistrySupplier<SoundEvent> MOVING4 = register("power.ironman.moving4");
 
     private static RegistrySupplier<SoundEvent> register(String key) {
-        return SOUNDS.register(key, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(key)));
+        return SOUNDS.register(key, () -> SoundEvent.createVariableRangeEvent(Constants.withId(key)));
     }
 }
