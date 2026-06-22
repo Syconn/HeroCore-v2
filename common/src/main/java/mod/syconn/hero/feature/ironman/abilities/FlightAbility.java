@@ -50,7 +50,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
     }
 
     @Override
-    public void clientTick(Player player) { // TODO Hover Ticks Broken
+    public void clientTick(Player player) {
         toggleFlightMode.tick();
 
         if (!usable(player)) {
@@ -77,6 +77,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
             player.displayClientMessage(Component.literal("Engaging ").withStyle(ChatFormatting.GOLD).append(mode == FlightMode.HOVER ? "Hover" : "Normal").withStyle(ChatFormatting.AQUA)
                     .append(" Mode").withStyle(ChatFormatting.GOLD), true);
             this.sendSpecificData(player, this.writeData(player));
+            this.sendClientSyncData(player);
         }
 
         if (this.mode == FlightMode.HOVER) {
@@ -239,6 +240,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
         tag.putInt("flyingTicks", this.flyingTicks);
         tag.putBoolean("renderFlying", this.renderFlying);
         tag.putFloat("slowFallingTicks", this.slowFallingTicks);
+        tag.put("mode", NBTUtil.putEnum(this.mode));
         return tag;
     }
 
@@ -248,6 +250,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
         this.flyingTicks = tag.getInt("flyingTicks");
         this.renderFlying = tag.getBoolean("renderFlying");
         this.slowFallingTicks = tag.getFloat("slowFallingTicks");
+        this.mode = NBTUtil.getEnum(FlightMode.class, tag.getCompound("mode"));
         IServerSynced.super.additionalSync(player, tag);
     }
 

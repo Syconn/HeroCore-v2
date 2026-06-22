@@ -68,7 +68,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
     }
 
     @Inject(method = "render(Lnet/minecraft/client/player/AbstractClientPlayer;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("TAIL"))
-    private void renderThrusters(AbstractClientPlayer entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci) { // TODO FEET PARTICLES
+    private void renderThrusters(AbstractClientPlayer entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci) {
         if (entity instanceof IHeroHolder holder && entity.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof IronmanArmorItem) {
             var flightController = holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class);
 

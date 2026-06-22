@@ -51,6 +51,8 @@ public class SyncClientPacket {
             if (type == null) return;
             var ability = type.getAbility(this.ability);
             if (ability == null) return;
+
+//            System.out.println(context.get().getPlayer() + " received packet for " + player + " " + data);
             if (ability instanceof IServerSynced synced) synced.readAdditionalSync(player, this.data);
         });
     }

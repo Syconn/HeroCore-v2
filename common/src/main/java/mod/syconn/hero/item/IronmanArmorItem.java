@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class IronmanArmorItem extends ArmorItem implements ICustomArmor { // TODO SERVERS BREAK
+public class IronmanArmorItem extends ArmorItem implements ICustomArmor {
 
     public IronmanArmorItem(ArmorItem.Type armorType, Properties properties) {
         super(ArmorMaterials.IRON, armorType, properties);

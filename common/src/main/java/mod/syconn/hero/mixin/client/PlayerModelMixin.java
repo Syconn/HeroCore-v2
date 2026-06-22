@@ -39,6 +39,8 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
     private void animateHead(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         if (entity instanceof IHeroHolder holder) {
+            System.out.println(holder + " " + holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class).getFlyingTicks());
+
             var flightController = holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class);
             float progress = Mth.clamp(Math.max(flightController.getFlyingTicks() / 15F, flightController.getSlowFallingTicks() / 8F), 0F, 1F);
             boolean hover = flightController.getMode() == FlightAbility.FlightMode.HOVER && !entity.onGround();
@@ -51,6 +53,8 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
                 this.head.xRot += (headTarget - this.head.xRot) * progress;
                 this.hat.xRot = this.head.xRot;
             }
+
+            System.out.println(flightController.getMode());
 
             this.leftArm.zRot += (leftArmTarget - this.leftArm.zRot) * progress;
             this.leftSleeve.zRot = this.leftArm.zRot;
