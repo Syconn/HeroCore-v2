@@ -31,8 +31,8 @@ public class SyncResourceDataPacket {
     public void apply(Supplier<NetworkManager.PacketContext> context) {
         context.get().queue(() -> {
             if (context.get().getPlayer() != null) {
-                SyncedResourceManager.ISyncedData data = SyncedResourceManager.getLoginDataSupplier(this.id);
-                data.readData(this.data);
+                SyncedResourceManager.ISyncedData sync = SyncedResourceManager.getLoginDataSupplier(this.id);
+                sync.readData(this.data);
             }
         });
     }

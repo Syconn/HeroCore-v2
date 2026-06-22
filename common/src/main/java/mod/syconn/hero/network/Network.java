@@ -2,6 +2,7 @@ package mod.syconn.hero.network;
 
 import dev.architectury.networking.NetworkChannel;
 import mod.syconn.hero.network.messages.PlayAnimationPacket;
+import mod.syconn.hero.network.messages.clientside.PlayParticleEffect;
 import mod.syconn.hero.network.messages.clientside.SyncClientPacket;
 import mod.syconn.hero.network.messages.clientside.SyncResourceDataPacket;
 import mod.syconn.hero.network.messages.serverside.FlightTravelPacket;
@@ -22,5 +23,6 @@ public class Network {
         CHANNEL.register(SyncClientPacket.class, SyncClientPacket::encode, SyncClientPacket::new, SyncClientPacket::apply);
         CHANNEL.register(PlaySoundPacket.class, PlaySoundPacket::encode, PlaySoundPacket::new, PlaySoundPacket::apply);
         CHANNEL.register(SyncResourceDataPacket.class, SyncResourceDataPacket::encode, SyncResourceDataPacket::new, SyncResourceDataPacket::apply);
+        CHANNEL.register(PlayParticleEffect.class, PlayParticleEffect::encode, PlayParticleEffect::new, PlayParticleEffect::apply);
     }
 }

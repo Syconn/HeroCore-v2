@@ -21,12 +21,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerModel.class)
 public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidModel<T> {
 
-    @Shadow
-    @Final
+    @Shadow @Final
     public ModelPart leftSleeve;
 
-    @Shadow
-    @Final
+    @Shadow @Final
     public ModelPart rightSleeve;
 
     public PlayerModelMixin(ModelPart root) {
@@ -35,9 +33,7 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
 
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("HEAD"))
     private void walkAnimation(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
-        if (entity instanceof IHeroHolder holder && holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class).isFlying()) {
-            entity.walkAnimation.setSpeed(0.0F);
-        }
+        if (entity instanceof IHeroHolder holder && holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class).isFlying()) entity.walkAnimation.setSpeed(0.0F);
     }
 
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))

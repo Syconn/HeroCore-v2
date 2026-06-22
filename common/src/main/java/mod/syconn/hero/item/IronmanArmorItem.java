@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class IronmanArmorItem extends ArmorItem implements ICustomArmor {
+public class IronmanArmorItem extends ArmorItem implements ICustomArmor { // TODO SERVERS BREAK
 
     public IronmanArmorItem(ArmorItem.Type armorType, Properties properties) {
         super(ArmorMaterials.IRON, armorType, properties);
@@ -62,8 +62,11 @@ public class IronmanArmorItem extends ArmorItem implements ICustomArmor {
 
     public static boolean wearingFullSameSuit(Player player) {
         var inv = player.getInventory().armor;
-        var mark = SuitTag.getOrCreate(inv.get(0)).model;
-        for (ItemStack stack : inv) if (!(stack.getItem() instanceof IronmanArmorItem) || !SuitTag.getOrCreate(stack).model.equals(mark)) return false;
-        return true;
+        if (inv.get(0).getItem() instanceof IronmanArmorItem) {
+            var mark = SuitTag.getOrCreate(inv.get(0)).model;
+            for (ItemStack stack : inv) if (!(stack.getItem() instanceof IronmanArmorItem) || !SuitTag.getOrCreate(stack).model.equals(mark)) return false;
+            return true;
+        }
+        return false;
     }
 }
