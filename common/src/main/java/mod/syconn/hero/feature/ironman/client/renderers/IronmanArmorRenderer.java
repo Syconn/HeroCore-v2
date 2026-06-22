@@ -63,8 +63,7 @@ public class IronmanArmorRenderer implements IModifiedItemRenderer {
     }
 
     private static String getLayer(EquipmentSlot slot) {
-        if (slot == EquipmentSlot.LEGS) return "layer_2";
-        return "layer_1";
+        return slot == EquipmentSlot.LEGS ? "layer_2" : "layer_1";
     }
 
     private static void createHelmetForModel(ItemStack stack, ICustomArmor armor) {
