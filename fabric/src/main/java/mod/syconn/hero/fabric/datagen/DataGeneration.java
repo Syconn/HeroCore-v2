@@ -9,15 +9,16 @@ public class DataGeneration implements DataGeneratorEntrypoint {
 
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         FabricDataGenerator.Pack pack = generator.createPack();
-        pack.addProvider(LangGen::new);
-        pack.addProvider(BlockTagGen::new);
-        pack.addProvider(ItemTagGen::new);
-        pack.addProvider(ItemModelGen::new);
-        pack.addProvider(DamageTypeGen::new);
+//        pack.addProvider(LangGen::new);
+//        pack.addProvider(BlockTagGen::new);
+//        pack.addProvider(ItemTagGen::new);
+//        pack.addProvider(ItemModelGen::new);
+//        pack.addProvider(DamageTypeGen::new);
+        pack.addProvider(ModelProvider::new);
     }
 
     public void buildRegistry(RegistrySetBuilder registryBuilder) {
         DataGeneratorEntrypoint.super.buildRegistry(registryBuilder);
-        registryBuilder.add(Registries.DAMAGE_TYPE, DamageTypeGen::bootstrapDamageTypes);
+//        registryBuilder.add(Registries.DAMAGE_TYPE, DamageTypeGen::bootstrapDamageTypes);
     }
 }

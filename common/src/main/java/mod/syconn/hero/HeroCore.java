@@ -3,10 +3,7 @@ package mod.syconn.hero;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.ReloadListenerRegistry;
-import mod.syconn.hero.core.ModEntities;
-import mod.syconn.hero.core.ModItems;
-import mod.syconn.hero.core.ModParticles;
-import mod.syconn.hero.core.ModSounds;
+import mod.syconn.hero.core.*;
 import mod.syconn.hero.feature.addons.IronmanContent;
 import mod.syconn.hero.feature.heros.HeroRegistry;
 import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
@@ -22,8 +19,10 @@ public final class HeroCore {
     @SuppressWarnings("UnstableApiUsage")
     public static void init() {
         ModItems.TABS.register();
+        ModBlocks.BLOCKS.register();
         ModItems.ITEMS.register();
         ModEntities.ENTITIES.register();
+        ModBlockEntities.BLOCK_ENTITIES.register();
         ModSounds.SOUNDS.register();
         ModParticles.PARTICLES.register();
 

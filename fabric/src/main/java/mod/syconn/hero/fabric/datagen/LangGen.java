@@ -13,7 +13,7 @@ public class LangGen extends FabricLanguageProvider {
     }
 
     public void generateTranslations(TranslationBuilder translationBuilder) {
-        translationBuilder.add("itemGroup.hero.hero_items", "Super Hero Gear");
+//        translationBuilder.add("itemGroup.hero.hero_items", "Super Hero Gear");
 
 //        translationBuilder.add(MARK_2_HELMET.get(), "Mark 2 Helmet");
 //        translationBuilder.add(MARK_2_CHESTPLATE.get(), "Mark 2 Chestplate");
