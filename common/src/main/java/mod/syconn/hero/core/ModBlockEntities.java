@@ -2,7 +2,7 @@ package mod.syconn.hero.core;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import mod.syconn.hero.blockentities.SuitDisplayBlockEntity;
+import mod.syconn.hero.features.ironman.blockentity.SuitDisplayBlockEntity;
 import mod.syconn.hero.utils.Constants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;

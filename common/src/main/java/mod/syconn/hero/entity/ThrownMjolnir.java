@@ -4,7 +4,6 @@ import dev.architectury.extensions.network.EntitySpawnExtension;
 import dev.architectury.networking.NetworkManager;
 import mod.syconn.hero.core.ModDamageTypes;
 import mod.syconn.hero.core.ModEntities;
-import mod.syconn.hero.core.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

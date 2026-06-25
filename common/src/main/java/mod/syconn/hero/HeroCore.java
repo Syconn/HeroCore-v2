@@ -21,6 +21,7 @@ public final class HeroCore {
         ModItems.ITEMS.register();
         ModEntities.ENTITIES.register();
         ModBlockEntities.BLOCK_ENTITIES.register();
+        ModMenus.MENUS.register();
         ModSounds.SOUNDS.register();
         ModParticles.PARTICLES.register();
 

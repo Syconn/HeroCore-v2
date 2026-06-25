@@ -1,6 +1,5 @@
 package mod.syconn.hero.utils.interfaces;
 
-import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.utils.GameInstance;
 import mod.syconn.hero.mixin.client.ItemRendererInvoker;

@@ -5,7 +5,7 @@ import mod.syconn.hero.features.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.features.heros.interfaces.IHeroType;
 import mod.syconn.hero.features.ironman.Ironman;
 import mod.syconn.hero.features.ironman.client.sounds.IronFlightSoundInstance;
-import mod.syconn.hero.item.IronmanArmorItem;
+import mod.syconn.hero.features.ironman.item.IronmanArmorItem;
 import mod.syconn.hero.utils.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;

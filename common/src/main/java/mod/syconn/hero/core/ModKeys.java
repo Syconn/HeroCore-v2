@@ -1,8 +1,5 @@
 package mod.syconn.hero.core;
 
-import me.fzzyhmstrs.fzzy_config.screen.context.ContextInput;
-import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
-import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedKeybind;
 import mod.syconn.hero.utils.Constants;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;

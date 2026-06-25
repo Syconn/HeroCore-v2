@@ -1,10 +1,7 @@
 package mod.syconn.hero.fabric.datagen;
 
-import mod.syconn.hero.core.ModKeys;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-
-import static mod.syconn.hero.core.ModItems.*;
 
 public class LangGen extends FabricLanguageProvider {
 

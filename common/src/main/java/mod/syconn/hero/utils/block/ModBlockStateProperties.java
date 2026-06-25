@@ -1,6 +1,5 @@
 package mod.syconn.hero.utils.block;
 
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class ModBlockStateProperties {

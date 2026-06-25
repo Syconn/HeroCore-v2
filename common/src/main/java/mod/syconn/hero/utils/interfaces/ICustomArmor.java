@@ -1,6 +1,6 @@
 package mod.syconn.hero.utils.interfaces;
 
-import mod.syconn.hero.features.ironman.client.renderers.ModifiedIronmanArmorRenderer;
+import mod.syconn.hero.features.ironman.client.renderers.item.ModifiedIronmanArmorRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;

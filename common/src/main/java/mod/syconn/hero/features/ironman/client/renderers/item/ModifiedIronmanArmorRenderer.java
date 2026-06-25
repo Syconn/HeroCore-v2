@@ -1,4 +1,4 @@
-package mod.syconn.hero.features.ironman.client.renderers;
+package mod.syconn.hero.features.ironman.client.renderers.item;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;

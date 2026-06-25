@@ -1,6 +1,7 @@
-package mod.syconn.hero.client.particle;
+package mod.syconn.hero.features.ironman.client.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import mod.syconn.hero.client.particle.TrailParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;

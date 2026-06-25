@@ -1,13 +1,12 @@
-package mod.syconn.hero.blockentities;
+package mod.syconn.hero.features.ironman.blockentity;
 
-import mod.syconn.hero.block.SuitDisplayBlock;
-import mod.syconn.hero.client.HeroClient;
+import mod.syconn.hero.blockentities.SyncedBlockEntity;
 import mod.syconn.hero.core.ModBlockEntities;
 import mod.syconn.hero.features.addons.IronmanContent;
+import mod.syconn.hero.features.ironman.block.SuitDisplayBlock;
 import mod.syconn.hero.features.ironman.server.data.SuitTag;
-import mod.syconn.hero.utils.block.ModBlockStateProperties;
+import mod.syconn.hero.server.container.EquipmentContainer;
 import mod.syconn.hero.utils.generic.AnimationUtil;
-import mod.syconn.hero.utils.generic.NBTUtil;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class SuitDisplayBlockEntity extends SyncedBlockEntity {
@@ -29,7 +27,7 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
     private static final byte OPEN_TICKS = 12;
     private static final byte SPIN_TICKS = 16;
 
-    private Map<EquipmentSlot, ItemStack> gear = new HashMap<>();
+    private final EquipmentContainer container = new EquipmentContainer();
     private float suitSpin = 0f;
     private boolean nearbyPlayer = false;
     private boolean lastNearbyPlayer = false;
@@ -47,15 +45,15 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
             if (be.suitSpin < 0) be.suitSpin++;
 
             be.lastNearbyPlayer = be.nearbyPlayer;
-            be.nearbyPlayer = !level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).inflate(0.5f)).isEmpty();
+            be.nearbyPlayer = !level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).inflate(0.75f)).isEmpty();
             be.startSuitSpin();
         } else {
 //            var playersWithin = level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition));
-
         }
     }
 
     private void startSuitSpin() {
+        if (!getBlockState().getValue(BlockStateProperties.OPEN)) this.nearbyPlayer = false;
         if (this.suitSpin != 0 || nearbyPlayer == lastNearbyPlayer) return;
         this.suitSpin = nearbyPlayer ? -SPIN_TICKS : SPIN_TICKS;
     }
@@ -67,8 +65,8 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
     }
 
     public int getColor() {
-        var stack = gear.get(EquipmentSlot.CHEST);
-        return stack != null && stack.getItem() instanceof ICustomArmor ? SuitTag.getOrCreate(stack).color : DyeColor.GRAY.getFireworkColor();
+        var stack = this.container.getItem(EquipmentSlot.CHEST.getIndex());
+        return stack.getItem() instanceof ICustomArmor ? SuitTag.getOrCreate(stack).color : DyeColor.GRAY.getFireworkColor();
     }
 
     public void open(Level level) {
@@ -90,25 +88,29 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
     }
 
     private void setGear(Map<EquipmentSlot, ItemStack> gear) {
-        this.gear = gear;
+        this.container.setGear(gear);
     }
 
     public Map<EquipmentSlot, ItemStack> getGear() {
-        return gear;
+        return this.container.getGear();
+    }
+
+    public EquipmentContainer getContainer() {
+        return container;
     }
 
     @Override
     public void load(CompoundTag tag) {
-        this.gear = NBTUtil.getMap(tag.getCompound("gear"), t -> NBTUtil.getEnum(EquipmentSlot.class, t), ItemStack::of);
+        container.read(tag.getCompound("container"));
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
-        tag.put("gear", NBTUtil.putMap(this.gear, NBTUtil::putEnum, s -> NBTUtil.convert(s::save)));
+        tag.put("container", container.save());
     }
 
     public static int getColor(BlockAndTintGetter level, BlockState state, BlockPos pos) {
-        if (level != null && level.getBlockEntity(SuitDisplayBlock.getBlockEntityPos(level, state, pos)) instanceof SuitDisplayBlockEntity be) return be.getColor();
+        if (level != null && level.getBlockEntity(SuitDisplayBlock.getBlockEntityPos(level, pos)) instanceof SuitDisplayBlockEntity be) return be.getColor();
         return -1;
     }
 }

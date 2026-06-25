@@ -1,4 +1,4 @@
-package mod.syconn.hero.item;
+package mod.syconn.hero.features.ironman.item;
 
 import mod.syconn.hero.features.ironman.server.data.SuitTag;
 import mod.syconn.hero.utils.generic.FontUtil;

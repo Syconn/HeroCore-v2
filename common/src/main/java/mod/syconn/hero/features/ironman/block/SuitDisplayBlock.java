@@ -1,8 +1,9 @@
-package mod.syconn.hero.block;
+package mod.syconn.hero.features.ironman.block;
 
-import mod.syconn.hero.blockentities.SuitDisplayBlockEntity;
+import mod.syconn.hero.block.TwoPartVerticalBlock;
 import mod.syconn.hero.core.ModBlockEntities;
-import mod.syconn.hero.item.IronmanArmorItem;
+import mod.syconn.hero.features.ironman.blockentity.SuitDisplayBlockEntity;
+import mod.syconn.hero.features.ironman.server.menu.SuitDisplayMenu;
 import mod.syconn.hero.utils.block.TwoPart;
 import mod.syconn.hero.utils.generic.ModelUtil;
 import mod.syconn.hero.utils.interfaces.IEntityBlock;
@@ -31,7 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO ITEM DROPS AND TOOL REQ, Texture Lighting Elements better, Walk in suit animation, Auto Place, Charging, Deploy MODE?
+public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO ITEM DROPS AND TOOL REQ, Texture Lighting Elements better, Redstone TOGGLES DOOR, Walk in suit animation, Auto Place, Charging, Deploy MODE?
 
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN; // TODO ADD LIKE GROUND LANDING PARTICLES
 
@@ -47,10 +48,11 @@ public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlo
 
     @Override @SuppressWarnings("deprecation")
     public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        var stack = player.getItemInHand(hand);
-        if (level.getBlockEntity(getBlockEntityPos(level, state, pos)) instanceof SuitDisplayBlockEntity be) {
-            if (stack.getItem() instanceof IronmanArmorItem) be.setFromModel(stack);
+        if (level.getBlockEntity(getBlockEntityPos(level, pos)) instanceof SuitDisplayBlockEntity be) {
+            var open = state.getValue(OPEN);
+            if (open && !player.isShiftKeyDown()) SuitDisplayMenu.openMenu(player, getBlockEntityPos(level, pos));
             else be.open(level);
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.CONSUME;
     }
@@ -79,8 +81,8 @@ public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlo
         return createTickerHelper(blockEntityType, ModBlockEntities.SUIT_DISPLAY.get(), SuitDisplayBlockEntity::tick);
     }
 
-    public static BlockPos getBlockEntityPos(@NotNull BlockAndTintGetter level, BlockState state, BlockPos pos) {
-        return level.getBlockEntity(pos) instanceof SuitDisplayBlockEntity ? pos : pos.relative(getOtherPart(state));
+    public static BlockPos getBlockEntityPos(@NotNull BlockAndTintGetter level, BlockPos pos) {
+        return level.getBlockEntity(pos) instanceof SuitDisplayBlockEntity ? pos : pos.relative(getOtherPart(level.getBlockState(pos)));
     }
 
     public VoxelShape getShape(boolean bottom, boolean open) {

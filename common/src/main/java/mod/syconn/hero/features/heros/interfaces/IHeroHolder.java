@@ -1,7 +1,7 @@
 package mod.syconn.hero.features.heros.interfaces;
 
-import mod.syconn.hero.features.heros.errors.DuplicateHeroException;
 import mod.syconn.hero.features.heros.HeroManager;
+import mod.syconn.hero.features.heros.errors.DuplicateHeroException;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;

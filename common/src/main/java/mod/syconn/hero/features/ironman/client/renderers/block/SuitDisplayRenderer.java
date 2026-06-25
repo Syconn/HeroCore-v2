@@ -1,10 +1,10 @@
-package mod.syconn.hero.client.render.block;
+package mod.syconn.hero.features.ironman.client.renderers.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import mod.syconn.hero.blockentities.SuitDisplayBlockEntity;
 import mod.syconn.hero.client.model.DisplayDoorModel;
-import mod.syconn.hero.client.render.entity.IronmanArmorRenderer;
+import mod.syconn.hero.features.ironman.blockentity.SuitDisplayBlockEntity;
+import mod.syconn.hero.features.ironman.client.renderers.entity.IronmanArmorRenderer;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.generic.ModelUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlockEntity> {
+public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlockEntity> { // TODO CLOSING HAS AWKWARD ANIMATION
 
     private static final ResourceLocation DOOR_TEXTURE = Constants.withId("textures/block/door.png");
     private final DisplayDoorModel door;

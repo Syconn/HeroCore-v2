@@ -1,17 +1,17 @@
-package mod.syconn.hero.client.render.entity;
+package mod.syconn.hero.features.ironman.client.renderers.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import mod.syconn.hero.features.addons.IronmanContent;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
+import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
@@ -20,18 +20,14 @@ import java.util.function.Function;
 
 public class IronmanArmorRenderer {
 
-    private final ModelPart innerModel;
-    private final ModelPart outerModel;
+    private final HumanoidArmorModel<Player> innerModel;
+    private final HumanoidArmorModel<Player> outerModel;
     private Map<EquipmentSlot, ItemStack> gear;
 
     public IronmanArmorRenderer(Function<ModelLayerLocation, ModelPart> baker) {
-        this.innerModel = baker.apply(ModelLayers.PLAYER_SLIM_INNER_ARMOR);
-        this.outerModel = baker.apply(ModelLayers.PLAYER_SLIM_OUTER_ARMOR);
+        this.innerModel = new HumanoidArmorModel<>(baker.apply(ModelLayers.PLAYER_SLIM_INNER_ARMOR));
+        this.outerModel = new HumanoidArmorModel<>(baker.apply(ModelLayers.PLAYER_SLIM_OUTER_ARMOR));
         this.gear = new HashMap<>();
-    }
-
-    public void setGear(ResourceLocation model) {
-        this.gear = IronmanContent.createSuitMap(model);
     }
 
     public void setGear(Map<EquipmentSlot, ItemStack> gear) {
@@ -47,13 +43,37 @@ public class IronmanArmorRenderer {
         this.renderArmorPiece(poseStack, buffer, EquipmentSlot.HEAD, packedLight, this.getArmorModel(EquipmentSlot.HEAD));
     }
 
-    private void renderArmorPiece(PoseStack poseStack, MultiBufferSource buffer, EquipmentSlot slot, int packedLight, ModelPart model) {
+    private void renderArmorPiece(PoseStack poseStack, MultiBufferSource buffer, EquipmentSlot slot, int packedLight, HumanoidArmorModel<Player> model) {
         var stack = this.gear.get(slot);
+        this.setPartVisibility(model, slot);
         if (stack != null && stack.getItem() instanceof ICustomArmor armor)
-            armor.getRenderLocation(stack, slot).ifPresent(texture -> model.render(poseStack, buffer.getBuffer(RenderType.armorCutoutNoCull(texture)), packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F));
+            armor.getRenderLocation(stack, slot).ifPresent(texture -> model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.armorCutoutNoCull(texture)), packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F));
     }
 
-    private ModelPart getArmorModel(EquipmentSlot slot) {
+    private HumanoidArmorModel<Player> getArmorModel(EquipmentSlot slot) {
         return slot == EquipmentSlot.LEGS ? this.innerModel : this.outerModel;
+    }
+
+    protected void setPartVisibility(HumanoidArmorModel<Player> model, EquipmentSlot slot) {
+        model.setAllVisible(false);
+        switch (slot) {
+            case HEAD:
+                model.head.visible = true;
+                model.hat.visible = true;
+                break;
+            case CHEST:
+                model.body.visible = true;
+                model.rightArm.visible = true;
+                model.leftArm.visible = true;
+                break;
+            case LEGS:
+                model.body.visible = true;
+                model.rightLeg.visible = true;
+                model.leftLeg.visible = true;
+                break;
+            case FEET:
+                model.rightLeg.visible = true;
+                model.leftLeg.visible = true;
+        }
     }
 }

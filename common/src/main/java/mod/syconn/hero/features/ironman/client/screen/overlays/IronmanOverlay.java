@@ -1,4 +1,4 @@
-package mod.syconn.hero.client.screen.overlays;
+package mod.syconn.hero.features.ironman.client.screen.overlays;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;

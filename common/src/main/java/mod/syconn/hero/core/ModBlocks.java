@@ -2,7 +2,7 @@ package mod.syconn.hero.core;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import mod.syconn.hero.block.SuitDisplayBlock;
+import mod.syconn.hero.features.ironman.block.SuitDisplayBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
