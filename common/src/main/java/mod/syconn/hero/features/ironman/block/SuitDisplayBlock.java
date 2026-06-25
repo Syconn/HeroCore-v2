@@ -32,12 +32,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO ITEM DROPS AND TOOL REQ, Texture Lighting Elements better, Redstone TOGGLES DOOR, Walk in suit animation, Auto Place, Charging, Deploy MODE?
+public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO Texture Lighting Elements better, Redstone TOGGLES DOOR, Walk in suit animation, Auto Place, Charging, Deploy MODE?
 
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN; // TODO ADD LIKE GROUND LANDING PARTICLES
 
     public SuitDisplayBlock() {
-        super(Properties.copy(Blocks.BEACON));
+        super(Properties.copy(Blocks.BEACON).isRedstoneConductor(Blocks::never));
         this.registerDefaultState(this.stateDefinition.any().setValue(PART, TwoPart.DOWN).setValue(FACING, Direction.NORTH).setValue(OPEN, false));
     }
 

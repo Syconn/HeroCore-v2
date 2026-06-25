@@ -1,6 +1,5 @@
 package mod.syconn.hero.features.ironman.client.screen;
 
-import mod.syconn.hero.features.ironman.server.data.SuitTag;
 import mod.syconn.hero.features.ironman.server.menu.SuitDisplayMenu;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
