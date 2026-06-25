@@ -70,6 +70,7 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
     }
 
     public void open(Level level) {
+        if (getBlockState().getValue(BlockStateProperties.POWERED) && getBlockState().getValue(BlockStateProperties.OPEN)) return;
         if (level.isClientSide()) this.openProgress = this.getBlockState().getValue(BlockStateProperties.OPEN) ? -OPEN_TICKS : OPEN_TICKS;
         level.setBlock(worldPosition, this.getBlockState().setValue(BlockStateProperties.OPEN, !this.getBlockState().getValue(BlockStateProperties.OPEN)), 3);
         this.markDirty();

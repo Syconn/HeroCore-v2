@@ -37,10 +37,9 @@ public abstract class TwoPartVerticalBlock extends VerticalRotatableBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockPos blockPos = context.getClickedPos();
-        BlockPos blockPos2 = blockPos.relative(Direction.UP);
-        Level level = context.getLevel();
-        return level.getBlockState(blockPos2).canBeReplaced(context) && level.getWorldBorder().isWithinBounds(blockPos2) ? this.defaultBlockState().setValue(VERTICAL, Direction.UP).setValue(FACING, context.getHorizontalDirection()) : null;
+        var pose = context.getClickedPos().relative(Direction.UP);
+        var level = context.getLevel();
+        return level.getBlockState(pose).canBeReplaced(context) && level.getWorldBorder().isWithinBounds(pose) ? this.defaultBlockState().setValue(VERTICAL, Direction.UP).setValue(FACING, context.getHorizontalDirection()) : null;
     }
 
     @Override

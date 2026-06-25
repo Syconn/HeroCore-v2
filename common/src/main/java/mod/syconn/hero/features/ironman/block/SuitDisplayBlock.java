@@ -12,9 +12,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -32,18 +35,26 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO Texture Lighting Elements better, Redstone TOGGLES DOOR, Walk in suit animation, Auto Place, Charging, Deploy MODE?
+public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO Texture Lighting Elements better, Walk in suit animation, Auto Place, Charging, Deploy MODE?, SOUNDS
 
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN; // TODO ADD LIKE GROUND LANDING PARTICLES
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public SuitDisplayBlock() {
         super(Properties.copy(Blocks.BEACON).isRedstoneConductor(Blocks::never));
-        this.registerDefaultState(this.stateDefinition.any().setValue(PART, TwoPart.DOWN).setValue(FACING, Direction.NORTH).setValue(OPEN, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(PART, TwoPart.DOWN).setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(POWERED, false));
     }
 
     @Override @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return ModelUtil.rotateShape(Direction.NORTH, state.getValue(FACING), getShape(state.getValue(PART).down(), state.getValue(OPEN)));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        var state = super.getStateForPlacement(context);
+        boolean powered = context.getLevel().hasNeighborSignal(context.getClickedPos().above()) || context.getLevel().hasNeighborSignal(context.getClickedPos().above().above());
+        return state != null ? state.setValue(POWERED, powered) : null;
     }
 
     @Override @SuppressWarnings("deprecation")
@@ -66,12 +77,14 @@ public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlo
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(OPEN);
+        builder.add(OPEN, POWERED);
     }
 
     @Override @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+        boolean powered = level.hasNeighborSignal(pos) || level.hasNeighborSignal(getBlockEntityPos(level, pos));
+        if (state.getValue(POWERED) != powered) level.setBlock(pos, state.setValue(POWERED, powered).setValue(OPEN, powered), 3);
         var otherState = level.getBlockState(neighborPos);
         if (otherState.getBlock() == this && state.getValue(OPEN) != otherState.getValue(OPEN)) level.setBlock(pos, state.setValue(OPEN, otherState.getValue(OPEN)), 3);
     }
