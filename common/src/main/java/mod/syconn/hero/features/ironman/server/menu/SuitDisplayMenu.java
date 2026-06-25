@@ -32,14 +32,36 @@ public class SuitDisplayMenu extends AbstractContainerMenu {
         super(ModMenus.SUIT_DISPLAY.get(), containerId);
         this.blockEntity = inventory.player.level().getBlockEntity(pos, ModBlockEntities.SUIT_DISPLAY.get()).orElseThrow();
 
-        this.addSlot(new SpecificEquipmentSlot(blockEntity.getContainer(), 0, 26, 17, IronmanArmorItem.class, EquipmentSlot.HEAD));
+        this.addSlot(new SpecificEquipmentSlot(blockEntity.getContainer(), 3, 26, 17, IronmanArmorItem.class, EquipmentSlot.HEAD));
+        this.addSlot(new SpecificEquipmentSlot(blockEntity.getContainer(), 2, 26, 53, IronmanArmorItem.class, EquipmentSlot.CHEST));
+        this.addSlot(new SpecificEquipmentSlot(blockEntity.getContainer(), 1, 134, 17, IronmanArmorItem.class, EquipmentSlot.LEGS));
+        this.addSlot(new SpecificEquipmentSlot(blockEntity.getContainer(), 0, 134, 53, IronmanArmorItem.class, EquipmentSlot.FEET));
         for(int l = 0; l < 3; ++l) for(int j1 = 0; j1 < 9; ++j1) this.addSlot(new Slot(inventory, j1 + l * 9 + 9, 8 + j1 * 18, 84 + l * 18));
         for(int i1 = 0; i1 < 9; ++i1) this.addSlot(new Slot(inventory, i1, 8 + i1 * 18, 142));
     }
 
     @Override
     public @NotNull ItemStack quickMoveStack(Player player, int index) {
-        return ItemStack.EMPTY;
+        var empty = ItemStack.EMPTY;
+        var slot = this.slots.get(index);
+        if (!slot.hasItem()) return empty;
+
+        var stack = slot.getItem();
+        var original = stack.copy();
+        if (index < 4 && !this.moveItemStackTo(stack, 4, this.slots.size(), true)) return ItemStack.EMPTY;
+        else {
+            if (stack.getItem() instanceof IronmanArmorItem armor && armor.getEquipmentSlot() == EquipmentSlot.HEAD && this.moveItemStackTo(stack, 0, 1, false)) return empty;
+            if (stack.getItem() instanceof IronmanArmorItem armor && armor.getEquipmentSlot() == EquipmentSlot.CHEST && this.moveItemStackTo(stack, 1, 2, false)) return empty;
+            if (stack.getItem() instanceof IronmanArmorItem armor && armor.getEquipmentSlot() == EquipmentSlot.LEGS && this.moveItemStackTo(stack, 2, 3, false)) return empty;
+            if (stack.getItem() instanceof IronmanArmorItem armor && armor.getEquipmentSlot() == EquipmentSlot.FEET && this.moveItemStackTo(stack, 3, 4, false)) return empty;
+            if (!this.moveItemStackTo(stack, 4, this.slots.size(), false)) return ItemStack.EMPTY;
+        }
+
+        if (stack.isEmpty()) slot.set(ItemStack.EMPTY);
+        else slot.setChanged();
+        if (stack.getCount() == original.getCount()) return ItemStack.EMPTY;
+        slot.onTake(player, stack);
+        return original;
     }
 
     @Override

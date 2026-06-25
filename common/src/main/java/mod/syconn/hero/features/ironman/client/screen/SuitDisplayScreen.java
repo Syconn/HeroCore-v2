@@ -1,11 +1,15 @@
 package mod.syconn.hero.features.ironman.client.screen;
 
+import mod.syconn.hero.features.ironman.server.data.SuitTag;
 import mod.syconn.hero.features.ironman.server.menu.SuitDisplayMenu;
 import mod.syconn.hero.utils.Constants;
+import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.DyeColor;
 
@@ -36,12 +40,15 @@ public class SuitDisplayScreen extends AbstractContainerScreen<SuitDisplayMenu> 
             int renderX = i + arcX + 4, renderY = j + arcY + 4;
             var time = (minecraft.player.tickCount + partialTick) * 0.1f;
             var arcSize = 256;
-//            var glow = 0.92f + 0.08f * Mth.sin(time); // TODO ADD BACK
-            var glow = 1.0f;
+            var active = this.menu.getBlockEntity().getContainer().getItem(EquipmentSlot.CHEST.getIndex()).getItem() instanceof ICustomArmor;
+            var glow = active ? 0.92f + 0.08f * Mth.sin(time) : 1.0f;
             var scale = 0.35f;
             var pose = guiGraphics.pose();
-            var color = DyeColor.GRAY.getFireworkColor(); // TODO PULL COLOR OR THIS
-            float r = ((color >> 16) & 0xFF) / 255f, g = ((color >> 8) & 0xFF) / 255f, b = (color & 0xFF) / 255f;
+            float t = active ? (Mth.sin(time) + 1f) * 0.5f : 1f;
+            int c1 = 0xE0E0E2, c2 = active ? 0xFFFFFF : DyeColor.GRAY.getFireworkColor();
+            float r1 = ((c1 >> 16) & 0xFF) / 255f, g1 = ((c1 >> 8) & 0xFF) / 255f, b1 = (c1 & 0xFF) / 255f;
+            float r2 = ((c2 >> 16) & 0xFF) / 255f, g2 = ((c2 >> 8) & 0xFF) / 255f, b2 = (c2 & 0xFF) / 255f;
+            float r = Mth.lerp(t, r1, r2), g = Mth.lerp(t, g1, g2), b = Mth.lerp(t, b1, b2);
 
             pose.pushPose();
             pose.translate(renderX, renderY, 0);

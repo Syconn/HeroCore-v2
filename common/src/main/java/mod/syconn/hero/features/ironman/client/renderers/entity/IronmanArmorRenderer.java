@@ -56,6 +56,7 @@ public class IronmanArmorRenderer {
 
     protected void setPartVisibility(HumanoidArmorModel<Player> model, EquipmentSlot slot) {
         model.setAllVisible(false);
+        model.young = false;
         switch (slot) {
             case HEAD:
                 model.head.visible = true;
