@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO Texture Lighting Elements better, Walk in suit animation, Auto Place, Charging, Deploy MODE?, SOUNDS
 
-    public static final BooleanProperty OPEN = BlockStateProperties.OPEN; // TODO ADD LIKE GROUND LANDING PARTICLES
+    public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public SuitDisplayBlock() {

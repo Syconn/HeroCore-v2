@@ -13,11 +13,14 @@ import mod.syconn.hero.network.messages.serverside.FlightTravelPacket;
 import mod.syconn.hero.network.messages.serverside.HoverPacket;
 import mod.syconn.hero.network.messages.serverside.PlaySoundPacket;
 import mod.syconn.hero.utils.Constants;
+import mod.syconn.hero.utils.client.ParticleEvent;
 import mod.syconn.hero.utils.generic.AnimationUtil;
 import mod.syconn.hero.utils.generic.NBTUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -178,6 +181,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
                     AnimationUtil.notifyAndPlay(sp, "ironman.landing", 1.5f, 1, Ease.OUTCUBIC);
                     float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
                     Network.CHANNEL.sendToServer(new PlaySoundPacket(ModSounds.LANDING.get(), SoundSource.PLAYERS, 0.5f, pitch));
+                    groundParticles(player);
                 }
                 sendTrackingData(player);
             }
@@ -187,6 +191,23 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
             player.setNoGravity(true);
             this.engagedHover = true;
         } else if (this.engagedHover) player.setNoGravity(false);
+    }
+
+    private void groundParticles(Player player) {
+        var level = player.level();
+        var center = player.position();
+        int count = 24;
+        for (int i = 0; i < count; i++) {
+            var groundPos = player.blockPosition().below();
+            double angle = (Math.PI * 2.0 * i) / count;
+            double speed = 1 * 0.35d;
+            double dx = Math.cos(angle), dz = Math.sin(angle);
+            double radius = 0.5;
+            double x = center.x + dx * radius, z = center.z + dz * radius;
+            var state = level.getBlockState(groundPos);
+            if (player instanceof ServerPlayer sp) addParticleEvent(sp, new ParticleEvent(new Vec3(x, player.getY() + 0.05, z), new Vec3(dx * speed, 0.02, dz * speed), new BlockParticleOption(ParticleTypes.BLOCK, state)));
+            if (player instanceof ServerPlayer sp) addParticleEvent(sp, new ParticleEvent(new Vec3(x, player.getY() + 0.05, z), new Vec3(dx * speed, 0.02, dz * speed), ParticleTypes.CLOUD));
+        }
     }
 
     private static int vector(boolean input, boolean otherInput) {
