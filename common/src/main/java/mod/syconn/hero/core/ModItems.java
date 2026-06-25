@@ -4,7 +4,7 @@ import dev.architectury.registry.CreativeTabOutput;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import mod.syconn.hero.feature.addons.IronmanContent;
+import mod.syconn.hero.features.addons.IronmanContent;
 import mod.syconn.hero.item.IronmanArmorItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;

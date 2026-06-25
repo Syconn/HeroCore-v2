@@ -1,8 +1,8 @@
 package mod.syconn.hero.network.messages.clientside;
 
 import dev.architectury.networking.NetworkManager;
-import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
-import mod.syconn.hero.feature.heros.interfaces.IServerSynced;
+import mod.syconn.hero.features.heros.interfaces.IHeroHolder;
+import mod.syconn.hero.features.heros.interfaces.IServerSynced;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

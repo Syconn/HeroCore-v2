@@ -16,8 +16,8 @@ import mod.syconn.hero.client.screen.overlays.IronmanOverlay;
 import mod.syconn.hero.core.ModBlockEntities;
 import mod.syconn.hero.core.ModBlocks;
 import mod.syconn.hero.core.ModKeys;
-import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
-import mod.syconn.hero.feature.ironman.client.renderers.IronmanArmorRenderer;
+import mod.syconn.hero.features.heros.interfaces.IHeroHolder;
+import mod.syconn.hero.features.ironman.client.renderers.ModifiedIronmanArmorRenderer;
 import mod.syconn.hero.item.IronmanArmorItem;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.interfaces.IModifiedItemRenderer;
@@ -34,7 +34,7 @@ public class HeroClient {
     public static void init() {
         ModKeys.KEYS.forEach(KeyMappingRegistry::register);
 
-        IModifiedItemRenderer.register(IronmanArmorItem.class, new IronmanArmorRenderer());
+        IModifiedItemRenderer.register(IronmanArmorItem.class, new ModifiedIronmanArmorRenderer());
         ColorHandlerRegistry.registerItemColors((s, layer) -> layer == 0 ? DyeColor.GRAY.getFireworkColor() : -1, ModBlocks.SUIT_DISPLAY.get());
         ColorHandlerRegistry.registerBlockColors((state, level, pos, layer) -> layer == 0 ? SuitDisplayBlockEntity.getColor(level, state, pos) : -1, ModBlocks.SUIT_DISPLAY.get());
         RenderTypeRegistry.register(RenderType.cutout(), ModBlocks.SUIT_DISPLAY.get());

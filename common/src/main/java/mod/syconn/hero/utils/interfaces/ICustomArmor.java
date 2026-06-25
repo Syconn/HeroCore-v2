@@ -1,5 +1,6 @@
 package mod.syconn.hero.utils.interfaces;
 
+import mod.syconn.hero.features.ironman.client.renderers.ModifiedIronmanArmorRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -11,8 +12,15 @@ import java.util.Optional;
 public interface ICustomArmor extends IItemExtensions {
 
     String getMaterialName(ItemStack stack);
-    Optional<ResourceLocation> getRenderLocation(LivingEntity entity, EquipmentSlot equipmentSlot);
     SoundEvent getEquipSound(ItemStack stack);
     int getDefense(ItemStack stack);
     float getToughness(ItemStack stack);
+
+    default Optional<ResourceLocation> getRenderLocation(LivingEntity entity, EquipmentSlot slot) {
+        return this.getRenderLocation(entity.getItemBySlot(slot), slot);
+    }
+
+    default Optional<ResourceLocation> getRenderLocation(ItemStack stack, EquipmentSlot slot) {
+        return ModifiedIronmanArmorRenderer.getRenderLocation(this, stack, slot);
+    }
 }

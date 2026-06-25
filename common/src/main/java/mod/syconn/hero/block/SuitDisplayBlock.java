@@ -2,7 +2,6 @@ package mod.syconn.hero.block;
 
 import mod.syconn.hero.blockentities.SuitDisplayBlockEntity;
 import mod.syconn.hero.core.ModBlockEntities;
-import mod.syconn.hero.feature.ironman.server.data.SuitTag;
 import mod.syconn.hero.item.IronmanArmorItem;
 import mod.syconn.hero.utils.block.TwoPart;
 import mod.syconn.hero.utils.generic.ModelUtil;
@@ -32,9 +31,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO ITEM DROPS AND TOOL REQ, Texture Lighting Elements better, Add actuall Lighting, Armor Render, Flip 180 for Walk in suit animation, Auto Place, Charging, Deploy MODE?
+public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO ITEM DROPS AND TOOL REQ, Texture Lighting Elements better, Walk in suit animation, Auto Place, Charging, Deploy MODE?
 
-    public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
+    public static final BooleanProperty OPEN = BlockStateProperties.OPEN; // TODO ADD LIKE GROUND LANDING PARTICLES
 
     public SuitDisplayBlock() {
         super(Properties.copy(Blocks.BEACON));
@@ -46,17 +45,12 @@ public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlo
         return ModelUtil.rotateShape(Direction.NORTH, state.getValue(FACING), getShape(state.getValue(PART).down(), state.getValue(OPEN)));
     }
 
-    @Override
+    @Override @SuppressWarnings("deprecation")
     public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-//        if (level.isClientSide) return InteractionResult.SUCCESS;
-//        else {
-//
-//        }
         var stack = player.getItemInHand(hand);
-        if (stack.getItem() instanceof IronmanArmorItem && level.getBlockEntity(getBlockEntityPos(level, state, pos)) instanceof SuitDisplayBlockEntity be) be.setColor(SuitTag.getOrCreate(stack).color);
-        else {
-            state = state.setValue(OPEN, !state.getValue(OPEN));
-            level.setBlock(pos, state, 3);
+        if (level.getBlockEntity(getBlockEntityPos(level, state, pos)) instanceof SuitDisplayBlockEntity be) {
+            if (stack.getItem() instanceof IronmanArmorItem) be.setFromModel(stack);
+            else be.open(level);
         }
         return InteractionResult.CONSUME;
     }
@@ -77,7 +71,7 @@ public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlo
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
         var otherState = level.getBlockState(neighborPos);
-        if (otherState.getBlock() == this && state.getValue(OPEN) != otherState.getValue(OPEN)) level.setBlock(pos, state.setValue(OPEN, otherState.getValue(OPEN)), 10);
+        if (otherState.getBlock() == this && state.getValue(OPEN) != otherState.getValue(OPEN)) level.setBlock(pos, state.setValue(OPEN, otherState.getValue(OPEN)), 3);
     }
 
     @Override
@@ -97,12 +91,12 @@ public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlo
             shape = Shapes.join(shape, Shapes.box(0, 0.09375, 0, 0.0625, 1, 0.75), BooleanOp.OR);
             shape = Shapes.join(shape, Shapes.box(0.9375, 0.09375, 0, 1, 1, 0.75), BooleanOp.OR);
             shape = Shapes.join(shape, Shapes.box(0.0625, 0.09375, 0, 0.9375, 1, 0.0625), BooleanOp.OR);
-            return shape;
+        } else {
+            shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 1, 0.0625), BooleanOp.OR);
+            shape = Shapes.join(shape, Shapes.box(0, 0, 0.0625, 0.0625, 1, 0.75), BooleanOp.OR);
+            shape = Shapes.join(shape, Shapes.box(0.9375, 0, 0.0625, 1, 1, 0.75), BooleanOp.OR);
+            shape = Shapes.join(shape, Shapes.box(0.0625, 0.9375, 0.0625, 0.9375, 1, 1), BooleanOp.OR);
         }
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 1, 0.0625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0.0625, 0.0625, 1, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.9375, 0, 0.0625, 1, 1, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.9375, 0.0625, 0.9375, 1, 1), BooleanOp.OR);
         return shape;
     }
 }

@@ -1,9 +1,9 @@
 package mod.syconn.hero.mixin.client;
 
 import mod.syconn.hero.client.HeroClient;
-import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
-import mod.syconn.hero.feature.ironman.Ironman;
-import mod.syconn.hero.feature.ironman.abilities.FlightAbility;
+import mod.syconn.hero.features.heros.interfaces.IHeroHolder;
+import mod.syconn.hero.features.ironman.Ironman;
+import mod.syconn.hero.features.ironman.abilities.FlightAbility;
 import mod.syconn.hero.utils.interfaces.IModifiedPoseRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;

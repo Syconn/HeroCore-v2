@@ -1,22 +1,15 @@
 package mod.syconn.hero.item;
 
-import mod.syconn.hero.feature.ironman.client.renderers.IronmanArmorRenderer;
-import mod.syconn.hero.feature.ironman.server.data.SuitTag;
+import mod.syconn.hero.features.ironman.server.data.SuitTag;
 import mod.syconn.hero.utils.generic.FontUtil;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 public class IronmanArmorItem extends ArmorItem implements ICustomArmor {
 
@@ -33,11 +26,6 @@ public class IronmanArmorItem extends ArmorItem implements ICustomArmor {
     @Override
     public String getMaterialName(ItemStack stack) {
         return SuitTag.getOrCreate(stack).getMaterial().getName();
-    }
-
-    @Override
-    public Optional<ResourceLocation> getRenderLocation(LivingEntity entity, EquipmentSlot slot) {
-        return IronmanArmorRenderer.getRenderLocation(entity, this, slot);
     }
 
     @Override

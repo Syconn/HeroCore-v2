@@ -1,7 +1,7 @@
 package mod.syconn.hero.mixin;
 
-import mod.syconn.hero.feature.heros.HeroManager;
-import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
+import mod.syconn.hero.features.heros.HeroManager;
+import mod.syconn.hero.features.heros.interfaces.IHeroHolder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

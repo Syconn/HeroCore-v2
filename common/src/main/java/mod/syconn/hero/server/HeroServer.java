@@ -2,8 +2,7 @@ package mod.syconn.hero.server;
 
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
-import mod.syconn.hero.feature.addons.IronmanContent;
-import mod.syconn.hero.feature.heros.interfaces.IHeroHolder;
+import mod.syconn.hero.features.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.utils.server.SyncedResourceManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;

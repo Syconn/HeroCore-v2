@@ -10,15 +10,17 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 
+import java.util.function.Function;
+
 public class DisplayDoorModel extends Model {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Constants.withId("door"), "main");
     private final ModelPart bot;
     private final ModelPart top;
 
-    public DisplayDoorModel(ModelPart root) {
+    public DisplayDoorModel(Function<ModelLayerLocation, ModelPart> baker) {
         super(RenderType::entityCutoutNoCull);
-        this.bot = root.getChild("bot");
-        this.top = root.getChild("top");
+        this.bot = baker.apply(DisplayDoorModel.LAYER_LOCATION).getChild("bot");
+        this.top = baker.apply(DisplayDoorModel.LAYER_LOCATION).getChild("top");
     }
 
     public static LayerDefinition createBodyLayer() {
