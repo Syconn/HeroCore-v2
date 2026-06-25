@@ -35,6 +35,7 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
 
     public SuitDisplayBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(ModBlockEntities.SUIT_DISPLAY.get(), pWorldPosition, pBlockState);
+        this.container.addListener(c -> this.markDirty());
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SuitDisplayBlockEntity be) {

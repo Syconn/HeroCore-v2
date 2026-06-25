@@ -9,10 +9,12 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
-public abstract class EquipmentContainer implements Container {
+public class EquipmentContainer implements Container {
 
     private final NonNullEnumMap gear = new NonNullEnumMap();
+    private Consumer<Container> listener = null;
 
     public void setGear(Map<EquipmentSlot, ItemStack> gear) {
         this.gear.setAll(gear);
@@ -66,6 +68,15 @@ public abstract class EquipmentContainer implements Container {
     public void clearContent() {
         this.gear.clear();
         this.setChanged();
+    }
+
+    @Override
+    public void setChanged() {
+        if (listener != null) this.listener.accept(this);
+    }
+
+    public void addListener(Consumer<Container> listener) {
+        this.listener = listener;
     }
 
     public void read(CompoundTag tag) {
