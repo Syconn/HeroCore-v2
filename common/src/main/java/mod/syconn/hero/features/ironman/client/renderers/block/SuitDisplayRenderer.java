@@ -38,9 +38,12 @@ public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlock
         this.door.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(DOOR_TEXTURE)), packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, 1.0f);
         poseStack.popPose();
 
+        var spin = blockEntity.getSuitSpin(partialTick);
+//        System.out.println(spin);
+
         poseStack.pushPose();
         ModelUtil.translateRotation(poseStack, Direction.NORTH, facing, 0.5f, 0.2f, 0.4f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(getCustomYRot(facing) + 180f * Mth.clamp(blockEntity.getSuitSpin(partialTick), 0, 1)));
+        poseStack.mulPose(Axis.YP.rotationDegrees(getCustomYRot(facing) + 180f * Mth.clamp(spin, 0, 1)));
         poseStack.scale(0.8f, 0.8f, 0.8f);
         renderer.setGear(blockEntity.getGear());
         renderer.render(poseStack, buffer, packedLight);

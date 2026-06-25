@@ -46,23 +46,22 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
             if (be.suitSpin < 0) be.suitSpin++;
 
             be.lastNearbyPlayer = be.nearbyPlayer;
-            be.nearbyPlayer = !level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).inflate(0.75f)).isEmpty();
-            be.startSuitSpin();
+            be.startSuitSpin(!level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).inflate(0.75f)).isEmpty());
         } else {
 //            var playersWithin = level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition));
         }
     }
 
-    private void startSuitSpin() {
-        if (!getBlockState().getValue(BlockStateProperties.OPEN)) this.nearbyPlayer = false;
+    private void startSuitSpin(boolean nearbyPlayer) {
         if (this.suitSpin != 0 || nearbyPlayer == lastNearbyPlayer) return;
         this.suitSpin = nearbyPlayer ? -SPIN_TICKS : SPIN_TICKS;
+        this.nearbyPlayer = nearbyPlayer;
     }
 
     public float getSuitSpin(float partialTicks) {
-        if (this.suitSpin == 0) return nearbyPlayer ? 0 : 1;
-        if (this.suitSpin > 0) return AnimationUtil.outCubic(1 - (this.suitSpin - partialTicks) / SPIN_TICKS);
-        return AnimationUtil.inCubic(-(this.suitSpin + partialTicks) / SPIN_TICKS);
+        if (this.suitSpin > 0) return AnimationUtil.outCubic(1f - (this.suitSpin - partialTicks) / SPIN_TICKS);
+        if (this.suitSpin < 0) return AnimationUtil.inCubic(-(this.suitSpin + partialTicks) / SPIN_TICKS);
+        return this.nearbyPlayer ? 0f : 1f;
     }
 
     public int getColor() {
