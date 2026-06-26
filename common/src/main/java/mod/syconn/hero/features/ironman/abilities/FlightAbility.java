@@ -1,6 +1,7 @@
 package mod.syconn.hero.features.ironman.abilities;
 
 import dev.kosmx.playerAnim.core.util.Ease;
+import mod.syconn.hero.client.particle.TrailParticleOptions;
 import mod.syconn.hero.core.ModSounds;
 import mod.syconn.hero.features.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.features.heros.interfaces.IHeroType;
@@ -8,6 +9,7 @@ import mod.syconn.hero.features.heros.interfaces.IServerSynced;
 import mod.syconn.hero.features.heros.interfaces.IVFXRenderer;
 import mod.syconn.hero.features.heros.util.PowerKeybind;
 import mod.syconn.hero.features.ironman.item.IronmanArmorItem;
+import mod.syconn.hero.features.ironman.server.data.SuitTag;
 import mod.syconn.hero.network.Network;
 import mod.syconn.hero.network.messages.serverside.FlightTravelPacket;
 import mod.syconn.hero.network.messages.serverside.HoverPacket;
@@ -16,6 +18,7 @@ import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.client.ParticleEvent;
 import mod.syconn.hero.utils.generic.AnimationUtil;
 import mod.syconn.hero.utils.generic.NBTUtil;
+import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -26,11 +29,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer {
 
@@ -181,7 +186,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
                     AnimationUtil.notifyAndPlay(sp, "ironman.landing", 1.5f, 1, Ease.OUTCUBIC);
                     float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
                     Network.CHANNEL.sendToServer(new PlaySoundPacket(ModSounds.LANDING.get(), SoundSource.PLAYERS, 0.5f, pitch));
-                    groundParticles(player);
+                    if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ICustomArmor) groundParticles(player);
                 }
                 sendTrackingData(player);
             }
@@ -205,8 +210,11 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
             double radius = 0.5;
             double x = center.x + dx * radius, z = center.z + dz * radius;
             var state = level.getBlockState(groundPos);
+            var color = SuitTag.getOrCreate(player.getItemBySlot(EquipmentSlot.FEET)).color;
+            var start = new Vector3f(FastColor.ARGB32.red(color) / 255f, FastColor.ARGB32.green(color) / 255f, FastColor.ARGB32.blue(color) / 255f);
+            var end = new Vector3f(start.x * 0.35f, start.y * 0.35f, start.z * 0.35f);
             if (player instanceof ServerPlayer sp) addParticleEvent(sp, new ParticleEvent(new Vec3(x, player.getY() + 0.05, z), new Vec3(dx * speed, 0.02, dz * speed), new BlockParticleOption(ParticleTypes.BLOCK, state)));
-            if (player instanceof ServerPlayer sp) addParticleEvent(sp, new ParticleEvent(new Vec3(x, player.getY() + 0.05, z), new Vec3(dx * speed, 0.02, dz * speed), ParticleTypes.CLOUD));
+            if (player instanceof ServerPlayer sp) addParticleEvent(sp, new ParticleEvent(new Vec3(x, player.getY() + 0.05, z), new Vec3(dx * speed, 0.02, dz * speed), new TrailParticleOptions(start, end)));
         }
     }
 
