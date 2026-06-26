@@ -33,7 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO Texture Lighting Elements better, Walk in suit animation, Auto Place, Charging, Deploy MODE?, SOUNDS
+public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO Walk in suit animation, Charging, Deploy MODE?, SOUNDS
 
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;

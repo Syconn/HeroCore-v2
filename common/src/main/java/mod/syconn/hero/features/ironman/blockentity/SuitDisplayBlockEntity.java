@@ -48,12 +48,14 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
             if (be.suitSpin < 0) be.suitSpin++;
 
             be.lastNearbyPlayer = be.nearbyPlayer;
-            be.startSuitSpin(!level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).inflate(0.75f)).isEmpty());
+            be.startSuitSpin(!level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).inflate(1f)).isEmpty());
         } else {
-            var players = level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition));
-            players.forEach(be::handleArmorSwap);
-            var nearby = players.stream().map(Player::getUUID).collect(Collectors.toSet());
-            be.modifiedPlayer.removeIf(uuid -> !nearby.contains(uuid));
+            if (state.getValue(BlockStateProperties.OPEN)) {
+                var players = level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).deflate(0.75f));
+                players.forEach(be::handleArmorSwap);
+                var nearby = players.stream().map(Player::getUUID).collect(Collectors.toSet());
+                be.modifiedPlayer.removeIf(uuid -> !nearby.contains(uuid));
+            }
         }
     }
 
@@ -81,6 +83,7 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
     }
 
     private void startSuitSpin(boolean nearbyPlayer) {
+        if (!getBlockState().getValue(BlockStateProperties.OPEN)) nearbyPlayer = false;
         if (this.suitSpin != 0 || nearbyPlayer == lastNearbyPlayer) return;
         this.suitSpin = nearbyPlayer ? -SPIN_TICKS : SPIN_TICKS;
         this.nearbyPlayer = nearbyPlayer;
