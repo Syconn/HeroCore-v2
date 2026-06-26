@@ -20,7 +20,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SuitDisplayBlockEntity extends SyncedBlockEntity {
 
@@ -28,6 +29,7 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
     private static final byte SPIN_TICKS = 16;
 
     private final EquipmentContainer container = new EquipmentContainer();
+    private final List<UUID> modifiedPlayer = new ArrayList<>();
     private float suitSpin = 0f;
     private boolean nearbyPlayer = false;
     private boolean lastNearbyPlayer = false;
@@ -48,8 +50,34 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
             be.lastNearbyPlayer = be.nearbyPlayer;
             be.startSuitSpin(!level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).inflate(0.75f)).isEmpty());
         } else {
-//            var playersWithin = level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition));
+            var players = level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition));
+            players.forEach(be::handleArmorSwap);
+            var nearby = players.stream().map(Player::getUUID).collect(Collectors.toSet());
+            be.modifiedPlayer.removeIf(uuid -> !nearby.contains(uuid));
         }
+    }
+
+    private void handleArmorSwap(Player player) {
+        if (this.modifiedPlayer.contains(player.getUUID())) return;
+        for (var slot : EquipmentSlot.values()) {
+            if (!slot.isArmor()) continue;
+            if (!this.container.getItem(slot.getIndex()).isEmpty()) {
+                if (player.getItemBySlot(slot).getItem() instanceof ICustomArmor || player.getItemBySlot(slot).isEmpty()) this.swap(player, slot);
+                else if (!(player.getItemBySlot(slot).getItem() instanceof ICustomArmor)) {
+                    player.addItem(player.getItemBySlot(slot).copy());
+                    player.setItemSlot(slot, ItemStack.EMPTY);
+                    this.swap(player, slot);
+                }
+            } else if (player.getItemBySlot(slot).getItem() instanceof ICustomArmor) this.swap(player, slot);
+        }
+        this.modifiedPlayer.add(player.getUUID());
+    }
+
+    private void swap(Player player, EquipmentSlot slot) {
+        var item = container.getItem(slot.getIndex()).copy();
+        container.setItem(slot.getIndex(), player.getItemBySlot(slot).copy());
+        player.setItemSlot(slot, item);
+        this.markDirty();
     }
 
     private void startSuitSpin(boolean nearbyPlayer) {

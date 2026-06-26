@@ -19,6 +19,7 @@ public class SuitDisplayScreen extends AbstractContainerScreen<SuitDisplayMenu> 
 
     public SuitDisplayScreen(SuitDisplayMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
+        this.imageWidth = 196;
     }
 
     @Override
