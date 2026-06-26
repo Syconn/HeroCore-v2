@@ -96,6 +96,10 @@ public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlo
         return level.getBlockEntity(pos) instanceof SuitDisplayBlockEntity ? pos : pos.relative(getOtherPart(level.getBlockState(pos)));
     }
 
+    public static BlockPos getBlockEntityPos(@NotNull BlockAndTintGetter level, BlockState state, BlockPos pos) {
+        return level.getBlockEntity(pos) instanceof SuitDisplayBlockEntity ? pos : pos.relative(getOtherPart(state));
+    }
+
     public VoxelShape getShape(boolean bottom, boolean open) {
         VoxelShape shape = Shapes.empty();
         if (!open) return Shapes.box(0, 0, 0, 1, 1, 0.75);

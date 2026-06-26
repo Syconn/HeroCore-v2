@@ -139,7 +139,7 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
     }
 
     public static int getColor(BlockAndTintGetter level, BlockState state, BlockPos pos) {
-        if (level != null && level.getBlockEntity(SuitDisplayBlock.getBlockEntityPos(level, pos)) instanceof SuitDisplayBlockEntity be) return be.getColor();
+        if (level != null && state.getBlock() instanceof SuitDisplayBlock && level.getBlockEntity(SuitDisplayBlock.getBlockEntityPos(level, state, pos)) instanceof SuitDisplayBlockEntity be) return be.getColor();
         return -1;
     }
 }
