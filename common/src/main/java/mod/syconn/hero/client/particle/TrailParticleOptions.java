@@ -29,7 +29,6 @@ public class TrailParticleOptions extends ParticleType<TrailParticleOptions> imp
         @Override
         public @NotNull TrailParticleOptions fromCommand(ParticleType<TrailParticleOptions> particleType, StringReader reader) throws CommandSyntaxException {
             Vector3f vector3f = DustParticleOptionsBase.readVector3f(reader);
-            reader.expect(' ');
             Vector3f vector3f2 = DustParticleOptionsBase.readVector3f(reader);
             return new TrailParticleOptions(vector3f, vector3f2);
         }
