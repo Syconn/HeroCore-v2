@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "smw:suit_display"
+    "hero:suit_display"
   ]
 }

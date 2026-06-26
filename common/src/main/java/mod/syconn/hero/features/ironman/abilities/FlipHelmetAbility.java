@@ -23,7 +23,6 @@ public class FlipHelmetAbility implements IHeroAbility {
     private final IHeroType heroType;
     private final PowerKeybind flipHelmet = new PowerKeybind(Constants.CONFIG.ironmanSettings.flipHelmet.get());
 
-
     public FlipHelmetAbility(IHeroType heroType) {
         this.heroType = heroType;
     }
@@ -55,9 +54,7 @@ public class FlipHelmetAbility implements IHeroAbility {
     }
 
     @Override
-    public void readData(Player player, CompoundTag tag) {
-
-    }
+    public void readData(Player player, CompoundTag tag) {}
 
     @Override
     public boolean usable(Player player) {

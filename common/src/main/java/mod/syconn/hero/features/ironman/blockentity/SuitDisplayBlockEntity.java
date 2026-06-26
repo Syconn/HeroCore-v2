@@ -16,6 +16,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -49,6 +50,7 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
 
             be.lastNearbyPlayer = be.nearbyPlayer;
             be.startSuitSpin(!level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).inflate(1f)).isEmpty());
+            if (be.getGear().get(EquipmentSlot.HEAD).getItem() instanceof ICustomArmor) SuitTag.update(be.getGear().get(EquipmentSlot.HEAD), SuitTag::tick);
         } else {
             if (state.getValue(BlockStateProperties.OPEN)) {
                 var players = level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).deflate(0.75f));
@@ -59,7 +61,7 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
         }
     }
 
-    private void handleArmorSwap(Player player) {
+    private void handleArmorSwap(Player player) { // TODO NOT UPDATING BLOCK COLOR
         if (this.modifiedPlayer.contains(player.getUUID())) return;
         for (var slot : EquipmentSlot.values()) {
             if (!slot.isArmor()) continue;
@@ -73,6 +75,7 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
             } else if (player.getItemBySlot(slot).getItem() instanceof ICustomArmor) this.swap(player, slot);
         }
         this.modifiedPlayer.add(player.getUUID());
+        player.level().sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
     }
 
     private void swap(Player player, EquipmentSlot slot) {

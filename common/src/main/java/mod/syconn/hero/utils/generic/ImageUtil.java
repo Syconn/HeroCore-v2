@@ -2,12 +2,13 @@ package mod.syconn.hero.utils.generic;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.util.Mth;
 import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.NotNull;
 
 public class ImageUtil {
 
-    public static void modifyTexture(DynamicTexture texture, TriFunction<Integer, Integer, Integer, Integer> function) {
+    public static void overlayTexture(DynamicTexture texture, TriFunction<Integer, Integer, Integer, Integer> function) {
         var image = texture.getPixels();
         if (image != null) {
             for (int x = 0; x < image.getWidth(); x++) {
@@ -39,6 +40,39 @@ public class ImageUtil {
     }
 
     public static void translate(@NotNull NativeImage image, int uX, int uY, int width, int height, int xOffset, int yOffset) {
-        ImageUtil.paste(image, ImageUtil.cut(image, uX, uY, width, height), uX + xOffset, uY + yOffset, width, height);
+        paste(image, ImageUtil.cut(image, uX, uY, width, height), uX + xOffset, uY + yOffset, width, height);
+    }
+
+    public static void translateCap(@NotNull NativeImage image, int uX, int uY, int width, int height, int xOffset, int yOffset, int cap) {
+        if (Mth.abs(xOffset) > cap || Mth.abs(yOffset) > cap) {
+            xOffset = xOffset < 0 ? -cap : xOffset > 0 ? cap : 0;
+            yOffset = yOffset < 0 ? -cap : yOffset > 0 ? cap : 0;
+        }
+        paste(image, ImageUtil.cut(image, uX, uY, width, height), uX + xOffset, uY + yOffset, width, height);
+    }
+
+    public static void translateBounded(@NotNull NativeImage image, int uX, int uY, int width, int height, int xOffset, int yOffset) {
+        var pixels = cut(image, uX, uY, width, height);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int destX = x + xOffset, destY = y + yOffset;
+                if (destX >= 0 && destX < width && destY >= 0 && destY < height) image.setPixelRGBA(uX + destX, uY + destY, pixels[x][y]);
+            }
+        }
+    }
+
+    public static void translateBoundedCap(@NotNull NativeImage image, int uX, int uY, int width, int height, int xOffset, int yOffset, int cap) {
+        if (Mth.abs(xOffset) > cap || Mth.abs(yOffset) > cap) {
+            xOffset = xOffset < 0 ? -cap : xOffset > 0 ? cap : 0;
+            yOffset = yOffset < 0 ? -cap : yOffset > 0 ? cap : 0;
+        }
+
+        var pixels = cut(image, uX, uY, width, height);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int destX = x + xOffset, destY = y + yOffset;
+                if (destX >= 0 && destX < width && destY >= 0 && destY < height) image.setPixelRGBA(uX + destX, uY + destY, pixels[x][y]);
+            }
+        }
     }
 }

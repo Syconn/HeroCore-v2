@@ -9,6 +9,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class SuitTag {
 
@@ -19,7 +20,9 @@ public class SuitTag {
     public int version;
     public int color;
     public boolean lifted;
-    public byte transition;
+    public byte liftTransition;
+    public boolean open;
+    public byte openTransition;
 
     public SuitTag(ResourceLocation model, int version, int color) {
         this.model = model;
@@ -33,7 +36,9 @@ public class SuitTag {
         this.color = tag.getInt("color");
         updateData(tag.getInt("version"));
         this.lifted = tag.getBoolean("lifted");
-        this.transition = tag.getByte("transition");
+        this.liftTransition = tag.getByte("liftTransition");
+        this.open = tag.getBoolean("open");
+        this.openTransition = tag.getByte("openTransition");
     }
 
     private void updateData(int value) {
@@ -49,21 +54,36 @@ public class SuitTag {
     }
 
     public void tick() {
-        if (this.transition != 0) {
-            if (this.transition > 0) this.transition--;
-            if (this.transition < 0) this.transition++;
+        if (this.liftTransition != 0) {
+            if (this.liftTransition > 0) this.liftTransition--;
+            if (this.liftTransition < 0) this.liftTransition++;
+        }
+        if (this.openTransition != 0) {
+            if (this.openTransition > 0) this.openTransition--;
+            if (this.openTransition < 0) this.openTransition++;
         }
     }
 
     public void openCloseHelmet() {
-        if (this.transition != 0) return;
-        this.transition = TRANSITION_TICKS;
+        if (this.liftTransition != 0) return;
+        this.liftTransition = TRANSITION_TICKS;
         this.lifted = !this.lifted;
     }
 
-    public byte getRenderFrame() {
-        if (transition == 0) return this.lifted ? TRANSITION_TICKS : 0;
-        return this.lifted ? (byte) (6 - transition) : transition;
+    public byte getHelmetFrame() {
+        if (liftTransition == 0) return this.lifted ? TRANSITION_TICKS : 0;
+        return this.lifted ? (byte) (6 - liftTransition) : liftTransition;
+    }
+
+    public void openCloseSuit() {
+        if (this.openTransition != 0) return;
+        this.openTransition = TRANSITION_TICKS;
+        this.open = !this.open;
+    }
+
+    public byte getOpenSuit() {
+        if (openTransition == 0) return !this.open ? TRANSITION_TICKS : 0;
+        return !this.open ? (byte) (6 - openTransition) : openTransition;
     }
 
     public ArmorMaterial getMaterial() {
@@ -81,7 +101,9 @@ public class SuitTag {
         tag.putInt("version", this.version);
         tag.putInt("color", this.color);
         tag.putBoolean("lifted", this.lifted);
-        tag.putByte("transition", this.transition);
+        tag.putByte("liftTransition", this.liftTransition);
+        tag.putBoolean("open", this.open);
+        tag.putByte("openTransition", this.openTransition);
         return tag;
     }
 
@@ -94,6 +116,14 @@ public class SuitTag {
         var lT = getOrCreate(stack);
         consumer.accept(lT);
         lT.change(stack);
+    }
+
+    public static void updateIf(ItemStack stack, Function<SuitTag, Boolean> condition, Consumer<SuitTag> consumer) {
+        var lT = getOrCreate(stack);
+        if (condition.apply(lT)) {
+            consumer.accept(lT);
+            lT.change(stack);
+        }
     }
 
     private static SuitTag create(ItemStack stack) {

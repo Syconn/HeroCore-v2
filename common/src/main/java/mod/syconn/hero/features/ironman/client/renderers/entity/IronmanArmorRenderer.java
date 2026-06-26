@@ -2,6 +2,8 @@ package mod.syconn.hero.features.ironman.client.renderers.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import mod.syconn.hero.features.ironman.item.IronmanArmorItem;
+import mod.syconn.hero.features.ironman.server.data.SuitTag;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -34,6 +36,13 @@ public class IronmanArmorRenderer {
         this.gear = gear;
     }
 
+    public void openCloseSuit(boolean open) {
+        if (this.gear == null || !IronmanArmorItem.wearingFullSameSuit(this.gear)) return;
+        SuitTag.update(this.gear.get(EquipmentSlot.HEAD), t -> {
+            if (t.open != open) t.openCloseSuit();
+        });
+    }
+
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.mulPose(Axis.XP.rotationDegrees(180f));
         poseStack.translate(0f, -1.5f, 0f);
@@ -44,7 +53,7 @@ public class IronmanArmorRenderer {
     }
 
     private void renderArmorPiece(PoseStack poseStack, MultiBufferSource buffer, EquipmentSlot slot, int packedLight, HumanoidArmorModel<Player> model) {
-        var stack = this.gear.get(slot);
+        var stack = this.gear.get(EquipmentSlot.HEAD); // CAUSE OF ANIMATIONS
         this.setPartVisibility(model, slot);
         if (stack != null && stack.getItem() instanceof ICustomArmor armor)
             armor.getRenderLocation(stack, slot).ifPresent(texture -> model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.armorCutoutNoCull(texture)), packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F));
@@ -54,7 +63,7 @@ public class IronmanArmorRenderer {
         return slot == EquipmentSlot.LEGS ? this.innerModel : this.outerModel;
     }
 
-    protected void setPartVisibility(HumanoidArmorModel<Player> model, EquipmentSlot slot) {
+    protected void setPartVisibility(HumanoidArmorModel<Player> model, EquipmentSlot slot) { //  TODO MINOR PARTS FOR FLIGHT EQUIP
         model.setAllVisible(false);
         model.young = false;
         switch (slot) {

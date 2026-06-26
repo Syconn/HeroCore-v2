@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlockEntity> {
+public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlockEntity> { // TODO ROTATE TOWARDS PLAYER WHEN SPUN, BLOCK DOESNT DROP INVENTORY
 
     private static final ResourceLocation DOOR_TEXTURE = Constants.withId("textures/block/door.png");
     private final DisplayDoorModel door;
@@ -38,11 +38,13 @@ public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlock
         this.door.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(DOOR_TEXTURE)), packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, 1.0f);
         poseStack.popPose();
 
+        final var spin = Mth.clamp(blockEntity.getSuitSpin(partialTick), 0, 1);
         poseStack.pushPose();
         ModelUtil.translateRotation(poseStack, Direction.NORTH, facing, 0.5f, 0.2f, 0.4f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(getCustomYRot(facing) + 180f * Mth.clamp(blockEntity.getSuitSpin(partialTick), 0, 1)));
-        poseStack.scale(0.8f, 0.8f, 0.8f);
+        poseStack.mulPose(Axis.YP.rotationDegrees(getCustomYRot(facing) + 180f * spin));
+        poseStack.scale(0.75f, 0.8f, 0.8f);
         renderer.setGear(blockEntity.getGear());
+        if (spin == 0 || spin == 1) renderer.openCloseSuit(spin == 1);
         renderer.render(poseStack, buffer, packedLight);
         poseStack.popPose();
     }
