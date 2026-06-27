@@ -117,15 +117,6 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
         return AnimationUtil.inCubic(-(this.openProgress + partialTicks) / OPEN_TICKS);
     }
 
-    public void setFromModel(ItemStack stack) {
-        this.setGear(IronmanContent.createSuitMap(SuitTag.getOrCreate(stack).model));
-        this.markDirty();
-    }
-
-    private void setGear(Map<EquipmentSlot, ItemStack> gear) {
-        this.container.setGear(gear);
-    }
-
     public Map<EquipmentSlot, ItemStack> getGear() {
         return this.container.getGear();
     }

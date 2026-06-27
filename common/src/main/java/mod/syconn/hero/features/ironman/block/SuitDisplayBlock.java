@@ -9,6 +9,7 @@ import mod.syconn.hero.utils.generic.ModelUtil;
 import mod.syconn.hero.utils.interfaces.IEntityBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -53,6 +54,15 @@ public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlo
         var state = super.getStateForPlacement(context);
         boolean powered = context.getLevel().hasNeighborSignal(context.getClickedPos().above()) || context.getLevel().hasNeighborSignal(context.getClickedPos().above().above());
         return state != null ? state.setValue(POWERED, powered) : null;
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock()) && level.getBlockEntity(getBlockEntityPos(level, state, pos)) instanceof SuitDisplayBlockEntity be) {
+            Containers.dropContents(level, pos, be.getContainer());
+            level.updateNeighbourForOutputSignal(pos, this);
+        }
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override @SuppressWarnings("deprecation")
