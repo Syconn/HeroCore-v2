@@ -6,8 +6,8 @@ plugins {
 
 val awFile =
     when {
-        stonecutter.current.parsed >= "1.21" -> project.rootProject.layout.projectDirectory.file("src/main/resources/accesswideners/1.21.accesswidener")
-        stonecutter.current.parsed >= "1.20" -> project.rootProject.layout.projectDirectory.file("src/main/resources/accesswideners/1.20.accesswidener")
+        stonecutter.current.parsed <= "1.20.4" -> project.rootProject.layout.projectDirectory.file("src/main/resources/accesswideners/1.20.accesswidener")
+        stonecutter.current.parsed <= "1.21.4" -> project.rootProject.layout.projectDirectory.file("src/main/resources/accesswideners/1.21.accesswidener")
         else -> project.rootProject.layout.projectDirectory.file("src/main/resources/accesswideners/26.1.accesswidener")
     }
 
@@ -65,14 +65,21 @@ stonecutter {
 java {
     withSourcesJar()
 
-    val javaCompact = when {
-        stonecutter.eval(stonecutter.current.version, "<=1.20.4") -> JavaVersion.VERSION_17
-        stonecutter.eval(stonecutter.current.version, "<=1.21.4") -> JavaVersion.VERSION_21
-        else -> JavaVersion.VERSION_25
+    val javaVersion = when {
+        stonecutter.eval(stonecutter.current.version, "<=1.20.4") -> 17
+        stonecutter.eval(stonecutter.current.version, "<=1.21.4") -> 21
+        else -> 25
     }
 
-    sourceCompatibility = javaCompact
-    targetCompatibility = javaCompact
+    println("Version: ${stonecutter.current.version}")
+    println("Java: $javaVersion")
+
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
+
+    sourceCompatibility = JavaVersion.toVersion(javaVersion)
+    targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
 if (mod.isForge) { // FORGE FIX for Gradle
