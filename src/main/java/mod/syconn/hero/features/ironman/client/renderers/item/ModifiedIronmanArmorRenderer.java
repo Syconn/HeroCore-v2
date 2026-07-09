@@ -102,7 +102,7 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
                     }
                 }
 
-                if (!SUIT_OPEN_BACK_PANTS.containsKey(name) && slot == EquipmentSlot.LEGS) { // TODO NOT RIGHT TEXTURE
+                if (!SUIT_OPEN_BACK_PANTS.containsKey(name) && slot == EquipmentSlot.LEGS) {
                     var image = texture.mappedCopy(op -> op);
                     for (byte i = 0; i < 7; i++) {
                         ImageUtil.translateBoundedCap(image, 32, 27, 4, 5, -i, 0, 2);
