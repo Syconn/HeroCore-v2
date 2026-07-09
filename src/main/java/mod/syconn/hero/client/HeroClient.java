@@ -35,19 +35,24 @@ public class HeroClient {
         ModKeys.KEYS.forEach(KeyMappingRegistry::register);
 
         IModifiedItemRenderer.register(IronmanArmorItem.class, new ModifiedIronmanArmorRenderer());
-        ColorHandlerRegistry.registerItemColors((s, layer) -> layer == 0 ? DyeColor.GRAY.getFireworkColor() : -1, ModBlocks.SUIT_DISPLAY.get());
-        ColorHandlerRegistry.registerBlockColors((state, level, pos, layer) -> layer == 0 ? SuitDisplayBlockEntity.getColor(level, state, pos) : -1, ModBlocks.SUIT_DISPLAY.get());
-        RenderTypeRegistry.register(RenderType.cutout(), ModBlocks.SUIT_DISPLAY.get());
-        EntityModelLayerRegistry.register(DisplayDoorModel.LAYER_LOCATION, DisplayDoorModel::createBodyLayer);
-        BlockEntityRendererRegistry.register(ModBlockEntities.SUIT_DISPLAY.get(), SuitDisplayRenderer::new);
-        ModMenus.registerScreens();
 
         ClientLifecycleEvent.CLIENT_SETUP.register(HeroClient::setupEvent);
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(HeroClient::onClientJoin);
         ClientGuiEvent.RENDER_HUD.register(IronmanOverlay::renderOverlay);
     }
 
-    public static void setupEvent(Minecraft minecraft) {}
+    public static void setupEvent(Minecraft minecraft) {
+        RenderTypeRegistry.register(RenderType.cutout(), ModBlocks.SUIT_DISPLAY.get());
+
+        ColorHandlerRegistry.registerItemColors((s, layer) -> layer == 0 ? DyeColor.GRAY.getFireworkColor() : -1, ModBlocks.SUIT_DISPLAY.get());
+        ColorHandlerRegistry.registerBlockColors((state, level, pos, layer) -> layer == 0 ? SuitDisplayBlockEntity.getColor(level, state, pos) : -1, ModBlocks.SUIT_DISPLAY.get());
+
+        BlockEntityRendererRegistry.register(ModBlockEntities.SUIT_DISPLAY.get(), SuitDisplayRenderer::new);
+
+        EntityModelLayerRegistry.register(DisplayDoorModel.LAYER_LOCATION, DisplayDoorModel::createBodyLayer);
+
+        ModMenus.registerScreens();
+    }
 
     public static void onClientJoin(LocalPlayer player) {
         Constants.TRACKER.clientPlayerJoined(player);

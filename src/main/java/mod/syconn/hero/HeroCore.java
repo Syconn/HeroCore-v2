@@ -3,7 +3,10 @@ package mod.syconn.hero;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.ReloadListenerRegistry;
+import dev.architectury.utils.Env;
+import dev.architectury.utils.EnvExecutor;
 import eu.midnightdust.lib.config.MidnightConfig;
+import mod.syconn.hero.client.HeroClient;
 import mod.syconn.hero.core.*;
 import mod.syconn.hero.features.addons.IronmanContent;
 import mod.syconn.hero.features.heros.HeroRegistry;
@@ -34,6 +37,7 @@ public final class HeroCore {
         MidnightConfig.init(Constants.MOD, HeroConfig.class);
 
         HeroRegistry.registerBuiltinHeroes();
+        EnvExecutor.runInEnv(Env.CLIENT, () -> HeroClient::init);
         LifecycleEvent.SETUP.register(HeroServer::init);
     }
 }

@@ -25,7 +25,6 @@ public class ForgeClientEntry {
         ISpecialRenderer.SPECIAL_RENDER_FOLDER.forEach(path -> scanFilesInDirectory(path, ISpecialRenderer::itemModelPath, files));
         files.addAll(ISpecialRenderer.SPECIAL_RENDERS);
         files.forEach(event::register);
-        event.register(Constants.withId("lightsaber/mace", "inventory"));
     }
 
     private static void scanFilesInDirectory(String name, Function<ResourceLocation, ResourceLocation> pathModifier, List<ResourceLocation> output) {
