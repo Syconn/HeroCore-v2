@@ -24,24 +24,43 @@ modSettings {
 
 repositories {
     maven("https://maven.kosmx.dev/")
-    maven("https://maven.blamejared.com/")
     maven("https://maven.fzzyhmstrs.me/")
-    maven("https://maven.terraformersmc.com/")
-    maven("https://thedarkcolour.github.io/KotlinForForge/")
     maven("https://maven.architectury.dev/")
+    maven("https://maven.terraformersmc.com/")
+    maven("https://maven.midnightdust.eu/releases")
 }
 
 val isDeobfuscated = stonecutter.current.parsed >= "26.1"
 dependencies {
     val imp = if (isDeobfuscated) "implementation" else "modImplementation"
     val api = if (isDeobfuscated) "api" else "modApi"
+    val loader = when {
+        mod.isForge -> "forge"
+        mod.isNeoforge -> "neoforge"
+        else -> "fabric"
+    }
+
+    add(imp, "dev.architectury:architectury-${loader}:${mod.prop("arch")}")
 
     if (mod.isFabric) {
-        add(imp, "dev.architectury:architectury-fabric:${mod.prop("arch")}")
+        add(imp, "me.fzzyhmstrs:fzzy_config:0.6.0+1.20.1")
     } else if (mod.isForge) {
-        add(imp, "dev.architectury:architectury-forge:${mod.prop("arch")}")
+        val midnightlib = "eu.midnightdust:midnightlib:1.9.2+1.20.1-forge"
+        add(imp, midnightlib)
+        include(midnightlib)
+//        add(imp, )
     } else {
-        add(imp, "dev.architectury:architectury-neoforge:${mod.prop("arch")}")
+//        add(imp, "me.fzzyhmstrs:fzzy_config:${mod.prop("fuzzy")}+neoforge")
+    }
+
+    if (stonecutter.current.parsed <= "1.20.4") add(imp, "dev.kosmx.player-anim:player-animation-lib-${loader}:${mod.prop("animation")}")
+}
+
+loom {
+    if (mod.isForge) {
+        forge {
+            mixinConfigs("${mod.id}.mixins.json",)
+        }
     }
 }
 
@@ -70,9 +89,6 @@ java {
         stonecutter.eval(stonecutter.current.version, "<=1.21.4") -> 21
         else -> 25
     }
-
-    println("Version: ${stonecutter.current.version}")
-    println("Java: $javaVersion")
 
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(javaVersion))

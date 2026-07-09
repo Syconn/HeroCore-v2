@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "*"
-issueTrackerURL = "https://github.com/meza/Stonecraft/issues"
+#issueTrackerURL = "https://github.com/meza/Stonecraft/issues"
 license = "GPL-3.0"
 
 [[mods]]

@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=east,two_part=down": {
+      "model": "hero:block/suit_display_down",
+      "y": 90
+    },
+    "facing=east,two_part=up": {
+      "model": "hero:block/suit_display_top",
+      "y": 90
+    },
+    "facing=north,two_part=down": {
+      "model": "hero:block/suit_display_down",
+      "y": 0
+    },
+    "facing=north,two_part=up": {
+      "model": "hero:block/suit_display_top",
+      "y": 0
+    },
+    "facing=south,two_part=down": {
+      "model": "hero:block/suit_display_down",
+      "y": 180
+    },
+    "facing=south,two_part=up": {
+      "model": "hero:block/suit_display_top",
+      "y": 180
+    },
+    "facing=west,two_part=down": {
+      "model": "hero:block/suit_display_down",
+      "y": 270
+    },
+    "facing=west,two_part=up": {
+      "model": "hero:block/suit_display_top",
+      "y": 270
+    }
+  }
+}

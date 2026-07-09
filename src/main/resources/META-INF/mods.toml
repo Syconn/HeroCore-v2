@@ -1,18 +1,18 @@
 modLoader = "javafml"
 loaderVersion = "*"
-issueTrackerURL = "https://github.com/meza/Stonecraft/issues"
-license = "GPL-3.0"
+issueTrackerURL = "https://github.com/Syconn/HeroCore-v2/issues/new"
+license = "All Rights Reserved"
 
 [[mods]]
 modId = "${id}"
 version = "${version}"
 displayName = "${name}"
-authors = "Meza"
+authors = "Syconn"
 description = '''
 ${description}
 '''
-logoFile = "assets/${id}/icon.png"
-logoBlur = false
+logoFile = "icon.png"
+#logoBlur = false
 
 [[dependencies.${id}]]
 modId = "minecraft"
@@ -27,3 +27,24 @@ mandatory = true
 versionRange = "*"
 ordering = "NONE"
 side = "CLIENT"
+
+[[dependencies.hero]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.hero]]
+modId="playeranimator"
+mandatory=true
+versionRange="[1,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.hero]]
+modId="midnightlib"
+mandatory=true
+versionRange="[1.9.2,)"
+ordering="AFTER"
+side="BOTH"
