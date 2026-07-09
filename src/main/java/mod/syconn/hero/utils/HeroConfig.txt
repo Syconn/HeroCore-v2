@@ -1,2 +1,0 @@
-public ValidatedKeybind toggleVisor = new ValidatedKeybind(GLFW.GLFW_KEY_O, ContextInput.KEYBOARD, false, false, false);
-public ValidatedKeybind toggleFlightMode = new ValidatedKeybind(GLFW.GLFW_KEY_N, ContextInput.KEYBOARD, false, false, false);

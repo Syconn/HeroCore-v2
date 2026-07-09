@@ -1,6 +1,5 @@
 package mod.syconn.hero.client;
 
-import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
@@ -18,7 +17,6 @@ import mod.syconn.hero.features.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.features.ironman.blockentity.SuitDisplayBlockEntity;
 import mod.syconn.hero.features.ironman.client.renderers.block.SuitDisplayRenderer;
 import mod.syconn.hero.features.ironman.client.renderers.item.ModifiedIronmanArmorRenderer;
-import mod.syconn.hero.features.ironman.client.screen.overlays.IronmanOverlay;
 import mod.syconn.hero.features.ironman.item.IronmanArmorItem;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.HeroConfig;
@@ -42,7 +40,6 @@ public class HeroClient {
 
         ClientLifecycleEvent.CLIENT_SETUP.register(HeroClient::setupEvent);
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(HeroClient::onClientJoin);
-        ClientGuiEvent.RENDER_HUD.register(IronmanOverlay::renderOverlay);
         ClientTickEvent.CLIENT_PRE.register(HeroClient::onClientTick);
     }
 

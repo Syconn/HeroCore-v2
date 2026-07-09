@@ -31,7 +31,7 @@ public class SuitTag {
     }
 
     public SuitTag(CompoundTag tag) {
-        this.model = new ResourceLocation(tag.getString("model"));
+        this.model = ResourceLocation.parse(tag.getString("model"));
         this.version = tag.getInt("version");
         this.color = tag.getInt("color");
         updateData(tag.getInt("version"));

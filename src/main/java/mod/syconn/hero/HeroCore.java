@@ -34,9 +34,9 @@ public final class HeroCore {
         CreativeTabRegistry.modify(ModItems.TAB, ModItems::addCreative);
         ReloadListenerRegistry.register(PackType.SERVER_DATA, IronmanContent.SUITS, Constants.withId("suit_data"));
         SyncedResourceManager.register(IronmanContent.SUITS);
-        MidnightConfig.init(Constants.MOD, HeroConfig.class);
 
         HeroRegistry.registerBuiltinHeroes();
+        MidnightConfig.init(Constants.MOD, HeroConfig.class);
         EnvExecutor.runInEnv(Env.CLIENT, () -> HeroClient::init);
         LifecycleEvent.SETUP.register(HeroServer::init);
     }

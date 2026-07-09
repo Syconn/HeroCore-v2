@@ -2,12 +2,17 @@
 package mod.syconn.hero.platform.forge.client;
 
 import dev.architectury.utils.GameInstance;
+import mod.syconn.hero.features.ironman.client.screen.overlays.IronmanOverlay;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.interfaces.ISpecialRenderer;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RenderGuiEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -35,8 +40,8 @@ public class ForgeClientEntry {
     static class StarWarsForgeModClient {
 
         @SubscribeEvent
-        public static void clientTickEvent(TickEvent.ClientTickEvent event) {
-//            if (event.side.isClient()) StarWarsClient.onClientTick(Minecraft.getInstance().player);
+        public static void renderOverlay(RenderGuiEvent.Pre event) {
+            IronmanOverlay.renderOverlay(event.getGuiGraphics(), event.getPartialTick());
         }
     }
 }

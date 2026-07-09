@@ -6,7 +6,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({})
-public @interface Entry {
+public @interface ConfigEntry {
     String hero();
     String desc();
 }

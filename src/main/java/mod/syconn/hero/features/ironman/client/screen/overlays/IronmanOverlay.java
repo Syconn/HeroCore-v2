@@ -4,10 +4,13 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.syconn.hero.HeroCore;
 import mod.syconn.hero.features.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.features.ironman.Ironman;
 import mod.syconn.hero.features.ironman.abilities.FlightAbility;
+import mod.syconn.hero.features.ironman.abilities.FlipHelmetAbility;
 import mod.syconn.hero.features.ironman.abilities.VisorAbility;
+import mod.syconn.hero.features.ironman.server.data.SuitTag;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.HeroConfig;
 import mod.syconn.hero.utils.generic.GraphicsUtil;
@@ -16,9 +19,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -26,19 +31,20 @@ import org.joml.Quaternionf;
 public class IronmanOverlay {
 
     private static final Minecraft minecraft = Minecraft.getInstance();
-    private static final ResourceLocation VIGNETTE_LOCATION = new ResourceLocation("textures/misc/vignette.png");
-    private static final ResourceLocation IRON_MAN = Constants.withId("textures/gui/hud/ironman_hud.png");
+    private static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/vignette.png");
+    private static final ResourceLocation HELMET_OFF = Constants.withId("textures/gui/hud/ironman_helmet.png");
+    private static final ResourceLocation HELMET_OPEN = Constants.withId("textures/gui/hud/ironman_helmet_open.png");
 
     public static void renderOverlay(GuiGraphics graphics, float tickDelta) {
         Player player = getCameraPlayer();
         if (player instanceof IHeroHolder holder) {
             var ironman = holder.hero$getManager().getType(Ironman.class);
-            if (ironman.getAbility(VisorAbility.class).usable(player)) {
+            if (ironman.getAbility(VisorAbility.class).usable(player) && HeroConfig.ironmanOverlay) {
                 // Blue Glint
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                GraphicsUtil.blit(graphics, VIGNETTE_LOCATION, 0, 0, -90, 0.0F, 0.0F, graphics.guiWidth(), graphics.guiHeight(), graphics.guiWidth(), graphics.guiHeight(), 1.0F, 1.0F, 255.0F, 0.9F);
+                GraphicsUtil.blit(graphics, VIGNETTE_LOCATION, 0, 0, -90, 0.0F, 0.0F, graphics.guiWidth(), graphics.guiHeight(), graphics.guiWidth(), graphics.guiHeight(), 1.0F, 1.0F, 255.0F, HeroConfig.helmetObfuscationAlpha);
                 RenderSystem.depthMask(true);
                 RenderSystem.enableDepthTest();
                 graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -68,6 +74,18 @@ public class IronmanOverlay {
                 renderCombatHotbar(graphics);
 
                 poseStack.popPose();
+            } else if (FlipHelmetAbility.getTagSlot(player).getItem() instanceof Equipable e && e.getEquipmentSlot() == EquipmentSlot.HEAD && !ironman.getAbility(VisorAbility.class).usable(player) && HeroConfig.overlayMode != HeroConfig.OverlayMode.Disabled) {
+                var helmetLoc = SuitTag.getOrCreate(FlipHelmetAbility.getTagSlot(player)).lifted ? HELMET_OPEN : HELMET_OFF;
+
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+                RenderSystem.disableDepthTest();
+                RenderSystem.depthMask(false);
+                graphics.setColor(1.0F, 1.0F, 1.0F, HeroConfig.helmetObfuscationAlpha);
+                graphics.blit(helmetLoc, 0, 0, -90, 0.0F, 0.0F, graphics.guiWidth(), graphics.guiHeight(), graphics.guiWidth(), graphics.guiHeight());
+                RenderSystem.depthMask(true);
+                RenderSystem.enableDepthTest();
+                graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
             }
         }
     }

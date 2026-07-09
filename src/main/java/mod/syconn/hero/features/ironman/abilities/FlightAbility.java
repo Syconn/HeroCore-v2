@@ -2,6 +2,7 @@ package mod.syconn.hero.features.ironman.abilities;
 
 import dev.kosmx.playerAnim.core.util.Ease;
 import mod.syconn.hero.client.particle.TrailParticleOptions;
+import mod.syconn.hero.core.ModKeys;
 import mod.syconn.hero.core.ModSounds;
 import mod.syconn.hero.features.heros.interfaces.IHeroAbility;
 import mod.syconn.hero.features.heros.interfaces.IHeroType;
@@ -38,10 +39,9 @@ import org.joml.Vector3f;
 
 public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer {
 
-    public static final ResourceLocation TYPE = Constants.withId("flight");
+    public static final ResourceLocation TYPE = Constants.withId("flight"); // TODO HOVER PACKET DOESNT WORK
 
     private final IHeroType hero;
-//    private final PowerKeybind toggleFlightMode = new PowerKeybind(Constants.CONFIG.ironmanSettings.toggleFlightMode.get());
     private FlightMode mode = FlightMode.NORMAL;
     private boolean engagedHover = false;
     private boolean initialJump = false;
@@ -58,8 +58,6 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
 
     @Override
     public void clientTick(Player player) {
-//        toggleFlightMode.tick(); TODO RE-ADD
-
         if (!usable(player)) {
             mode = FlightMode.NORMAL;
             flying = false;
@@ -79,13 +77,13 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
 
         if (usable(player)) this.requiresUpdate(player);
 
-//        while (this.toggleFlightMode.consumeClick()) { TODO READD
-//            this.cycleMode();
-//            player.displayClientMessage(Component.literal("Engaging ").withStyle(ChatFormatting.GOLD).append(mode == FlightMode.HOVER ? "Hover" : "Normal").withStyle(ChatFormatting.AQUA)
-//                    .append(" Mode").withStyle(ChatFormatting.GOLD), true);
-//            this.sendSpecificData(player, this.writeData(player));
-//            this.sendClientSyncData(player);
-//        }
+        while (ModKeys.TOGGLE_FLIGHT.consumeClick()) {
+            this.cycleMode();
+            player.displayClientMessage(Component.literal("Engaging ").withStyle(ChatFormatting.GOLD).append(mode == FlightMode.HOVER ? "Hover" : "Normal").withStyle(ChatFormatting.AQUA)
+                    .append(" Mode").withStyle(ChatFormatting.GOLD), true);
+            this.sendSpecificData(player, this.writeData(player));
+            this.sendClientSyncData(player);
+        }
 
         if (this.mode == FlightMode.HOVER) {
             var options = Minecraft.getInstance().options;
