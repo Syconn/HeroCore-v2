@@ -9,11 +9,11 @@ import eu.midnightdust.lib.config.MidnightConfig;
 import mod.syconn.hero.client.HeroClient;
 import mod.syconn.hero.core.*;
 import mod.syconn.hero.features.addons.IronmanContent;
-import mod.syconn.hero.features.heros.HeroRegistry;
+import mod.syconn.hero.features.heros.core.HeroRegistry;
 import mod.syconn.hero.network.Network;
 import mod.syconn.hero.server.HeroServer;
-import mod.syconn.hero.utils.HeroConfig;
 import mod.syconn.hero.utils.Constants;
+import mod.syconn.hero.utils.HeroConfig;
 import mod.syconn.hero.utils.server.SyncedResourceManager;
 import net.minecraft.server.packs.PackType;
 
