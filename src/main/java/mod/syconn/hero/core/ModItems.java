@@ -14,12 +14,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.function.Function;
 
 import static mod.syconn.hero.utils.Constants.MOD;
 
 public class ModItems {
 
+    private static final ArrayList<RegistrySupplier<?>> IGNORE = new ArrayList<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD, Registries.ITEM);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(MOD, Registries.CREATIVE_MODE_TAB);
 
@@ -32,15 +34,19 @@ public class ModItems {
 
     @SuppressWarnings("UnstableApiUsage")
     public static void addCreative(FeatureFlagSet flags, CreativeTabOutput output, boolean canUseGameMasterBlocks) {
-        ITEMS.forEach(sup -> output.accept(sup.get())); // TODO DUPLICATES?
         output.acceptAll(IronmanContent.createArmorTypes(), CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
+        ITEMS.forEach(sup -> {
+            if (!IGNORE.contains(sup)) output.accept(sup.get());
+        });
     }
 
     private static <T extends Item> RegistrySupplier<T> registerItem(String id, Function<Item.Properties, T> factory) {
-        return registerItem(id, factory, new Item.Properties());
+        return registerItem(id, factory, new Item.Properties(), true);
     }
 
-    private static <T extends Item> RegistrySupplier<T> registerItem(String id, Function<Item.Properties, T> factory, Item.Properties properties) {
-        return ITEMS.register(id, () -> factory.apply(properties));
+    private static <T extends Item> RegistrySupplier<T> registerItem(String id, Function<Item.Properties, T> factory, Item.Properties properties, boolean ignoreTab) {
+        var item = ITEMS.register(id, () -> factory.apply(properties));
+        if (ignoreTab) IGNORE.add(item);
+        return item;
     }
 }
