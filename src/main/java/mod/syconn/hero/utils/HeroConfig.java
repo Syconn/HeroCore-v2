@@ -10,9 +10,5 @@ public class HeroConfig extends ExtendedConfig {
     @Entry(category = SERVER, name = "Max Hover Height")
     public static int maxHoverHeight = 40;
 
-//    @Client
-//    @Entry(category = IRONMAN, name = "Random Bool")
-//    public static boolean tesad = true;
-
-    @Comment(category = IRONMAN) public static Comment iAmJustADummy;
+    @Entry(category = SERVER) public static boolean ironmanOverlay;
 }
