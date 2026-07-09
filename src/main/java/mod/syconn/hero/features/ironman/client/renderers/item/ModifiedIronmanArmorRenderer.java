@@ -33,8 +33,6 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
     public boolean render(LivingEntity entity, ItemStack stack, ItemDisplayContext renderMode, boolean leftHanded, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, BakedModel backupModel) {
         poseStack.pushPose();
 
-        System.out.println("RUNNING");
-
         Lighting.setupForFlatItems();
         var type = stack.getItem() instanceof ArmorItem armor ? armor.getType().getName() : "";
         var model = IModifiedItemRenderer.getModel(SuitTag.getOrCreate(stack).model.withSuffix("_" + type), backupModel);
