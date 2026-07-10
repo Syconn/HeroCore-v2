@@ -16,12 +16,16 @@ public class EquipmentContainer implements Container {
     private final NonNullEnumMap gear = new NonNullEnumMap();
     private Consumer<Container> listener = null;
 
-    public void setGear(Map<EquipmentSlot, ItemStack> gear) {
-        this.gear.setAll(gear);
-    }
-
     public Map<EquipmentSlot, ItemStack> getGear() {
         return this.gear.values();
+    }
+
+    public boolean isGearFull() {
+        return gear.values().values().stream().noneMatch(ItemStack::isEmpty);
+    }
+
+    public boolean isGearEmpty() {
+        return gear.values().values().stream().allMatch(ItemStack::isEmpty);
     }
 
     @Override

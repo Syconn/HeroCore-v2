@@ -32,7 +32,7 @@ public class SuitDisplayMenu extends AbstractContainerMenu {
 
     private final SuitDisplayBlockEntity blockEntity;
 
-    public SuitDisplayMenu(int containerId, Inventory inventory, FriendlyByteBuf data) { // TODO ADD ARMOR TO GUI
+    public SuitDisplayMenu(int containerId, Inventory inventory, FriendlyByteBuf data) {
         this(containerId, inventory, data.readBlockPos());
     }
 

@@ -34,8 +34,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 
     @Inject(at = @At("HEAD"), method = "renderArmorPiece", cancellable = true)
     public void renderArmorPiece(PoseStack poseStack, MultiBufferSource buffer, T livingEntity, EquipmentSlot slot, int packedLight, A model, CallbackInfo ci) {
-        ItemStack itemStack = livingEntity.getItemBySlot(slot);
-        Item bl = itemStack.getItem();
+        var itemStack = livingEntity.getItemBySlot(slot);
+        var bl = itemStack.getItem();
         if (bl instanceof ICustomArmor armor) {
             this.getParentModel().copyPropertiesTo(model);
             this.setPartVisibility(model, slot);
@@ -49,7 +49,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
     private void heroCore$renderModel(PoseStack poseStack, MultiBufferSource buffer, int packedLight, LivingEntity entity, ICustomArmor armorItem, EquipmentSlot slot, A model) {
         final var location = armorItem.getRenderLocation(entity, slot);
         if (location.isPresent()) {
-            VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.armorCutoutNoCull(location.get()));
+            var vertexConsumer = buffer.getBuffer(RenderType.armorCutoutNoCull(location.get()));
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F);
         }
     }

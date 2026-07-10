@@ -47,7 +47,7 @@ public class SuitTag {
         if (saved == null) System.out.println("Invalid Suit Tag for " + this.model);
         else if (this.version != saved.version()) {
             var tag = saved.toTag().save();
-            this.model = tag.contains("model") ? new ResourceLocation(tag.getString("model")) : Constants.withId("suits/mark_2");
+            this.model = tag.contains("model") ? ResourceLocation.parse(tag.getString("model")) : Constants.withId("suits/mark_2");
             this.color = tag.getInt("color");
             this.version = saved.version();
         }
@@ -81,7 +81,8 @@ public class SuitTag {
         this.open = !this.open;
     }
 
-    public byte getOpenSuit() {
+    public byte getOpenSuit(ItemStack stack) {
+        if (stack.isEmpty()) return 0;
         if (openTransition == 0) return !this.open ? TRANSITION_TICKS : 0;
         return !this.open ? (byte) (6 - openTransition) : openTransition;
     }

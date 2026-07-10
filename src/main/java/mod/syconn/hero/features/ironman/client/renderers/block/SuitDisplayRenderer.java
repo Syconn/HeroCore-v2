@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlockEntity> { // TODO ROTATE TOWARDS PLAYER WHEN SPUN, BLOCK DOESNT DROP INVENTORY
+public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlockEntity> {
 
     private static final ResourceLocation DOOR_TEXTURE = Constants.withId("textures/block/door.png");
     private final DisplayDoorModel door;

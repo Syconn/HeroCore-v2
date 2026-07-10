@@ -44,15 +44,15 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
         return true;
     }
 
-    public static Optional<ResourceLocation> getRenderLocation(ICustomArmor armor, ItemStack stack, EquipmentSlot slot) {
+    public static Optional<ResourceLocation> getRenderLocation(ICustomArmor armor, ItemStack stack, EquipmentSlot slot, ItemStack dataStack) {
+        var suitOpen = SuitTag.getOrCreate(dataStack).getOpenSuit(dataStack);
         createModels(armorPath(stack, armor, slot), armor.getMaterialName(stack), slot);
-        if (slot == EquipmentSlot.LEGS) return Optional.of(getOrDefaultPants(stack, armor));
-        return Optional.of(getOrDefault(stack, armor, slot));
+        if (slot == EquipmentSlot.LEGS) return Optional.of(getOrDefaultPants(stack, armor, suitOpen));
+        return Optional.of(getOrDefault(stack, armor, slot, suitOpen));
     }
 
-    private static ResourceLocation getOrDefault(ItemStack stack, ICustomArmor armor, EquipmentSlot slot) {
+    private static ResourceLocation getOrDefault(ItemStack stack, ICustomArmor armor, EquipmentSlot slot, byte suitOpen) {
         if (stack.getItem() instanceof ICustomArmor) {
-            var suitOpen = SuitTag.getOrCreate(stack).getOpenSuit();
             if (suitOpen != 0 && SUIT_OPEN_BACK.containsKey(armor.getMaterialName(stack)) && SUIT_OPEN_BACK.get(armor.getMaterialName(stack)).containsKey(suitOpen)) return SUIT_OPEN_BACK.get(armor.getMaterialName(stack)).get(suitOpen);
 
             var helmetFrame = SuitTag.getOrCreate(stack).getHelmetFrame();
@@ -61,8 +61,7 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
         return armorPath(stack, armor, slot);
     }
 
-    private static ResourceLocation getOrDefaultPants(ItemStack stack, ICustomArmor armor) {
-        var suitOpen = SuitTag.getOrCreate(stack).getOpenSuit();
+    private static ResourceLocation getOrDefaultPants(ItemStack stack, ICustomArmor armor, byte suitOpen) {
         if (stack.getItem() instanceof ICustomArmor) if (SUIT_OPEN_BACK_PANTS.containsKey(armor.getMaterialName(stack)) && SUIT_OPEN_BACK_PANTS.get(armor.getMaterialName(stack)).containsKey(suitOpen)) return SUIT_OPEN_BACK_PANTS.get(armor.getMaterialName(stack)).get(suitOpen);
         return armorPath(stack, armor, EquipmentSlot.LEGS);
     }

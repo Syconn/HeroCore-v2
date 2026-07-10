@@ -17,10 +17,10 @@ public interface ICustomArmor extends IItemExtensions {
     float getToughness(ItemStack stack);
 
     default Optional<ResourceLocation> getRenderLocation(LivingEntity entity, EquipmentSlot slot) {
-        return this.getRenderLocation(entity.getItemBySlot(slot), slot);
+        return this.getRenderLocation(entity.getItemBySlot(slot), slot, entity.getItemBySlot(EquipmentSlot.HEAD));
     }
 
-    default Optional<ResourceLocation> getRenderLocation(ItemStack stack, EquipmentSlot slot) {
-        return ModifiedIronmanArmorRenderer.getRenderLocation(this, stack, slot);
+    default Optional<ResourceLocation> getRenderLocation(ItemStack stack, EquipmentSlot slot, ItemStack dataStack) {
+        return ModifiedIronmanArmorRenderer.getRenderLocation(this, stack, slot, dataStack);
     }
 }

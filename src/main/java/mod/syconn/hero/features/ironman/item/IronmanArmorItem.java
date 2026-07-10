@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -55,7 +56,7 @@ public class IronmanArmorItem extends ArmorItem implements ICustomArmor {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (entity instanceof Player && stack.getItem() instanceof ICustomArmor) {
+        if (entity instanceof Player && stack.getItem() instanceof ICustomArmor && level.isClientSide) {
             SuitTag.updateIf(stack, t -> !t.open, SuitTag::openCloseSuit);
             SuitTag.update(stack, SuitTag::tick);
         }
@@ -69,6 +70,10 @@ public class IronmanArmorItem extends ArmorItem implements ICustomArmor {
             return true;
         }
         return false;
+    }
+
+    public static boolean naked(Player player) {
+        return player.getInventory().armor.stream().allMatch(ItemStack::isEmpty);
     }
 
     public static boolean wearingFullSameSuit(Map<EquipmentSlot, ItemStack> gear) {

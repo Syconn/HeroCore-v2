@@ -16,6 +16,8 @@ public class ModSounds {
     public static final RegistrySupplier<SoundEvent> FLYING = register("power.ironman.flying");
     public static final RegistrySupplier<SoundEvent> HOVER = register("power.ironman.hover");
     public static final RegistrySupplier<SoundEvent> LANDING = register("power.ironman.landing");
+    public static final RegistrySupplier<SoundEvent> SUIT_EQUIP = register("power.ironman.equip_suit");
+    public static final RegistrySupplier<SoundEvent> SUIT_UNEQUIP = register("power.ironman.unequip_suit");
 
     private static RegistrySupplier<SoundEvent> register(String key) {
         return SOUNDS.register(key, () -> SoundEvent.createVariableRangeEvent(Constants.withId(key)));

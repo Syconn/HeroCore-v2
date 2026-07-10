@@ -1,0 +1,203 @@
+{
+	"meta": {
+		"format_version": "5.0",
+		"model_format": "modded_entity",
+		"box_uv": true
+	},
+	"name": "Door",
+	"model_identifier": "",
+	"modded_entity_entity_class": "",
+	"modded_entity_version": "1.17",
+	"modded_entity_flip_y": true,
+	"visible_box": [1, 1, 0],
+	"variable_placeholders": "",
+	"multi_file_ruleset": "",
+	"variable_placeholder_buttons": [],
+	"timeline_setups": [],
+	"unhandled_root_fields": {},
+	"resolution": {
+		"width": 32,
+		"height": 32
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"box_uv": true,
+			"render_order": "default",
+			"locked": false,
+			"export": true,
+			"scope": 0,
+			"allow_mirror_modeling": true,
+			"from": [-7, 0, -1],
+			"to": [7, 14, 0],
+			"autouv": 0,
+			"color": 7,
+			"origin": [-6, 0, 0],
+			"uv_offset": [0, 15],
+			"faces": {
+				"north": {
+					"uv": [1, 16, 15, 30],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 16, 1, 30],
+					"texture": 0
+				},
+				"south": {
+					"uv": [16, 16, 30, 30],
+					"texture": 0
+				},
+				"west": {
+					"uv": [15, 16, 16, 30],
+					"texture": 0
+				},
+				"up": {
+					"uv": [15, 16, 1, 15],
+					"texture": 0
+				},
+				"down": {
+					"uv": [29, 15, 15, 16],
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "12dcf3e1-88cd-1b7f-98a3-245d42f0364c"
+		},
+		{
+			"name": "cube",
+			"box_uv": true,
+			"render_order": "default",
+			"locked": false,
+			"export": true,
+			"scope": 0,
+			"allow_mirror_modeling": true,
+			"from": [-7, 14, -1],
+			"to": [7, 28, 0],
+			"autouv": 0,
+			"color": 7,
+			"origin": [-6, 14, 0],
+			"faces": {
+				"north": {
+					"uv": [1, 1, 15, 15],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 1, 1, 15],
+					"texture": 0
+				},
+				"south": {
+					"uv": [16, 1, 30, 15],
+					"texture": 0
+				},
+				"west": {
+					"uv": [15, 1, 16, 15],
+					"texture": 0
+				},
+				"up": {
+					"uv": [15, 1, 1, 0],
+					"texture": 0
+				},
+				"down": {
+					"uv": [29, 0, 15, 1],
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "c3294ed8-8d1d-0fc2-f297-7a8d03b3b544"
+		}
+	],
+	"groups": [
+		{
+			"name": "bot",
+			"uuid": "23529898-c784-3e35-8d9a-f112f795a12d",
+			"export": true,
+			"locked": false,
+			"scope": 0,
+			"selected": false,
+			"_static": {
+				"properties": {},
+				"temp_data": {}
+			},
+			"origin": [-6, 0, 0],
+			"rotation": [0, 0, 0],
+			"color": 0,
+			"children": [],
+			"reset": false,
+			"shade": true,
+			"mirror_uv": false,
+			"visibility": true,
+			"autouv": 0,
+			"isOpen": true,
+			"primary_selected": false
+		},
+		{
+			"name": "top",
+			"uuid": "ce305d9f-a480-69de-6833-e59502c08732",
+			"export": true,
+			"locked": false,
+			"scope": 0,
+			"selected": false,
+			"_static": {
+				"properties": {},
+				"temp_data": {}
+			},
+			"origin": [-6, 0, 0],
+			"rotation": [0, 0, 0],
+			"color": 0,
+			"children": [],
+			"reset": false,
+			"shade": true,
+			"mirror_uv": false,
+			"visibility": true,
+			"autouv": 0,
+			"isOpen": true,
+			"primary_selected": false
+		}
+	],
+	"outliner": [
+		{
+			"uuid": "23529898-c784-3e35-8d9a-f112f795a12d",
+			"isOpen": true,
+			"children": ["12dcf3e1-88cd-1b7f-98a3-245d42f0364c"]
+		},
+		{
+			"uuid": "ce305d9f-a480-69de-6833-e59502c08732",
+			"isOpen": true,
+			"children": ["c3294ed8-8d1d-0fc2-f297-7a8d03b3b544"]
+		}
+	],
+	"textures": [
+		{
+			"name": "texture.png",
+			"relative_path": "../common/src/main/resources/assets/hero/textures/block/texture.png",
+			"folder": "block",
+			"namespace": "",
+			"id": "0",
+			"group": "",
+			"scope": 0,
+			"width": 32,
+			"height": 32,
+			"uv_width": 32,
+			"uv_height": 32,
+			"particle": false,
+			"use_as_default": false,
+			"layers_enabled": false,
+			"sync_to_project": "",
+			"file_format": "png",
+			"render_mode": "default",
+			"render_sides": "auto",
+			"wrap_mode": "limited",
+			"pbr_channel": "color",
+			"fps": 7,
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"internal": true,
+			"saved": true,
+			"uuid": "e7334f28-b6fa-3eee-86ac-5ea475662e70",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACTElEQVR4AbyWS27UQBRFnyt23D8CigRMGIMYEYkFMGILiI2wCjaCxBIYsQCkiAlCmUYKJLQSmfQng7RTx8m12sqnq6qVtHz7VVW/8+6TbVW1M//ZPfxbp8ija18O45Qqe38q+7L7O6nxrz/3ank2d4DJzrPnWYym87llWQZqMRy5sA3ov9oG/Li9Qu7KwXhsl/YtFjyAVfK1BjCnSyXcFo8nExtX1W0/37kOq4ROAzzTEHNg52///tERw2jBCuo08HHnVfBdpcj5YqE6URFWQKcBLYbE2ptvuDQcVh5pFTzt8tyWC/ml4AtWyckNDEZblhebqhMVYQUkN1AUhQ0fPbaUD6y45AZmk1Or63ZDU72gCKvE6AbYJ4DP5jM7rU4YRgtWUFQDmGuf6A2G/h0oVCcqwgqIakDmwL3+0JZfJtZCBatcR1GkhdD46d3bzPl94Nuv/eZU/Pz9Rx0idltY+TTHMbdWC6ERM17C969fGDsoRUNELqx8bnwEKQ2pYGy81gDmKY8k1lj5nQZ4Pg9pThPNweRPVsbNs2wGEV9iI5BOqsv8/xrUWY2YrMNi406mZ4aYpGgdFj93cDw1xCRF67D4ue1RaYhJrBb+MEpl5eWebvUNaSE0sgk5/wamsvJx//7PDWlhVWSfIIeDeLtfRrFwCJaI3GE1M8RklTDXPjEochuVm8Hscm1YzZ0GIVHm5D7pleb/kTCMVsNeUY7niNgFOSRCRG6Zbxi3MpW98jfH6SSFnGbkkP/hzcuMKLEeIvJh2wY0uK+4qu4FAAAA//+td1keAAAABklEQVQDAPkssVDq7kPKAAAAAElFTkSuQmCC"
+		}
+	]
+}

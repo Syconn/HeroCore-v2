@@ -6,6 +6,7 @@ import mod.syconn.hero.utils.generic.MapUtil;
 import mod.syconn.hero.utils.interfaces.ISerializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
@@ -37,7 +38,7 @@ public record SuitJson(ResourceLocation model, int version, int color) implement
     }
 
     public static SuitJson readTag(CompoundTag tag) {
-        return new SuitJson(new ResourceLocation(tag.getString("model")), tag.getInt("version"), tag.getInt("color"));
+        return new SuitJson(ResourceLocation.parse(tag.getString("model")), tag.getInt("version"), tag.getInt("color"));
     }
 
     @Override
@@ -50,6 +51,6 @@ public record SuitJson(ResourceLocation model, int version, int color) implement
     }
 
     public static SuitJson fromJson(JsonObject json) {
-        return new SuitJson(new ResourceLocation(json.get("model").getAsString()), json.get("version").getAsInt(), Integer.parseInt(json.get("color").getAsString(), 16));
+        return new SuitJson(ResourceLocation.parse(json.get("model").getAsString()), json.get("version").getAsInt(), Integer.parseInt(json.get("color").getAsString(), 16));
     }
 }

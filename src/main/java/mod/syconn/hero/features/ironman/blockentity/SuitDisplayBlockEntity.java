@@ -2,13 +2,18 @@ package mod.syconn.hero.features.ironman.blockentity;
 
 import mod.syconn.hero.blockentities.SyncedBlockEntity;
 import mod.syconn.hero.core.ModBlockEntities;
+import mod.syconn.hero.core.ModSounds;
 import mod.syconn.hero.features.ironman.block.SuitDisplayBlock;
+import mod.syconn.hero.features.ironman.client.renderers.entity.IronmanArmorRenderer;
+import mod.syconn.hero.features.ironman.item.IronmanArmorItem;
 import mod.syconn.hero.features.ironman.server.data.SuitTag;
+import mod.syconn.hero.network.Network;
 import mod.syconn.hero.server.container.EquipmentContainer;
 import mod.syconn.hero.utils.generic.AnimationUtil;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -52,7 +57,8 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
 
             be.lastNearbyPlayer = be.nearbyPlayer;
             be.startSuitSpin(!level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).inflate(1f)).isEmpty());
-            if (be.getGear().get(EquipmentSlot.HEAD).getItem() instanceof ICustomArmor) SuitTag.update(be.getGear().get(EquipmentSlot.HEAD), SuitTag::tick);
+            var gear = IronmanArmorRenderer.getClientRenderStack(be.getGear());
+            if (gear != null && gear.getItem() instanceof ICustomArmor) SuitTag.update(gear, SuitTag::tick);
         } else {
             if (state.getValue(BlockStateProperties.OPEN)) {
                 var players = level.getEntitiesOfClass(Player.class, new AABB(be.worldPosition).deflate(0.75f));
@@ -60,11 +66,21 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
                 var nearby = players.stream().map(Player::getUUID).collect(Collectors.toSet());
                 be.modifiedPlayer.removeIf(uuid -> !nearby.contains(uuid));
             }
+
+            var stack = be.container.getItem(EquipmentSlot.HEAD.getIndex());
+            if (stack.getItem() instanceof IronmanArmorItem) {
+                SuitTag.updateIf(stack, t -> t.lifted, SuitTag::openCloseHelmet);
+                SuitTag.update(stack, SuitTag::tick);
+            }
         }
     }
 
     private void handleArmorSwap(Player player) { // TODO NOT UPDATING BLOCK COLOR
         if (this.modifiedPlayer.contains(player.getUUID())) return;
+
+        float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
+        if (IronmanArmorItem.wearingFullSameSuit(player) && this.container.isGearEmpty()) player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SUIT_UNEQUIP.get(), SoundSource.BLOCKS, 0.8f, pitch);
+        else if (IronmanArmorItem.naked(player) && this.container.isGearFull()) player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SUIT_EQUIP.get(), SoundSource.BLOCKS, 0.8f, pitch);
         for (var slot : EquipmentSlot.values()) {
             if (!slot.isArmor()) continue;
             if (!this.container.getItem(slot.getIndex()).isEmpty()) {

@@ -26,7 +26,7 @@ public class MjolnirRenderer extends EntityRenderer<ThrownMjolnir> {
         if (entity.clientReturnTicks > 0) poseStack.mulPose(Axis.XP.rotationDegrees(180f));
         else {
             poseStack.mulPose(Axis.XP.rotationDegrees(90f));
-            poseStack.mulPose(Axis.ZP.rotationDegrees(180f + entity.getThrownAngle())); // TODO ONLY WORKS IN 1 Direction
+            poseStack.mulPose(Axis.ZP.rotationDegrees(180f + entity.getThrownAngle()));
         }
 
 //        BakedModel bakedModel = this.itemRenderer.getModel(entity.getMjonirItem(), entity.level(), null, entity.getId());

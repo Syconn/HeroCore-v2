@@ -11,7 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-public class VisorAbility implements IHeroAbility { // TODO MAKE HELMET OVERLAY LIKE PUMPKIN?
+public class VisorAbility implements IHeroAbility {
 
     public static final ResourceLocation TYPE = Constants.withId("ironman_visor");
     private final IHeroType heroType;
