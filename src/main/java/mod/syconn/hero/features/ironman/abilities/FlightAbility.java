@@ -39,7 +39,7 @@ import org.joml.Vector3f;
 
 public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer {
 
-    public static final ResourceLocation TYPE = Constants.withId("flight"); // TODO HOVER PACKET DOESNT WORK
+    public static final ResourceLocation TYPE = Constants.withId("flight");
 
     private final IHeroType hero;
     private FlightMode mode = FlightMode.NORMAL;
@@ -182,7 +182,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
                     landed = true;
                     AnimationUtil.notifyAndPlay(sp, "ironman.landing", 1.5f, 1, Ease.OUTCUBIC);
                     float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
-                    Network.CHANNEL.sendToServer(new PlaySoundPacket(ModSounds.LANDING.get(), SoundSource.PLAYERS, 0.5f, pitch));
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.LANDING.get(), SoundSource.PLAYERS, 0.5f, pitch);
                     if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ICustomArmor) groundParticles(player);
                 }
                 sendTrackingData(player);

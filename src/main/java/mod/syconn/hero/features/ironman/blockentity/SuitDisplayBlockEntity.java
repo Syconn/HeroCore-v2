@@ -79,8 +79,8 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
         if (this.modifiedPlayer.contains(player.getUUID())) return;
 
         float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
-        if (IronmanArmorItem.wearingFullSameSuit(player) && this.container.isGearEmpty()) player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SUIT_UNEQUIP.get(), SoundSource.BLOCKS, 0.8f, pitch);
-        else if (IronmanArmorItem.naked(player) && this.container.isGearFull()) player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SUIT_EQUIP.get(), SoundSource.BLOCKS, 0.8f, pitch);
+        if (IronmanArmorItem.wearingFullSameSuit(player) && this.container.isGearEmpty()) player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SUIT_UNEQUIP.get(), SoundSource.PLAYERS, 0.8f, pitch);
+        else if (IronmanArmorItem.naked(player) && this.container.isGearFull()) player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SUIT_EQUIP.get(), SoundSource.PLAYERS, 0.8f, pitch);
         for (var slot : EquipmentSlot.values()) {
             if (!slot.isArmor()) continue;
             if (!this.container.getItem(slot.getIndex()).isEmpty()) {

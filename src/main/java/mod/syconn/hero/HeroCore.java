@@ -14,6 +14,7 @@ import mod.syconn.hero.network.Network;
 import mod.syconn.hero.server.HeroServer;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.HeroConfig;
+import mod.syconn.hero.utils.config.ServerConfig;
 import mod.syconn.hero.utils.server.SyncedResourceManager;
 import net.minecraft.server.packs.PackType;
 
@@ -36,8 +37,8 @@ public final class HeroCore {
         SyncedResourceManager.register(IronmanContent.SUITS);
 
         HeroRegistry.registerBuiltinHeroes();
-        MidnightConfig.init(Constants.MOD, HeroConfig.class);
-        EnvExecutor.runInEnv(Env.CLIENT, () -> HeroClient::init);
+//        MidnightConfig.init(Constants.MOD, HeroConfig.class);
         LifecycleEvent.SETUP.register(HeroServer::init);
+        EnvExecutor.runInEnv(Env.CLIENT, () -> HeroClient::init);
     }
 }

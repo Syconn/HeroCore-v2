@@ -12,6 +12,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,7 +23,9 @@ import java.util.UUID;
 public class IronmanSoundManagerAbility implements IHeroAbility {
 
     public static final ResourceLocation TYPE = Constants.withId("sound_manager");
-    private static final Map<UUID, IronFlightSoundInstance> FLIGHT_SOUNDS = new HashMap<>();
+
+    @OnlyIn(Dist.CLIENT)
+    private static Map<UUID, IronFlightSoundInstance> FLIGHT_SOUNDS;
 
     private final IHeroType hero;
 
@@ -29,8 +33,11 @@ public class IronmanSoundManagerAbility implements IHeroAbility {
         this.hero = hero;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void clientTick(Player player) {
+        if (FLIGHT_SOUNDS == null) FLIGHT_SOUNDS = new HashMap<>();
+
         if (usable(player)) {
             var level = player.level();
 

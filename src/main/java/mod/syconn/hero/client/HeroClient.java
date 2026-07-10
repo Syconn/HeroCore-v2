@@ -8,11 +8,9 @@ import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
+import eu.midnightdust.lib.config.MidnightConfig;
 import mod.syconn.hero.client.model.DisplayDoorModel;
-import mod.syconn.hero.core.ModBlockEntities;
-import mod.syconn.hero.core.ModBlocks;
-import mod.syconn.hero.core.ModKeys;
-import mod.syconn.hero.core.ModMenus;
+import mod.syconn.hero.core.*;
 import mod.syconn.hero.features.heros.interfaces.IHeroHolder;
 import mod.syconn.hero.features.ironman.blockentity.SuitDisplayBlockEntity;
 import mod.syconn.hero.features.ironman.client.renderers.block.SuitDisplayRenderer;
@@ -33,6 +31,10 @@ public class HeroClient {
 
     public static void init() {
         ModKeys.KEYS.forEach(KeyMappingRegistry::register);
+
+        MidnightConfig.init(Constants.MOD, HeroConfig.class);
+
+        ModParticles.registerParticleProviders();
 
         IModifiedItemRenderer.register(IronmanArmorItem.class, new ModifiedIronmanArmorRenderer());
 
