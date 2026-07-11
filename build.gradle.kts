@@ -110,13 +110,13 @@ if (mod.isForge) { // FORGE FIX for Gradle
 }
 
 publishMods {
-    modrinth {
-        if (mod.isFabric) requires("fabric-api")
-    }
-
-    curseforge {
-        client = true
-        server = true
-        if (mod.isFabric) requires("fabric-api")
-    }
+//    modrinth {
+//        if (mod.isFabric) requires("fabric-api")
+//    }
+//
+//    curseforge {
+//        client = true
+//        server = true
+//        if (mod.isFabric) requires("fabric-api")
+//    }
 }
