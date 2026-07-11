@@ -72,11 +72,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           DO_PUBLISH: steps.get-next-version.outputs.new-release-published
-#          MODRINTH_ID: ${{ vars.MODRINTH_ID }}
-#          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-#          CURSEFORGE_ID: ${{ vars.CURSEFORGE_ID }}
-#          CURSEFORGE_SLUG: ${{ vars.CURSEFORGE_SLUG }}
-#          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          MODRINTH_ID: ${{ vars.MODRINTH_ID }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_ID: ${{ vars.CURSEFORGE_ID }}
+          CURSEFORGE_SLUG: ${{ vars.CURSEFORGE_SLUG }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: npx semantic-release
 
