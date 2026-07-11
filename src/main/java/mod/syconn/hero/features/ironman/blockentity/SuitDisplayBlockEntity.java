@@ -7,7 +7,6 @@ import mod.syconn.hero.features.ironman.block.SuitDisplayBlock;
 import mod.syconn.hero.features.ironman.client.renderers.entity.IronmanArmorRenderer;
 import mod.syconn.hero.features.ironman.item.IronmanArmorItem;
 import mod.syconn.hero.features.ironman.server.data.SuitTag;
-import mod.syconn.hero.network.Network;
 import mod.syconn.hero.server.container.EquipmentContainer;
 import mod.syconn.hero.utils.generic.AnimationUtil;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
@@ -108,6 +107,10 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
         if (this.suitSpin != 0 || nearbyPlayer == lastNearbyPlayer) return;
         this.suitSpin = nearbyPlayer ? -SPIN_TICKS : SPIN_TICKS;
         this.nearbyPlayer = nearbyPlayer;
+        if (level != null && level.isClientSide() && nearbyPlayer) {
+            var pitch = 0.95f + level.getRandom().nextFloat() * 0.1f;
+            level.playLocalSound(worldPosition.getX(), this.worldPosition.getY(), this.worldPosition.getZ(), ModSounds.DISPLAY_SPIN.get(), SoundSource.BLOCKS, 0.8f, pitch, true);
+        }
     }
 
     public float getSuitSpin(float partialTicks) {
@@ -124,6 +127,10 @@ public class SuitDisplayBlockEntity extends SyncedBlockEntity {
     public void open(Level level) {
         if (getBlockState().getValue(BlockStateProperties.POWERED) && getBlockState().getValue(BlockStateProperties.OPEN)) return;
         if (level.isClientSide()) this.openProgress = this.getBlockState().getValue(BlockStateProperties.OPEN) ? -OPEN_TICKS : OPEN_TICKS;
+        else {
+            var pitch = 0.95f + level.getRandom().nextFloat() * 0.1f;
+            level.playSound(null, worldPosition.getX(), this.worldPosition.getY(), this.worldPosition.getZ(), this.getBlockState().getValue(BlockStateProperties.OPEN) ? ModSounds.DISPLAY_CLOSE.get() : ModSounds.DISPLAY_OPEN.get(), SoundSource.BLOCKS, 0.8f, pitch);
+        }
         level.setBlock(worldPosition, this.getBlockState().setValue(BlockStateProperties.OPEN, !this.getBlockState().getValue(BlockStateProperties.OPEN)), 3);
         this.markDirty();
     }

@@ -19,6 +19,10 @@ public class ModSounds {
     public static final RegistrySupplier<SoundEvent> SUIT_EQUIP = register("power.ironman.equip_suit");
     public static final RegistrySupplier<SoundEvent> SUIT_UNEQUIP = register("power.ironman.unequip_suit");
 
+    public static final RegistrySupplier<SoundEvent> DISPLAY_SPIN = register("blocks.suit_display.spin");
+    public static final RegistrySupplier<SoundEvent> DISPLAY_OPEN = register("blocks.suit_display.open");
+    public static final RegistrySupplier<SoundEvent> DISPLAY_CLOSE = register("blocks.suit_display.close");
+
     private static RegistrySupplier<SoundEvent> register(String key) {
         return SOUNDS.register(key, () -> SoundEvent.createVariableRangeEvent(Constants.withId(key)));
     }

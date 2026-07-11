@@ -181,7 +181,7 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
                 if (!landed && player instanceof ServerPlayer sp && player.onGround()) {
                     landed = true;
                     AnimationUtil.notifyAndPlay(sp, "ironman.landing", 1.5f, 1, Ease.OUTCUBIC);
-                    float pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
+                    var pitch = 0.95f + player.getRandom().nextFloat() * 0.1f;
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.LANDING.get(), SoundSource.PLAYERS, 0.5f, pitch);
                     if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ICustomArmor) groundParticles(player);
                 }
