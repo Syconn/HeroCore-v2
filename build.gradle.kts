@@ -110,13 +110,19 @@ if (mod.isForge) { // FORGE FIX for Gradle
 }
 
 publishMods {
-//    modrinth {
-//        if (mod.isFabric) requires("fabric-api")
-//    }
-//
-//    curseforge {
-//        client = true
-//        server = true
-//        if (mod.isFabric) requires("fabric-api")
-//    }
+    modrinth {
+        if (mod.isFabric) requires("fabric-api")
+        if (stonecutter.eval(stonecutter.current.version, "<=1.20.4")) requires("playeranimator")
+        requires("architectury-api")
+        requires("midnightlib")
+    }
+
+    curseforge {
+        client = true
+        server = true
+        if (mod.isFabric) requires("fabric-api")
+        if (stonecutter.eval(stonecutter.current.version, "<=1.20.4")) requires("playeranimator")
+        requires("architectury-api")
+        requires("midnightlib")
+    }
 }
