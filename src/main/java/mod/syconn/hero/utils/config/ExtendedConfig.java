@@ -53,7 +53,9 @@ public class ExtendedConfig extends MidnightConfig {
     protected static void addKeybind(KeyMapping binding, MidnightConfigListWidget list, MidnightConfigScreen screen) {
         var editButton = new ConfigKeybind(screen.width - 185, 0, 95, 20, binding);
         var resetButton = Button.builder(Component.translatable("controls.reset"), (arg) -> {
-            binding.setToDefault();
+            //? if forge
+            //binding.setToDefault();
+
             binding.setKey(binding.getDefaultKey());
             KeyMapping.resetMapping();
             screen.updateList();
@@ -65,7 +67,9 @@ public class ExtendedConfig extends MidnightConfig {
     protected static void addKeybind(KeyMapping binding, String name, MidnightConfigListWidget list, MidnightConfigScreen screen) {
         var editButton = new ConfigKeybind(screen.width - 185, 0, 95, 20, binding);
         var resetButton = Button.builder(Component.translatable("controls.reset"), (arg) -> {
-            binding.setToDefault();
+            //? if forge
+            //binding.setToDefault();
+
             binding.setKey(binding.getDefaultKey());
             KeyMapping.resetMapping();
             screen.updateList();

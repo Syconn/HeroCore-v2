@@ -20,6 +20,12 @@ modSettings {
         narrator = false
         musicVolume = 0.0
     }
+
+    variableReplacements = mapOf(
+        "arch" to mod.prop("arch", "*"),
+        "anim" to mod.prop("animation", "*"),
+        "midnight" to mod.prop("midnight", "*")
+    )
 }
 
 repositories {
@@ -42,15 +48,14 @@ dependencies {
 
     add(imp, "dev.architectury:architectury-${loader}:${mod.prop("arch")}")
 
-    if (mod.isFabric) {
-        add(imp, "me.fzzyhmstrs:fzzy_config:0.6.0+1.20.1")
-    } else if (mod.isForge) {
-        val midnightlib = "eu.midnightdust:midnightlib:1.9.2+1.20.1-forge"
+    if (stonecutter.current.parsed <= "1.20.4") {
+        val midnightlib = "eu.midnightdust:midnightlib:${mod.prop("midnight")}+1.20.1-$loader"
         add(imp, midnightlib)
         include(midnightlib)
-//        add(imp, )
-    } else {
-//        add(imp, "me.fzzyhmstrs:fzzy_config:${mod.prop("fuzzy")}+neoforge")
+    }
+
+    if (mod.isFabric) {
+        add(imp, "me.fzzyhmstrs:fzzy_config:0.6.0+1.20.1")
     }
 
     if (stonecutter.current.parsed <= "1.20.4") add(imp, "dev.kosmx.player-anim:player-animation-lib-${loader}:${mod.prop("animation")}")

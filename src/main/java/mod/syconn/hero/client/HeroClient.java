@@ -23,10 +23,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.DyeColor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
+//? if forge {
+/*import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
+*///? } else if fabric {
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+@Environment(EnvType.CLIENT)
+//? }
 public class HeroClient {
 
     public static void init() {

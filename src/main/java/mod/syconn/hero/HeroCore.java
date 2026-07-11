@@ -37,7 +37,7 @@ public final class HeroCore {
         SyncedResourceManager.register(IronmanContent.SUITS);
 
         HeroRegistry.registerBuiltinHeroes();
-//        MidnightConfig.init(Constants.MOD, HeroConfig.class);
+//        MidnightConfig.init(Constants.MOD, HeroConfig.class); TODO DO I NEED FOR FABRIC
         LifecycleEvent.SETUP.register(HeroServer::init);
         EnvExecutor.runInEnv(Env.CLIENT, () -> HeroClient::init);
     }

@@ -31,7 +31,7 @@ import org.joml.Quaternionf;
 public class IronmanOverlay {
 
     private static final Minecraft minecraft = Minecraft.getInstance();
-    private static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/vignette.png");
+    private static final ResourceLocation VIGNETTE_LOCATION = Constants.withDefault("textures/misc/vignette.png");
     private static final ResourceLocation HELMET_OFF = Constants.withId("textures/gui/hud/ironman_helmet.png");
     private static final ResourceLocation HELMET_OPEN = Constants.withId("textures/gui/hud/ironman_helmet_open.png");
 

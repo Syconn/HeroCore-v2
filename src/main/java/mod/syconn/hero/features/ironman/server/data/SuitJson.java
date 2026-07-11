@@ -38,7 +38,7 @@ public record SuitJson(ResourceLocation model, int version, int color) implement
     }
 
     public static SuitJson readTag(CompoundTag tag) {
-        return new SuitJson(ResourceLocation.parse(tag.getString("model")), tag.getInt("version"), tag.getInt("color"));
+        return new SuitJson(ResourceLocation.tryParse(tag.getString("model")), tag.getInt("version"), tag.getInt("color"));
     }
 
     @Override
@@ -51,6 +51,6 @@ public record SuitJson(ResourceLocation model, int version, int color) implement
     }
 
     public static SuitJson fromJson(JsonObject json) {
-        return new SuitJson(ResourceLocation.parse(json.get("model").getAsString()), json.get("version").getAsInt(), Integer.parseInt(json.get("color").getAsString(), 16));
+        return new SuitJson(ResourceLocation.tryParse(json.get("model").getAsString()), json.get("version").getAsInt(), Integer.parseInt(json.get("color").getAsString(), 16));
     }
 }

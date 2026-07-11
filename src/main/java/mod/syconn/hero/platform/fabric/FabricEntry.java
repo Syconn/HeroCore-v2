@@ -1,14 +1,14 @@
-package mod.syconn.hero.platform.fabric;//? if fabric {
-/*package mod.syconn.swm.loaders.fabric;
+//? if fabric {
+package mod.syconn.hero.platform.fabric;
 
-import mod.syconn.swm.StarWars;
+import mod.syconn.hero.HeroCore;
 import net.fabricmc.api.ModInitializer;
 
-public class StarFab implements ModInitializer {
+public class FabricEntry implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        StarWars.init();
+        HeroCore.init();
     }
 }
-*///?}
+//?}

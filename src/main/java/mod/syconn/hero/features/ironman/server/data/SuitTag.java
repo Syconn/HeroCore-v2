@@ -31,7 +31,7 @@ public class SuitTag {
     }
 
     public SuitTag(CompoundTag tag) {
-        this.model = ResourceLocation.parse(tag.getString("model"));
+        this.model = ResourceLocation.tryParse(tag.getString("model"));
         this.version = tag.getInt("version");
         this.color = tag.getInt("color");
         updateData(tag.getInt("version"));
@@ -47,7 +47,7 @@ public class SuitTag {
         if (saved == null) System.out.println("Invalid Suit Tag for " + this.model);
         else if (this.version != saved.version()) {
             var tag = saved.toTag().save();
-            this.model = tag.contains("model") ? ResourceLocation.parse(tag.getString("model")) : Constants.withId("suits/mark_2");
+            this.model = tag.contains("model") ? ResourceLocation.tryParse(tag.getString("model")) : Constants.withId("suits/mark_2");
             this.color = tag.getInt("color");
             this.version = saved.version();
         }

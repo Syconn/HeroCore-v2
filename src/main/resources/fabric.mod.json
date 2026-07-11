@@ -16,12 +16,22 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "${group}.${id}.ExampleMod"
+      "mod.syconn.hero.platform.fabric.FabricEntry"
+    ],
+    "client": [
+      "mod.syconn.hero.platform.fabric.client.FabricClientEntry"
     ]
   },
+  "mixins": [
+    "hero.mixins.json",
+    "fabric.hero.mixin.json"
+  ],
   "depends": {
     "fabricloader": "*",
     "fabric-api": ">=${fabricVersion}",
-    "minecraft": ">=${minecraftVersion}"
+    "minecraft": ">=${minecraftVersion}",
+    "architectury": ">=${arch}",
+    "player-animator": "*",
+    "midnightlib": ">=${midnight}"
   }
 }

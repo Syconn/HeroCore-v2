@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "mod.syconn.hero.platform.fabric.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "client.ModelBakeryMixin",
+    "client.GuiMixin"
+  ]
+}

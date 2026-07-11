@@ -9,6 +9,10 @@ public class Constants {
     public static final String MOD = "hero";
     public static final RandomSource RANDOM = RandomSource.createNewThreadLocalInstance();
     public static final UpdateTracker TRACKER = new UpdateTracker();
+
+    public static ResourceLocation withDefault(String id) {
+        return new ResourceLocation(id);
+    }
     
     public static ResourceLocation withId(String id) {
         return new ResourceLocation(MOD, id);
