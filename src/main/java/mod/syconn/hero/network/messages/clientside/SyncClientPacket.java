@@ -7,10 +7,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-
 import java.util.UUID;
 import java.util.function.Supplier;
 
+//? if 1.20.1 {
+//? } else {
+/*import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.core.UUIDUtil;
+import mod.syconn.hero.utils.Constants;
+import mod.syconn.hero.utils.client.ParticleEvent;
+*///? }
+
+//? if 1.20.1 {
 public class SyncClientPacket {
 
     private final UUID target;
@@ -51,9 +63,37 @@ public class SyncClientPacket {
             if (type == null) return;
             var ability = type.getAbility(this.ability);
             if (ability == null) return;
-
-//            System.out.println(context.get().getPlayer() + " received packet for " + player + " " + data);
             if (ability instanceof IServerSynced synced) synced.readAdditionalSync(player, this.data);
         });
     }
 }
+//? } else {
+/*public record SyncClientPacket(UUID target, ResourceLocation heroType, ResourceLocation ability, CompoundTag data) implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<SyncClientPacket> TYPE = new CustomPacketPayload.Type<>(Constants.withId("sync_client_packet"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, SyncClientPacket> STREAM_CODEC = StreamCodec.composite(
+            UUIDUtil.STREAM_CODEC, SyncClientPacket::target, ResourceLocation.STREAM_CODEC, SyncClientPacket::heroType,
+            ResourceLocation.STREAM_CODEC, SyncClientPacket::ability, ByteBufCodecs.COMPOUND_TAG, SyncClientPacket::data, SyncClientPacket::new
+    );
+
+    @Override
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
+
+    public static void handle(SyncClientPacket packet, NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            var level = Minecraft.getInstance().level;
+            if (level == null) return;
+            var player = level.getPlayerByUUID(packet.target);
+            if (player == null) return;
+            if (!(player instanceof IHeroHolder holder)) return;
+
+            var type = holder.hero$getManager().getType(packet.heroType);
+            if (type == null) return;
+            var ability = type.getAbility(packet.ability);
+            if (ability == null) return;
+            if (ability instanceof IServerSynced synced) synced.readAdditionalSync(player, packet.data);
+        });
+    }
+}
+*///? }
