@@ -73,6 +73,9 @@ public class HeroClient {
     }
 
     public static float getTickDelta() {
-        return Minecraft.getInstance().getDeltaFrameTime();
+        //? if 1.20.1
+        return Minecraft.getInstance().getFrameTime();
+        //? if >1.20.1
+        //return Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
     }
 }

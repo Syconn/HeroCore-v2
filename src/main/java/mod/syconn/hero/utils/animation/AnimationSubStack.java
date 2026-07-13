@@ -1,4 +1,6 @@
-package mod.syconn.hero.utils.client;
+//? if 1.20.1 {
+package mod.syconn.hero.utils.animation;
+
 
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
@@ -17,3 +19,4 @@ public class AnimationSubStack<T extends IAnimation> {
         base.addModifier(mirror, 0);
     }
 }
+//? }

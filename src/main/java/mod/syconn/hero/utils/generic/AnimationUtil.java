@@ -1,12 +1,16 @@
 package mod.syconn.hero.utils.generic;
 
+import mod.syconn.hero.network.Network;
+import mod.syconn.hero.network.messages.PlayAnimationPacket;
+import net.minecraft.server.level.ServerPlayer;
+
+//? if 1.20.1 {
+import mod.syconn.hero.utils.Constants;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
-import mod.syconn.hero.network.Network;
-import mod.syconn.hero.network.messages.PlayAnimationPacket;
-import mod.syconn.hero.utils.Constants;
-import net.minecraft.server.level.ServerPlayer;
+//? } else
+//import com.zigythebird.playeranimcore.easing.EasingType;
 
 public class AnimationUtil {
 
@@ -26,11 +30,13 @@ public class AnimationUtil {
         return (t * t * t + 2) / 2;
     }
 
+    //? if 1.20.1 {
     public static KeyframeAnimation getAnimation(String name) {
         return PlayerAnimationRegistry.getAnimation(Constants.withId(name));
     }
+    //? }
 
-    public static void notifyAndPlay(ServerPlayer serverPlayer, String animation, float speed, int fadeIn, Ease ease) {
+    public static void notifyAndPlay(ServerPlayer serverPlayer, String animation, float speed, int fadeIn, /*? >=1.21.1 >> */ /*EasingType*/ /*? 1.20.1 >> */ Ease ease) {
         Network.CHANNEL.sendToPlayers(serverPlayer.serverLevel().players(), new PlayAnimationPacket(serverPlayer.getUUID(), animation, speed, fadeIn, ease));
     }
 }
