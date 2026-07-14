@@ -18,6 +18,7 @@ import mod.syconn.hero.features.ironman.client.renderers.item.ModifiedIronmanArm
 import mod.syconn.hero.features.ironman.item.IronmanArmorItem;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.HeroConfig;
+import mod.syconn.hero.utils.client.TintedTextureProvider;
 import mod.syconn.hero.utils.interfaces.IModifiedItemRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -34,6 +35,8 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 //? }
 public class HeroClient {
+
+    public static TintedTextureProvider tintedTextureProvider = new TintedTextureProvider();
 
     public static void init() {
         ModKeys.KEYS.forEach(KeyMappingRegistry::register);
