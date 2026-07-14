@@ -24,11 +24,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Equipable;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.BlockHitResult;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-public class IronmanOverlay {
+public class IronmanOverlay { // TODO TEST IF THIS ACTUALLY PULLS FROM SERVER? for hover height
 
     private static final Minecraft minecraft = Minecraft.getInstance();
     private static final ResourceLocation VIGNETTE_LOCATION = Constants.withDefault("textures/misc/vignette.png");
@@ -51,16 +53,18 @@ public class IronmanOverlay {
                 RenderSystem.defaultBlendFunc();
 
                 // Hover Math
-                var height = player.level().getHeight(Heightmap.Types.MOTION_BLOCKING, player.getBlockX(), player.getBlockZ());
-                var maxHeight = player.level().getHeight(Heightmap.Types.MOTION_BLOCKING, player.getBlockX(), player.getBlockZ()) + HeroConfig.maxHoverHeight;
-                int playerY = (int) player.getY();
+                var hit = player.level().clip(new ClipContext(player.position(), player.position().subtract(0, 512, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+                int groundY = Mth.floor(hit.getLocation().y);
+                int playerY = Mth.floor(player.getY());
+                int currentHoverHeight = Math.max(playerY - groundY, 0);
+                int maxHoverHeight = HeroConfig.maxHoverHeight;
 
                 // Text
                 PoseStack poseStack = graphics.pose(); // MOVEMENT SPEED?
                 poseStack.pushPose();
                 poseStack.scale(0.5f, 0.5f, 0.5f);
                 graphics.drawString(minecraft.font, "Suit Information", 5, 5, DyeColor.LIGHT_BLUE.getTextColor()); // TODO ADD AN ACTUALLY SPACING SYSTEM
-                if (ironman.getAbility(FlightAbility.class).getMode() == FlightAbility.FlightMode.HOVER) graphics.drawString(minecraft.font, "Hovering " + Math.max(playerY - height, 0) + " blocks / " + (maxHeight - height) + " blocks", 5, 20, DyeColor.LIGHT_BLUE.getTextColor());
+                if (ironman.getAbility(FlightAbility.class).getMode() == FlightAbility.FlightMode.HOVER) graphics.drawString(minecraft.font, "Hovering " + currentHoverHeight + " blocks / " + maxHoverHeight + " blocks", 5, 20, DyeColor.LIGHT_BLUE.getTextColor());
 //                graphics.drawString(minecraft.font, "Status:", 5, 20, DyeColor.LIGHT_BLUE.getTextColor());
     //            graphics.drawString(minecraft.font, online ? "Online" : "Offline", 42, 20, online ? DyeColor.GREEN.getTextColor() : DyeColor.RED.getTextColor());
 
