@@ -11,7 +11,7 @@ authors = "Syconn"
 description = '''
 ${description}
 '''
-logoFile = "icon.png"
+logoFile = "../assets/hero/icon.png"
 #logoBlur = false
 
 [[dependencies.${id}]]

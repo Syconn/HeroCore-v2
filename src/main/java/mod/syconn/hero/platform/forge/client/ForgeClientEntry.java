@@ -24,6 +24,14 @@ import java.util.function.Function;
 @Mod.EventBusSubscriber(modid = Constants.MOD, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ForgeClientEntry {
 
+//    @SubscribeEvent
+//    public static void addRenderLayers(EntityRenderersEvent.AddLayers event) {
+//        for (String skin : event.getSkins()) {
+//            var renderer = event.getSkin(skin);
+//            if (renderer instanceof PlayerRenderer playerRenderer) playerRenderer.addLayer(new SWGearLayer<>(playerRenderer, event.getContext().getItemRenderer()));
+//        }
+//    }
+
     @SubscribeEvent
     public static void registerAdditionalModels(final ModelEvent.RegisterAdditional event) {
         var files = new ArrayList<ResourceLocation>();

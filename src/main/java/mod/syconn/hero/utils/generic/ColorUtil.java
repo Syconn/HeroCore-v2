@@ -127,6 +127,10 @@ public class ColorUtil {
         };
     }
 
+    public static int argbToAbgr(int value) {
+        return FastColor.ABGR32.color((value >>> 24) & 0xFF, (value) & 0xFF, (value >>> 8) & 0xFF, (value >>> 16) & 0xFF);
+    }
+
     public static float argbGetAf(int color) {
         return ((color & 0xFF000000) >> 24) / 255f;
     }
@@ -164,8 +168,16 @@ public class ColorUtil {
         return (float)(layeredSat * target);
     }
 
+    public static float getValue(double layer, double target) {
+        return (float) Mth.lerp(AnimationUtil.outCubic((float)(layer / 75)), 1, target);
+    }
+
     public static float getHue(double h, double x) {
         return (float) Mth.clamp(-0.06 * Math.exp(-0.011 * Math.pow(x - 6, 2)) + h, 0, 1);
+    }
+
+    public static String toResourceId(int color) {
+        return String.format("%06x", color & 0xFFFFFF);
     }
     
     public enum TintMode {

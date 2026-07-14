@@ -10,7 +10,8 @@
     "client.ItemRendererMixin",
     "client.PlayerModelMixin",
     "client.PlayerRendererMixin",
-    "client.TitleScreenMixin"
+    "client.TitleScreenMixin",
+    "client.LevelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
