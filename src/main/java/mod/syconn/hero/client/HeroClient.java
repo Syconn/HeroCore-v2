@@ -26,14 +26,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.DyeColor;
 
 //? if forge {
-import net.minecraftforge.api.distmarker.Dist;
+/*import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
-//? } else if fabric {
-/*import net.fabricmc.api.EnvType;
+*///? } else if fabric {
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
-*///? }
+//? }
 public class HeroClient {
 
     public static TintedTextureProvider tintedTextureProvider = new TintedTextureProvider();

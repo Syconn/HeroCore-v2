@@ -1,5 +1,5 @@
 //? if forge {
-package mod.syconn.hero.platform.forge.client;
+/*package mod.syconn.hero.platform.forge.client;
 
 import dev.architectury.utils.GameInstance;
 import mod.syconn.hero.features.ironman.client.renderers.entity.IronmanFlightLayer;
@@ -51,4 +51,4 @@ public class ForgeClientEntry {
         }
     }
 }
-//? }
+*///? }

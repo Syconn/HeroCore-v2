@@ -1,5 +1,5 @@
 //? if forge {
-package mod.syconn.hero.platform.forge;
+/*package mod.syconn.hero.platform.forge;
 
 import dev.architectury.platform.forge.EventBuses;
 import mod.syconn.hero.HeroCore;
@@ -15,4 +15,4 @@ public class ForgeEntry {
         HeroCore.init();
     }
 }
-//?}
+*///?}
