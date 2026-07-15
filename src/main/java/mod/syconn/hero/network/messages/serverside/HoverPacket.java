@@ -1,12 +1,10 @@
 package mod.syconn.hero.network.messages.serverside;
 
 import dev.architectury.networking.NetworkManager;
-import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.HeroConfig;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Supplier;
@@ -35,25 +33,27 @@ public class HoverPacket {
 
     public void apply(Supplier<NetworkManager.PacketContext> context) {
         context.get().queue(() -> {
-            Player player = context.get().getPlayer();
+            var player = context.get().getPlayer();
             var speed = player.isSprinting() ? 0.35 : 0.25;
-            Vec3 motion = player.getDeltaMovement();
+            var motion = player.getDeltaMovement();
             double verticalAccel = 0.065;
             double damping = 0.9;
 
-            double y = motion.y * damping;
+            var y = motion.y * damping;
             if (up == 1) y += verticalAccel;
             else if (up == -1) y -= verticalAccel;
             if (up == 0) y *= 0.5;
             y = Mth.clamp(y, -speed * 5, speed * 5);
 
-            double maxY = player.level().getHeight(Heightmap.Types.MOTION_BLOCKING, player.getBlockX(), player.getBlockZ()) + HeroConfig.maxHoverHeight;
-            double playerY = player.getBlockY();
-            double overflow = playerY - maxY;
+            var hit = player.level().clip(new ClipContext(player.position(), player.position().subtract(0, 512, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+            var groundY = hit.getLocation().y;
+            var maxY = groundY + HeroConfig.maxHoverHeight;
+            var playerY = player.getBlockY();
+            var overflow = playerY - maxY;
             if (overflow > 0) y = -Math.min(0.3, 0.05 + overflow * 0.2);
             else if (playerY >= maxY - 0.1 && y > 0) y = 0;
 
-            float yaw = player.getYRot() * ((float) Math.PI / 180F);
+            var yaw = player.getYRot() * ((float) Math.PI / 180F);
             var forwardVec = new Vec3(-Mth.sin(yaw), 0, Mth.cos(yaw));
             var rightVec = new Vec3(forwardVec.z, 0, -forwardVec.x);
             var horizontal = forwardVec.scale(forward).add(rightVec.scale(side));

@@ -1,29 +1,43 @@
 package mod.syconn.hero.features.ironman.client.renderers.entity;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import mod.syconn.hero.features.ironman.item.IronmanArmorItem;
 import mod.syconn.hero.features.ironman.server.data.SuitTag;
+import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import net.minecraft.client.model.HumanoidArmorModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 public class IronmanArmorRenderer {
+
+    private static RenderType getGlowArmor(ResourceLocation texture) {
+        return RenderType.create(Constants.withId("ironman_glow").toString(), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                RenderType.CompositeState.builder().setShaderState(RenderStateShard.RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER).setTextureState(new RenderStateShard.TextureStateShard(texture, false, false)).setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).setLightmapState(RenderStateShard.NO_LIGHTMAP).setOverlayState(RenderStateShard.OVERLAY).setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST).createCompositeState(false)
+        );
+    }
 
     private final HumanoidArmorModel<Player> innerModel;
     private final HumanoidArmorModel<Player> outerModel;
@@ -69,8 +83,42 @@ public class IronmanArmorRenderer {
         var stack = this.gear.get(slot);
         var dataStack = getClientRenderStack(this.gear);
         this.setPartVisibility(model, slot);
-        if (stack != null && stack.getItem() instanceof ICustomArmor armor && dataStack != null)
-            armor.getRenderLocation(stack, slot, dataStack).ifPresent(texture -> model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.armorCutoutNoCull(texture)), packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F));
+        if (stack != null && stack.getItem() instanceof ICustomArmor armor && dataStack != null) renderModel(poseStack, buffer, packedLight, stack, dataStack, armor, slot, model);
+    }
+
+    public static void renderModel(PoseStack poseStack, MultiBufferSource buffer, int packedLight, LivingEntity entity, ICustomArmor armorItem, EquipmentSlot slot, HumanoidModel<?> model) {
+        var locations = armorItem.getRenderLocation(entity, slot);
+
+        // Armor Layer
+        locations.get(0).ifPresent(location -> {
+            var vertexConsumer = buffer.getBuffer(RenderType.armorCutoutNoCull(location));
+            model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F);
+        });
+
+        // Glow Layer
+        poseStack.scale(1.01f, 1.01f, 1.01f);
+        locations.get(1).ifPresent(location -> {
+            var glowConsumer = buffer.getBuffer(getGlowArmor(location));
+            float pulse = 0.9f + Mth.sin(entity.tickCount * 0.2f) * 0.1f;
+            model.renderToBuffer(poseStack, glowConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, pulse, pulse, pulse, 1f);
+        });
+    }
+
+    private void renderModel(PoseStack poseStack, MultiBufferSource buffer, int packedLight, ItemStack stack, ItemStack dataStack, ICustomArmor armorItem, EquipmentSlot slot, HumanoidModel<?> model) {
+        var locations = armorItem.getRenderLocation(stack, slot, dataStack);
+
+        // Armor Layer
+        locations.get(0).ifPresent(location -> {
+            var vertexConsumer = buffer.getBuffer(RenderType.armorCutoutNoCull(location));
+            model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F);
+        });
+
+        // Glow Layer
+        poseStack.scale(1.01f, 1.01f, 1.01f);
+        locations.get(1).ifPresent(location -> {
+            var glowConsumer = buffer.getBuffer(getGlowArmor(location));
+            model.renderToBuffer(poseStack, glowConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F);
+        });
     }
 
     private HumanoidArmorModel<Player> getArmorModel(EquipmentSlot slot) {

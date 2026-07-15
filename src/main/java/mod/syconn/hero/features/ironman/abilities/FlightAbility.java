@@ -33,7 +33,10 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -94,8 +97,11 @@ public class FlightAbility implements IHeroAbility, IServerSynced, IVFXRenderer 
             renderFlying = false;
             initialJump = false;
 
-            var worldY = player.level().getHeight(Heightmap.Types.MOTION_BLOCKING, player.getBlockX(), player.getBlockZ());
-            if ((player.onGround() || player.getY() - worldY < 0.65f)) {
+            var hit = player.level().clip(new ClipContext(player.position(), player.position().subtract(0, 512, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+            var distanceToGround = Double.MAX_VALUE;
+            if (hit.getType() == HitResult.Type.BLOCK) distanceToGround = player.getY() - hit.getLocation().y;
+
+            if (player.onGround() || distanceToGround < 0.65) {
                 flying = false;
                 if (flyingTicks > 0) flyingTicks--;
             }
