@@ -18,6 +18,7 @@ import mod.syconn.hero.features.ironman.client.renderers.item.ModifiedIronmanArm
 import mod.syconn.hero.features.ironman.item.IronmanArmorItem;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.HeroConfig;
+import mod.syconn.hero.utils.client.TintedTextureProvider;
 import mod.syconn.hero.utils.interfaces.IModifiedItemRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -25,15 +26,17 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.DyeColor;
 
 //? if forge {
-/*import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
-*///? } else if fabric {
-import net.fabricmc.api.EnvType;
+//? } else if fabric {
+/*import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
-//? }
+*///? }
 public class HeroClient {
+
+    public static TintedTextureProvider tintedTextureProvider = new TintedTextureProvider();
 
     public static void init() {
         ModKeys.KEYS.forEach(KeyMappingRegistry::register);
@@ -63,7 +66,7 @@ public class HeroClient {
     }
 
     public static void onClientJoin(LocalPlayer player) {
-        Constants.TRACKER.clientPlayerJoined(player);
+//        Constants.TRACKER.clientPlayerJoined(player);
     }
 
     public static void onClientTick(Minecraft mc) {
@@ -73,6 +76,9 @@ public class HeroClient {
     }
 
     public static float getTickDelta() {
-        return Minecraft.getInstance().getDeltaFrameTime();
+        //? if 1.20.1
+        return Minecraft.getInstance().getFrameTime();
+        //? if >1.20.1
+        //return Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
     }
 }

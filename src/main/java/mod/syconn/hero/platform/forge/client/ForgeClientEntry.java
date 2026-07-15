@@ -1,19 +1,18 @@
 //? if forge {
-/*package mod.syconn.hero.platform.forge.client;
+package mod.syconn.hero.platform.forge.client;
 
 import dev.architectury.utils.GameInstance;
+import mod.syconn.hero.features.ironman.client.renderers.entity.IronmanFlightLayer;
 import mod.syconn.hero.features.ironman.client.screen.overlays.IronmanOverlay;
 import mod.syconn.hero.utils.Constants;
 import mod.syconn.hero.utils.interfaces.ISpecialRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderGuiEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -23,6 +22,13 @@ import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ForgeClientEntry {
+
+    @SubscribeEvent
+    public static void addRenderLayers(EntityRenderersEvent.AddLayers event) {
+        for (String skin : event.getSkins()) {
+            if (event.getSkin(skin) instanceof PlayerRenderer playerRenderer) playerRenderer.addLayer(new IronmanFlightLayer<>(playerRenderer));
+        }
+    }
 
     @SubscribeEvent
     public static void registerAdditionalModels(final ModelEvent.RegisterAdditional event) {
@@ -45,4 +51,4 @@ public class ForgeClientEntry {
         }
     }
 }
-*///? }
+//? }

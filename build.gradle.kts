@@ -34,31 +34,27 @@ repositories {
     maven("https://maven.architectury.dev/")
     maven("https://maven.terraformersmc.com/")
     maven("https://maven.midnightdust.eu/releases")
+    maven("https://repo.redlance.org/public")
 }
 
 val isDeobfuscated = stonecutter.current.parsed >= "26.1"
 dependencies {
     val imp = if (isDeobfuscated) "implementation" else "modImplementation"
-    val api = if (isDeobfuscated) "api" else "modApi"
     val loader = when {
         mod.isForge -> "forge"
         mod.isNeoforge -> "neoforge"
         else -> "fabric"
     }
+    val anim = if (mod.isNeoforge) "Neo" else "Fabric"
 
     add(imp, "dev.architectury:architectury-${loader}:${mod.prop("arch")}")
 
-    if (stonecutter.current.parsed <= "1.20.4") {
-        val midnightlib = "eu.midnightdust:midnightlib:${mod.prop("midnight")}+1.20.1-$loader"
-        add(imp, midnightlib)
-        include(midnightlib)
-    }
-
-    if (mod.isFabric) {
-        add(imp, "me.fzzyhmstrs:fzzy_config:0.6.0+1.20.1")
-    }
+    val midnightlib = "eu.midnightdust:midnightlib:${mod.prop("midnight")}+${mod.prop("minecraft_version")}-$loader"
+    add(imp, midnightlib)
+    include(midnightlib)
 
     if (stonecutter.current.parsed <= "1.20.4") add(imp, "dev.kosmx.player-anim:player-animation-lib-${loader}:${mod.prop("animation")}")
+    else add(imp, "com.zigythebird.playeranim:PlayerAnimationLib$anim:${mod.prop("animation")}+mc.${mod.prop("minecraft_version")}")
 }
 
 loom {
@@ -110,13 +106,19 @@ if (mod.isForge) { // FORGE FIX for Gradle
 }
 
 publishMods {
-//    modrinth {
-//        if (mod.isFabric) requires("fabric-api")
-//    }
-//
-//    curseforge {
-//        client = true
-//        server = true
-//        if (mod.isFabric) requires("fabric-api")
-//    }
+    modrinth {
+        if (mod.isFabric) requires("fabric-api")
+        if (stonecutter.eval(stonecutter.current.version, "<=1.20.4")) requires("playeranimator")
+        requires("architectury-api")
+        requires("midnightlib")
+    }
+
+    curseforge {
+        client = true
+        server = true
+        if (mod.isFabric) requires("fabric-api")
+        if (stonecutter.eval(stonecutter.current.version, "<=1.20.4")) requires("playeranimator")
+        requires("architectury-api")
+        requires("midnightlib")
+    }
 }

@@ -7,6 +7,7 @@ import mod.syconn.hero.features.ironman.server.menu.SuitDisplayMenu;
 import mod.syconn.hero.utils.block.TwoPart;
 import mod.syconn.hero.utils.generic.ModelUtil;
 import mod.syconn.hero.utils.interfaces.IEntityBlock;
+import net.minecraft.client.renderer.entity.GuardianRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -35,7 +36,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO Charging, Deploy MODE?, SOUNDS
+public class SuitDisplayBlock extends TwoPartVerticalBlock implements IEntityBlock { // TODO All Connected Blocks open doors, Charging, Deploy MODE?, SOUNDS
 
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;

@@ -37,11 +37,11 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
     }
 
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
-    private void animateHead(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
-        if (entity instanceof IHeroHolder holder) {
+    private void animateHead(LivingEntity livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (livingEntity instanceof IHeroHolder holder) {
             var flightController = holder.hero$getManager().getType(Ironman.class).getAbility(FlightAbility.class);
             float progress = Mth.clamp(Math.max(flightController.getFlyingTicks() / 15F, flightController.getSlowFallingTicks() / 8F), 0F, 1F);
-            boolean hover = flightController.getMode() == FlightAbility.FlightMode.HOVER && !entity.onGround();
+            boolean hover = flightController.getMode() == FlightAbility.FlightMode.HOVER && !livingEntity.onGround();
             boolean flyFalling = flightController.isFlying() || flightController.getSlowFallingTicks() > 0;
             float headTarget = flightController.isFlying() ? (float) Math.toRadians(-90 * (flightController.getFlyingTicks() / 15f)) : 0F;
             float leftArmTarget = (flyFalling || hover) ? (float) Math.toRadians(-25) : 0F;
@@ -60,15 +60,15 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
     }
 
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At(value = "TAIL"))
-    public void setAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
-        if (entity.isSwimming()) return;
+    public void setAnim(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (livingEntity.isSwimming()) return;
 
         for (var hand : InteractionHand.values()) {
-            var stack = entity.getItemInHand(hand);
+            var stack = livingEntity.getItemInHand(hand);
             if (!stack.isEmpty()) {
                 final IModifiedPoseRenderer pose = IModifiedPoseRenderer.REGISTRY.get(stack.getItem().getClass());
                 if (pose != null) {
-                    pose.modifyPose(entity, hand, stack, this, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, HeroClient.getTickDelta());
+                    pose.modifyPose(livingEntity, hand, stack, this, f, g, h, i, j, HeroClient.getTickDelta());
                     break;
                 }
             }
