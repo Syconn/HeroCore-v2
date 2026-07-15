@@ -101,7 +101,7 @@ public class UpdateTracker {
         protected void init() {
             int l = this.height / 4 + 48;
             this.addRenderableWidget(new ExpandedButton(this.width / 2 - 100, l + 72 + 12, 98, 20, Component.literal("Update"), b -> {
-                Util.getPlatform().openUri(Constants.TRACKER.homepageLink());
+//                Util.getPlatform().openUri(Constants.TRACKER.homepageLink());
                 this.minecraft.setScreen(this.lastScreen);
             }));
             this.addRenderableWidget(new ExpandedButton(this.width / 2 + 2, l + 72 + 12, 98, 20, Component.literal("Continue"), b -> this.minecraft.setScreen(this.lastScreen)));
@@ -113,11 +113,11 @@ public class UpdateTracker {
             super.render(guiGraphics, mouseX, mouseY, partialTick);
 
             var mod = Platform.getMod(Constants.MOD);
-            var tracker = Constants.TRACKER;
+//            var tracker = Constants.TRACKER;
             if (this.minecraft != null) {
                 guiGraphics.drawCenteredString(this.minecraft.font, mod.getName() + " version " + mod.getVersion() + " is out of date,", this.width / 2, 50, 14737632);
-                guiGraphics.drawCenteredString(this.minecraft.font, "consider updating to " + tracker.latestVersion() + " at", this.width / 2, 65, 14737632);
-                guiGraphics.drawCenteredString(this.minecraft.font, FontUtil.newChatWithLinks(tracker.homepageLink()), this.width / 2, 80, 14737632);
+//                guiGraphics.drawCenteredString(this.minecraft.font, "consider updating to " + tracker.latestVersion() + " at", this.width / 2, 65, 14737632);
+//                guiGraphics.drawCenteredString(this.minecraft.font, FontUtil.newChatWithLinks(tracker.homepageLink()), this.width / 2, 80, 14737632);
             }
         }
     }
