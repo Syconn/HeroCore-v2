@@ -2,4 +2,5 @@ Landing Animation + Sound + Particle Effect
 Flight Particles
 Suit Display + Armor Rotation + Equip Effect + Armor Animation
 Ironman Helmet Overlay
+Emissive Textures
 Config System

@@ -112,11 +112,11 @@ public abstract class TextureProvider<TData> {
         LOAD_CALLBACKS.get(target).add(callback);
     }
 
-    private void pollCallbacks(ResourceLocation identifier, boolean success) {
-        var callbacks = LOAD_CALLBACKS.get(identifier);
+    private void pollCallbacks(ResourceLocation location, boolean success) {
+        var callbacks = LOAD_CALLBACKS.get(location);
         if (callbacks == null) return;
 
         callbacks.forEach(callback -> callback.accept(success));
-        LOAD_CALLBACKS.remove(identifier);
+        LOAD_CALLBACKS.remove(location);
     }
 }

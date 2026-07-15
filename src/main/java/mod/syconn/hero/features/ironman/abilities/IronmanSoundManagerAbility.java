@@ -18,23 +18,23 @@ import java.util.Map;
 import java.util.UUID;
 
 //? if forge {
-/*import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-*///? }
+//? }
 
 //? if fabric {
-import net.fabricmc.api.EnvType;
+/*import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-//? }
+*///? }
 
 public class IronmanSoundManagerAbility implements IHeroAbility {
 
     public static final ResourceLocation TYPE = Constants.withId("sound_manager");
 
     //? if forge
-    //@OnlyIn(Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     //? if fabric
-    @Environment(EnvType.CLIENT)
+    //@Environment(EnvType.CLIENT)
     private static Map<UUID, IronFlightSoundInstance> FLIGHT_SOUNDS;
 
     private final IHeroType hero;
@@ -44,9 +44,9 @@ public class IronmanSoundManagerAbility implements IHeroAbility {
     }
 
     //? if forge
-    //@OnlyIn(Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     //? if fabric
-    @Environment(EnvType.CLIENT)
+    //@Environment(EnvType.CLIENT)
     @Override
     public void clientTick(Player player) {
         if (FLIGHT_SOUNDS == null) FLIGHT_SOUNDS = new HashMap<>();

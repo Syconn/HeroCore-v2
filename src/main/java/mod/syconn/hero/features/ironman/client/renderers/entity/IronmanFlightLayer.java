@@ -50,7 +50,6 @@ public class IronmanFlightLayer<T extends Player, M extends PlayerModel<T>> exte
         poseStack.pushPose();
         this.getParentModel().translateToHand(arm, poseStack);
         poseStack.translate((arm == HumanoidArm.RIGHT ? -1 : 1) / 16.0F, 0.70F, 0.0F);
-        // TODO SCALE EFFECT + SCALE FOR SLIM
         poseStack.mulPose(Axis.YP.rotationDegrees(spin));
         poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
         poseStack.scale(0.65f, 0.65f, Mth.lerp(progress, 0.25f, 0.85f));
@@ -64,8 +63,6 @@ public class IronmanFlightLayer<T extends Player, M extends PlayerModel<T>> exte
         else this.getParentModel().rightLeg.translateAndRotate(poseStack);
 
         poseStack.translate(0, 0.9f, 0);
-//        poseStack.translate((arm == HumanoidArm.RIGHT ? -1 : 1) / 16.0F, 0.70F, 0.0F);
-        // TODO SCALE EFFECT + SCALE FOR SLIM
         poseStack.mulPose(Axis.YP.rotationDegrees(spin));
         poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
         poseStack.scale(1f, 1f, Mth.lerp(progress, 0.25f, 1f));
