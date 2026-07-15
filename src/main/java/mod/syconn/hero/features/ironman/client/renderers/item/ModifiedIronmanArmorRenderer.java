@@ -9,6 +9,7 @@ import mod.syconn.hero.utils.generic.MapUtil;
 import mod.syconn.hero.utils.generic.ResourceUtil;
 import mod.syconn.hero.utils.interfaces.ICustomArmor;
 import mod.syconn.hero.utils.interfaces.IModifiedItemRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.model.BakedModel;
@@ -18,8 +19,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,6 +31,7 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
     private static final Map<String, Map<Byte, ResourceLocation>> HELMET_OPEN = new HashMap<>();
     private static final Map<String, Map<Byte, ResourceLocation>> SUIT_OPEN_BACK = new HashMap<>();
     private static final Map<String, Map<Byte, ResourceLocation>> SUIT_OPEN_BACK_PANTS = new HashMap<>();
+    private static final Map<String, Map<Byte, ResourceLocation>> HELMET_GLOW_OPEN = new HashMap<>();
 
     @Override
     public boolean render(LivingEntity entity, ItemStack stack, ItemDisplayContext renderMode, boolean leftHanded, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, BakedModel backupModel) {
@@ -44,11 +48,12 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
         return true;
     }
 
-    public static Optional<ResourceLocation> getRenderLocation(ICustomArmor armor, ItemStack stack, EquipmentSlot slot, ItemStack dataStack) {
+    public static List<Optional<ResourceLocation>> getRenderLocations(ICustomArmor armor, ItemStack stack, EquipmentSlot slot, ItemStack dataStack) {
         var suitOpen = SuitTag.getOrCreate(dataStack).getOpenSuit(dataStack);
         createModels(armorPath(stack, armor, slot), armor.getMaterialName(stack), slot);
-        if (slot == EquipmentSlot.LEGS) return Optional.of(getOrDefaultPants(stack, armor, suitOpen));
-        return Optional.of(getOrDefault(stack, armor, slot, suitOpen));
+        createGlowModels(glowPath(stack, armor, slot), armor.getMaterialName(stack), slot);
+        if (slot == EquipmentSlot.LEGS) return List.of(Optional.of(getOrDefaultPants(stack, armor, suitOpen)), Optional.ofNullable(getGlowPants(stack, armor)));
+        return List.of(Optional.of(getOrDefault(stack, armor, slot, suitOpen)), Optional.ofNullable(getGlow(stack, armor)));
     }
 
     private static ResourceLocation getOrDefault(ItemStack stack, ICustomArmor armor, EquipmentSlot slot, byte suitOpen) {
@@ -66,6 +71,20 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
         return armorPath(stack, armor, EquipmentSlot.LEGS);
     }
 
+    private static ResourceLocation getGlow(ItemStack stack, ICustomArmor armor) {
+        if (stack.getItem() instanceof ICustomArmor) {
+            var helmetFrame = SuitTag.getOrCreate(stack).getHelmetFrame();
+            if (HELMET_GLOW_OPEN.containsKey(armor.getMaterialName(stack)) && HELMET_GLOW_OPEN.get(armor.getMaterialName(stack)).containsKey(helmetFrame)) return HELMET_GLOW_OPEN.get(armor.getMaterialName(stack)).get(helmetFrame);
+        }
+        return null;
+    }
+
+    @Nullable
+    private static ResourceLocation getGlowPants(ItemStack stack, ICustomArmor armor) {
+        var glowLocation = glowPath(stack, armor, EquipmentSlot.LEGS);
+        return Minecraft.getInstance().getResourceManager().getResource(glowLocation).isPresent() ? glowLocation : null;
+    }
+
     private static void createModels(ResourceLocation path, String name, EquipmentSlot slot) {
         if (!HELMET_OPEN.containsKey(name) || !SUIT_OPEN_BACK.containsKey(name) || !SUIT_OPEN_BACK_PANTS.containsKey(name)) {
             ResourceUtil.loadResource(path).ifPresent(texture -> {
@@ -74,7 +93,7 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
                         var modify = texture.mappedCopy(op -> op);
                         ImageUtil.translate(modify, 9, 9, 6, 6, 0, -i);
                         ImageUtil.translate(modify, 41, 9, 6, 6, 0, -i);
-                        HELMET_OPEN.put(name, MapUtil.add(i, ResourceUtil.registerOrGet(name + "open" + i, new DynamicTexture(modify)), HELMET_OPEN.get(name)));
+                        HELMET_OPEN.put(name, MapUtil.add(i, ResourceUtil.registerOrGet(name + "_open_" + i, new DynamicTexture(modify)), HELMET_OPEN.get(name)));
                     }
                 }
 
@@ -97,7 +116,7 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
 
                         // Feet
                         if (i != 0) ImageUtil.cut(image, 12, 26, 4, 5);
-                        SUIT_OPEN_BACK.put(name, MapUtil.add(i, ResourceUtil.registerOrGet(name + "suit" + i, new DynamicTexture(image)), SUIT_OPEN_BACK.get(name)));
+                        SUIT_OPEN_BACK.put(name, MapUtil.add(i, ResourceUtil.registerOrGet(name + "_suit_" + i, new DynamicTexture(image)), SUIT_OPEN_BACK.get(name)));
                     }
                 }
 
@@ -108,15 +127,35 @@ public class ModifiedIronmanArmorRenderer implements IModifiedItemRenderer {
                         ImageUtil.translateBoundedCap(image, 36, 27, 4, 5, i, 0, 2);
                         if (i > 1) ImageUtil.cut(image, 13, 20, 2, 8);
                         if (i > 2) ImageUtil.cut(image, 12, 20, 4, 8);
-                        SUIT_OPEN_BACK_PANTS.put(name, MapUtil.add(i, ResourceUtil.registerOrGet(name + "legs" + i, new DynamicTexture(image)), SUIT_OPEN_BACK_PANTS.get(name)));
+                        SUIT_OPEN_BACK_PANTS.put(name, MapUtil.add(i, ResourceUtil.registerOrGet(name + "_legs_" + i, new DynamicTexture(image)), SUIT_OPEN_BACK_PANTS.get(name)));
                     }
                 }
             });
         }
     }
 
-    private static ResourceLocation armorPath(ItemStack stack, ICustomArmor armor, EquipmentSlot slot) {
+    private static void createGlowModels(ResourceLocation path, String name, EquipmentSlot slot) {
+        if (!HELMET_GLOW_OPEN.containsKey(name)) {
+            ResourceUtil.loadResource(path).ifPresent(texture -> {
+                if (!HELMET_GLOW_OPEN.containsKey(name) && slot == EquipmentSlot.HEAD) {
+                    for (byte i = 0; i < 7; i++) {
+                        var modify = texture.mappedCopy(op -> op);
+                        ImageUtil.translate(modify, 9, 9, 6, 6, 0, -i);
+                        ImageUtil.translate(modify, 41, 9, 6, 6, 0, -i);
+                        HELMET_GLOW_OPEN.put(name, MapUtil.add(i, ResourceUtil.registerOrGet(name + "_glow_open_" + i, new DynamicTexture(modify)), HELMET_GLOW_OPEN.get(name)));
+                    }
+                }
+            });
+        }
+    }
+
+    public static ResourceLocation armorPath(ItemStack stack, ICustomArmor armor, EquipmentSlot slot) {
         return Constants.withId("textures/armor/" + armor.getMaterialName(stack) + "/" + getLayer(slot) + ".png");
+    }
+
+    private static ResourceLocation glowPath(ItemStack stack, ICustomArmor armor, EquipmentSlot slot) {
+        var glowPath = armorPath(stack, armor, slot);
+        return new ResourceLocation(glowPath.getNamespace(), glowPath.getPath().replace(".png", "_glow.png"));
     }
 
     private static String getLayer(EquipmentSlot slot) {

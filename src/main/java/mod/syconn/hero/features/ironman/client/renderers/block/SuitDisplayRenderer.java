@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlockEntity> {
+public class SuitDisplayRenderer implements BlockEntityRenderer<SuitDisplayBlockEntity> { // TODO OPEN SUIT ANIMATION IS BROKEN
 
     private static final ResourceLocation DOOR_TEXTURE = Constants.withId("textures/block/door.png");
     private final DisplayDoorModel door;
