@@ -1,5 +1,5 @@
 //? if fabric {
-/*package mod.syconn.hero.platform.fabric.mixin.client;
+package mod.syconn.hero.platform.fabric.mixin.client;
 
 import dev.architectury.utils.GameInstance;
 import mod.syconn.hero.utils.interfaces.ISpecialRenderer;
@@ -42,4 +42,4 @@ public abstract class ModelBakeryMixin {
         output.addAll(FileToIdConverter.json(name).listMatchingResources(GameInstance.getClient().getResourceManager()).keySet().stream().map(pathModifier).toList());
     }
 }
-*///? }
+//? }

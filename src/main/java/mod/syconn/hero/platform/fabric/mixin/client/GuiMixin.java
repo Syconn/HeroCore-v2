@@ -1,5 +1,5 @@
 //? if fabric {
-/*package mod.syconn.hero.platform.fabric.mixin.client;
+package mod.syconn.hero.platform.fabric.mixin.client;
 
 import mod.syconn.hero.features.ironman.client.screen.overlays.IronmanOverlay;
 import net.minecraft.client.gui.Gui;
@@ -17,4 +17,4 @@ public class GuiMixin {
         IronmanOverlay.renderOverlay(guiGraphics, f);
     }
 }
-*///? }
+//? }
