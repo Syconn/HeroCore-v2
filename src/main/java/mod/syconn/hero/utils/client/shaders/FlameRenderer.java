@@ -16,8 +16,6 @@ import net.minecraft.util.Mth;
 public class FlameRenderer {
 
     public static final int FLAME = ColorUtil.packHsv(0.08f, 0.9f, 1.0f);
-    private static final int OUTER_FLAME = ColorUtil.packHsv(0.08f, 0.95f, 1.0f);
-    private static final int INNER_FLAME = ColorUtil.packHsv(0.11f, 0.15f, 1.0f);
 
     private static RenderType getFlameShader(ResourceLocation texture) {
         return RenderType.create(Constants.withId("muzzle_flash2").toString(), DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, true,
